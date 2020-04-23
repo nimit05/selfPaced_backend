@@ -1,35 +1,36 @@
-const {Users} = require('../data/db')
-const{getrandomstring} = require('../utils/string')
+const { Users } = require('../data/db')
+const { getrandomstring } = require('../utils/string')
 
-async function createusers(name , username , email ,password , phone_Number ){
+async function createusers(name, username, email, password, phone_Number, pro_img) {
     const user = await Users.create({
-        name ,
+        name,
         username,
-        email ,
+        email,
         password,
         phone_Number,
-        token : getrandomstring(32),
-        OTP : null,
-        Verified : false
+        token: getrandomstring(32),
+        OTP: null,
+        Verified: false,
+        pro_img
     })
 
     const newuser = await Users.findOne({
-        attributes : ['name' , 'username' , 'email' , 'phone_Number'  , 'token'],
-        where : { token : user.token}
+        attributes: ['name', 'username', 'email', 'phone_Number', 'token'],
+        where: { token: user.token }
     })
-return newuser;
+    return newuser;
 }
 
 async function findUserByOTP(OTP) {
     const user = await Users.findOne({
-        attributes : ['name' , 'username' , 'email' , 'phone_Number'],
+        attributes: ['name', 'username', 'email', 'phone_Number'],
         where: { OTP }
     })
 
     if (!user) {
-        return { body: [ 'Invalid OTP' ]}
+        return { body: ['Invalid OTP'] }
     }
-const ys = "verified Succesfully"
+    const ys = "verified Succesfully"
     return ys
 }
 
@@ -39,25 +40,25 @@ async function findUserByToken(token) {
     })
 
     if (!user) {
-        return { body: [ 'Invalid token' ]}
+        return { body: ['Invalid token'] }
     }
 
     return user
 }
 
-async function findUser(username , password) {
+async function findUser(username, password) {
     const auth = await Users.findOne({
-        where : {username}
+        where: { username }
     })
-    if(!auth){
-        return { body: [ 'No user found with that username' ]}
+    if (!auth) {
+        return { body: ['No user found with that username'] }
     }
-    if(auth.password != password){
-        return {body : ['incorrect Password']}
+    if (auth.password != password) {
+        return { body: ['incorrect Password'] }
     }
-    else{
+    else {
         return "succesfully login"
     }
 }
 
-module.exports = {createusers , findUserByOTP , findUserByToken , findUser}
+module.exports = { createusers, findUserByOTP, findUserByToken, findUser }

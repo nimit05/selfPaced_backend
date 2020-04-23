@@ -6,8 +6,15 @@ const { passport } = require('../../middleware/passport');
 
 
 route.get('/', passport.authenticate('local', {
-  successRedirect: '/register',
+
   failureRedirect: '/login'
-}))
+}), (req, res) => {
+  console.log(req.user)
+  res.send(req.user)
+})
+
+
+
+
 
 module.exports = { route }

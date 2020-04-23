@@ -4,16 +4,20 @@ const { db } = require('./data/db')
 const apiRouter = require('./routes/api').route
 const dotenv = require('dotenv')
 dotenv.config();
-
+const upload = require('express-fileupload')
 const session = require('express-session')
 const { passport } = require('./middleware/passport')
 
 
 // middlewares
 
+
+
 app.use('/', exp.static('public'));
+app.use('/api/pro-img', exp.static(`${__dirname}/routes/api/pro-img`));
 app.use(exp.json())
 app.use(exp.urlencoded({ extended: true }))
+app.use(upload())
 app.use(
     session({
         secret: process.env.session_sec,
@@ -29,9 +33,22 @@ app.use(passport.session());
 
 app.use('/api', apiRouter);
 
+
+
+
 db.sync({}).then(() => {
 
     app.listen(5132, () => {
         console.log('server-started')
     })
+})
+
+
+
+// for try 
+
+app.post('/upload/img', (req, res) => {
+
+
+    res.send("done")
 })

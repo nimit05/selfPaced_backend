@@ -39,6 +39,11 @@ const Users = db.define('users', {
     },
     Verified: {
         type: Sequelize.BOOLEAN
+    },
+    pro_img: {
+        type: Sequelize.STRING(50),
+
+
     }
 })
 
