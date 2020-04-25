@@ -1,6 +1,6 @@
 const exp = require('express')
 const app = exp()
-const { db  } = require('./data/db')
+const { db } = require('./data/db')
 const apiRouter = require('./routes/api').route
 const dotenv = require('dotenv')
 dotenv.config();
@@ -29,7 +29,7 @@ app.use('/api', apiRouter);
 
 
 
-db.sync({force : true}).then(() => {
+db.sync({}).then(() => {
 
     app.listen(5132, () => {
         console.log('server-started')

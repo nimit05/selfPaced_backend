@@ -1,16 +1,18 @@
 const { Router } = require('express')
 const route = Router()
 const { findUser } = require('../../controllers/user')
-const {auth} = require('../../middleware/auth')
+const { auth } = require('../../middleware/auth')
 
 
 // for login request 
-route.post('/', (req, res) => {
+route.post('/', async (req, res) => {
   if (req.body.user) {
 
     let cuser = req.body.user
 
-    let ouser = findUser(cuser.username, cuser.password)
+    let ouser = await findUser(cuser.username, cuser.password)
+
+
 
     if (ouser) {
 
@@ -56,9 +58,9 @@ route.get('/', auth, (req, res) => {
       "pro_img": user.pro_img,
     }
   }
-    res.send(senduser)
+  res.send(senduser)
 
-  
+
 })
 
 route.delete('/', auth, (req, res) => {
