@@ -1,0 +1,6 @@
+     
+        for login :-
+        post to /api/login
+        body :- user : {"username":username , "password":password}
+        success will return {"username":username }
+        error will return {"error":error}

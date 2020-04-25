@@ -50,15 +50,39 @@ async function findUser(username, password) {
     const auth = await Users.findOne({
         where: { username }
     })
-    if (!auth) {
-        return { body: ['No user found with that username'] }
-    }
-    if (auth.password != password) {
-        return { body: ['incorrect Password'] }
-    }
-    else {
-        return "succesfully login"
-    }
+
+    return auth
 }
+
+async function updateUserDet(username, name, password, img) {
+
+
+    const user = await User.findOne({
+        where: {
+            username: username
+        }
+    })
+
+    if (user) {
+        user.name = name
+        user.password = password
+        user.pro_img = img
+
+        User.save()
+
+        return true
+    }
+
+    else {
+        return false
+    }
+
+
+
+
+
+}
+
+
 
 module.exports = { createusers, findUserByOTP, findUserByToken, findUser }

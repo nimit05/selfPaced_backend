@@ -1,23 +1,33 @@
-const {findUserByOTP} = require('../controllers/user')
+const { Users } = require('../db/db')
 
-async function authwire(req , res , next){
-    let auth = req.headers['authorization']
-    if (auth && auth.startsWith('OTP ')) {
-        let OTP = auth.split(' ')[1]
-        let user = await findUserByOTP(OTP)
-        if (user) {
-            req.user = user 
-            
-            return next()
-        }
-    } else {
-        res.status(401).send({
-            "errors":{
-              "body": [
-                "Incorrect OTP"
-              ]
+async function auth(req, res, next) {
+
+
+    let token = false;
+    let authUser = false;
+    if (req.session) { token = req.session.token; }
+
+    if (token) {
+
+
+        authUser = await Users.findOne({
+            where: {
+                token: token
             }
-          })
+        })
+
     }
+
+    if (authUser) {
+        req.user = authUser
+        next()
+    }
+
+    else {
+        res.redirect("/login")
+    }
+
+
 }
-module.exports = {authwire}   
+
+module.exports = { auth }
