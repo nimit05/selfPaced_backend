@@ -6,7 +6,6 @@ const dotenv = require('dotenv')
 dotenv.config();
 const upload = require('express-fileupload')
 const session = require('express-session')
-const { passport } = require('./middleware/passport')
 
 // middlewares
 
@@ -25,8 +24,6 @@ app.use(
         }
     })
 )
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use('/api', apiRouter);
 
