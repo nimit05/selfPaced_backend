@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const route = Router()
 const { findUser } = require('../../controllers/user')
+const {auth} = require('../../middleware/auth')
 
 
 // for login request 

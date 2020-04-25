@@ -3,7 +3,7 @@ const route = Router()
 const { createusers } = require('../../controllers/user')
 const fs = require('fs')
 const { getrandomstring } = require('../../utils/string')
-
+const {auth} = require('../../middleware/auth')
 // const nodemailer = require('nodemailer')
 
 
