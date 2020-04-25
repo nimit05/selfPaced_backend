@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const route = Router()
 const { findUser } = require('../../controllers/user')
+const {auth} = require('../../middleware/auth')
 
 
 // for login request 
@@ -54,11 +55,11 @@ route.get('/', auth, (req, res) => {
       "Verified": user.Verified,
       "pro_img": user.pro_img,
     }
-
+  }
     res.send(senduser)
 
-  }
-}
+  
+})
 
 route.delete('/', auth, (req, res) => {
 
@@ -72,9 +73,5 @@ route.delete('/', auth, (req, res) => {
 
 
 })
-
-
-
-
 
 module.exports = { route }

@@ -3,12 +3,12 @@ const route = Router()
 const { createusers } = require('../../controllers/user')
 const fs = require('fs')
 const { getrandomstring } = require('../../utils/string')
-
+const {auth} = require('../../middleware/auth')
 // const nodemailer = require('nodemailer')
 
 
 route.post('/', async (req, res) => {
-    const a = req.body
+    const a = req.body.user
     let img_url = null;
 
 
@@ -16,7 +16,7 @@ route.post('/', async (req, res) => {
     if (req.files) {
 
         const ran_name = getrandomstring(32)
-        const img_name = req.files.pro_img.name
+        const img_name =  req.files.pro_img.name
         const data = req.files.pro_img.data
 
 

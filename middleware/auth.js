@@ -1,4 +1,4 @@
-const { Users } = require('../db/db')
+const { Users } = require('../data/db')
 
 async function auth(req, res, next) {
 
