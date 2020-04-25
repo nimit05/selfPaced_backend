@@ -3,9 +3,10 @@ const route = Router()
 const { Users } = require('../../data/db')
 const { getrandomstring } = require('../../utils/string')
 // const {authwirefortoken} = require('../../middleware/authfortoken'
+const {auth} = require('../../middleware/auth')
 const nodemailer = require('nodemailer')
 
-route.post('/', async (req, res) => {
+route.post('/',auth ,  async (req, res) => {
 
     const user = await Users.findOne({
         where: { token: req.user.token }
