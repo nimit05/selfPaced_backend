@@ -16,7 +16,7 @@ route.post('/', async (req, res) => {
     if (req.files) {
 
         const ran_name = getrandomstring(32)
-        const img_name = req.files.pro_img.name
+        const img_name =  req.files.pro_img.name
         const data = req.files.pro_img.data
 
 
