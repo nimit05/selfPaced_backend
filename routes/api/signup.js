@@ -8,7 +8,7 @@ const {auth} = require('../../middleware/auth')
 
 
 route.post('/', async (req, res) => {
-    const a = req.body
+    const a = req.body.user
     let img_url = null;
 
 
