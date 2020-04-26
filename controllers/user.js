@@ -1,7 +1,7 @@
 const { Users } = require('../data/db')
 const { getrandomstring } = require('../utils/string')
 
-async function createusers(name, username, email, password, phone_Number, pro_img) {
+async function createusers(name, username, email, password, phone_Number, pro_img, otp) {
     const user = await Users.create({
         name,
         username,
@@ -9,7 +9,7 @@ async function createusers(name, username, email, password, phone_Number, pro_im
         password,
         phone_Number,
         token: getrandomstring(32),
-        OTP: null,
+        OTP: otp,
         Verified: false,
         pro_img
     })
@@ -53,6 +53,13 @@ async function findUser(username, password) {
 
     return auth
 }
+async function findUserByEmail(email) {
+    const auth = await Users.findOne({
+        where: { email }
+    })
+
+    return auth
+}
 
 async function updateUserDet(username, name, password, img) {
 
@@ -83,6 +90,31 @@ async function updateUserDet(username, name, password, img) {
 
 }
 
+async function verified(email) {
+
+    let user = await Users.findOne({
+        where: {
+            email: email
+        }
+    }).catch(() => {
+        return false
+    })
+
+    if (user) {
+        user.Verified = true
+        user.save()
+        return true
+    }
+
+    else {
+        return false
+    }
 
 
-module.exports = { createusers, findUserByOTP, findUserByToken, findUser }
+
+
+}
+
+
+
+module.exports = { createusers, findUserByOTP, findUserByToken, findUser, findUserByEmail, verified }

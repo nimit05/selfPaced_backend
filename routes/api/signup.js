@@ -1,15 +1,23 @@
 const { Router } = require('express')
 const route = Router()
-const { createusers } = require('../../controllers/user')
+const { createusers, findUserByOTP, verified, findUserByEmail } = require('../../controllers/user')
 const fs = require('fs')
 const { getrandomstring } = require('../../utils/string')
 const { auth } = require('../../middleware/auth')
-// const nodemailer = require('nodemailer')
+const { sendOtpToMail } = require('../../utils/emailVeri')
 
 
 route.post('/', async (req, res) => {
     const a = req.body
     let img_url = null;
+    let otp = getrandomstring(6)
+    sendOtpToMail(a.email, otp).catch((err) => {
+        console.log({ error: "unable to send email error :- " + err })
+        res.send({ error: "can not register your account internal error" })
+    })
+
+
+
 
 
 
@@ -46,12 +54,47 @@ route.post('/', async (req, res) => {
         a.email,
         a.password,
         a.phone_Number,
-        img_url
+        img_url,
+        otp
     )
 
 
     res.send(user)
 })
+
+
+route.post('/email-verification', async (req, res) => {
+
+    let user = await findUserByEmail(req.body.email)
+
+    console.log(user.OTP)
+
+    if (user) {
+        if (user.OTP === req.body.otp) {
+
+            let ifVeri = await verified(req.body.email)
+
+            if (ifVeri) {
+                res.send({ success: req.body.email })
+            }
+            else {
+                res.send({ error: "internal error try again later" })
+            }
+
+        }
+
+        else {
+            res.send({ error: "wrong otp" })
+        }
+
+    }
+
+    else {
+        res.send({ error: "email not registered" })
+    }
+})
+
+
 
 
 route.put('/', auth, async (req, res) => {

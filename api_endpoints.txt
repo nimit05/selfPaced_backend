@@ -4,3 +4,8 @@
         body :- user : {"username":username , "password":password}
         success will return {"username":username }
         error will return {"error":error}
+
+
+        for emailVerifiaction :-
+        post to /api/register/email-verification 
+        body :- user:{"email":email , "otp":otp}
