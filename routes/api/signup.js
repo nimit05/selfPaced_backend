@@ -15,12 +15,11 @@ route.post('/', async (req, res) => {
         console.log({ error: "unable to send email error :- " + err })
         res.send({ error: "can not register your account internal error" })
     })
-
-
-
-
-
-
+    setTimeout(() => {
+   
+        user.OTP = null
+        user.save()
+    }, 300000)
     if (req.files) {
 
         const ran_name = getrandomstring(32)

@@ -4,10 +4,10 @@ dotenv.config();
 
 const db = new Sequelize({
     dialect: "mysql",
-    host: process.env.aws_mysql_host,
-    database: "puraniBooks",
-    username: process.env.aws_mysql_username,
-    password: process.env.aws_mysql_pass
+    // host: process.env.aws_mysql_host,
+    database: "puranibook",
+    username: 'creator',
+    password: 'letmein',
 })
 
 const Users = db.define('users', {
@@ -47,7 +47,16 @@ const Users = db.define('users', {
     pro_img: {
         type: Sequelize.STRING(50),
 
+    },
+    favourites : {
+        type : Sequelize.TEXT,
+        get(){
+         return this.getDataValue('tagList')
+     },
+     set(val){
+         this.setDataValue('tagList', val.join(','))
     }
+}
 })
 
 const Products = db.define('products' , {

@@ -5,9 +5,10 @@ const {createProduct} = require('../../controllers/products')
 
 
 route.post('/' , auth , async(req,res) => {
+    console.log( req.user.username )
     const a = req.body.product
     const product = await createProduct (
-        req.user.Username,
+        req.user.username,
       a.category,
       a.BookName,
       a.BookAuthor,
