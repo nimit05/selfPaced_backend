@@ -7,7 +7,7 @@ const db = new Sequelize({
     host: process.env.aws_mysql_host,
     database: "puraniBooks",
     username: process.env.aws_mysql_username,
-    password: process.env.aws_mysql_pass,
+    password: process.env.aws_mysql_pass
 })
 
 const Users = db.define('users', {
@@ -31,6 +31,10 @@ const Users = db.define('users', {
         type: Sequelize.STRING(15),
         allowNull: false
     },
+    Address : {
+      type : Sequelize.TEXT,
+      allowNull : false
+    },
     token: {
         type: Sequelize.STRING(50)
     },
@@ -43,11 +47,54 @@ const Users = db.define('users', {
     pro_img: {
         type: Sequelize.STRING(50),
 
-
     }
 })
 
+const Products = db.define('products' , {
+    id : {
+        type : Sequelize.INTEGER,
+        autoIncrement : true,
+        primaryKey : true
+    },
+    refrenceId : {
+        type : Sequelize.STRING(16),
+        primaryKey : true,
+        unique : true
+    },
+    category : {
+        type : Sequelize.TEXT,
+        allowNull : false
+    },
+   BookName : {
+       type :Sequelize.TEXT
+   },
+   BookAuthor : {
+       type : Sequelize.STRING(60),
+   },
+   Edition : {
+       type : Sequelize.INTEGER
+   },
+   Description : {
+       type : Sequelize.TEXT   
+   },
+   old : {
+       type : Sequelize.BOOLEAN,
+       allowNull : false
+    },
+   MRP : {
+       type : Sequelize.INTEGER
+   },
+  Value : {
+      type : Sequelize.INTEGER
+  }
+
+})
+
+Products.belongsTo(Users , {as : 'Seller'})
+Users.hasMany(Products , {as : 'Seller'})
+
 module.exports = {
     Users,
-    db
+    db,
+    Products
 }

@@ -3,9 +3,10 @@ const route = Router()
 const { Users } = require('../../data/db')
 const { getrandomstring } = require('../../utils/string')
 // const {authwirefortoken} = require('../../middleware/authfortoken'
+const {auth} = require('../../middleware/auth')
 const nodemailer = require('nodemailer')
 
-route.post('/', async (req, res) => {
+route.post('/', auth ,  async (req, res) => {
 
     const user = await Users.findOne({
         where: { token: req.user.token }
@@ -15,6 +16,7 @@ route.post('/', async (req, res) => {
     user.save()
 
     setTimeout(() => {
+   
         user.OTP = null
         user.save()
     }, 600000)
@@ -52,7 +54,8 @@ route.post('/', async (req, res) => {
     res.send('otp-sent at ' + user.email)
 })
 
-route.put('/', async (req, res) => {
+route.put('/', auth ,  async (req, res) => {
+    console.log(req.user.username)
     const user = await Users.findOne({
         where: { token: req.user.token }
     })

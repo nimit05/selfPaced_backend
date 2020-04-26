@@ -54,6 +54,7 @@ route.get('/', auth, (req, res) => {
       "name": user.name,
       "email": user.email,
       "phone_Number": user.phone_Number,
+      "Address" : user.Address,
       "Verified": user.Verified,
       "pro_img": user.pro_img,
     }
