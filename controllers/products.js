@@ -17,8 +17,10 @@ async function createProduct ( SellerUsername , category , BookName , BookAuthor
     })
 
 const product = await Products.findOne({
+    attributes : [ 'refrenceId' ,'category' , 'BookName' , 'BookAuthor' , 'Edition' 
+, 'Description' , 'old' , 'Value'],
     where : {refrenceId : newproduct.refrenceId},
-    includes : [{
+    include : [{
         attributes : [
             'username' , 'Address' , 'phone_Number' , 'email'
         ],
