@@ -46,6 +46,7 @@ route.post('/', async (req, res) => {
         a.email,
         a.password,
         a.phone_Number,
+        a.Address,
         img_url
     )
 
