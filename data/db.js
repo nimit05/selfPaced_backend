@@ -51,10 +51,10 @@ const Users = db.define('users', {
     favourites : {
         type : Sequelize.TEXT,
         get(){
-         return this.getDataValue('tagList')
+         return this.getDataValue('favourites')
      },
      set(val){
-         this.setDataValue('tagList', val.join(','))
+         this.setDataValue('favourites', val.join(','))
     }
 }
 })
