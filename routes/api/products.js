@@ -2,6 +2,7 @@ const { Router } = require('express')
 const route = Router()
 const {auth} = require('../../middleware/auth')
 const {Users , Products} = require('../../data/db')
+const {getAllProducts} = require('../../controllers/products')
 
 var arr = []
 
@@ -31,6 +32,20 @@ route.post('/:refrenceId/favourite' ,auth ,  async(req,res) => {
 
   res.send(product.BookName + " is added to your favourites")
 
+})
+
+route.get('/myproducts' ,auth ,  async (req,res) => {
+    const products = await getAllProducts(req.user.username)
+    res.send({products})
+})
+
+route.get('/' , auth , async(req,res) => {
+    const products = await Products.findAll({
+        attributes : [ 'refrenceId' ,'category' , 'BookName' , 'BookAuthor' , 'Edition' 
+        , 'Description' , 'old' , 'Value'],
+    })
+
+    res.send({products})
 })
 
 module.exports = {route}
