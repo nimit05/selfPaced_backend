@@ -28,7 +28,7 @@ app.use(
 app.use('/api', apiRouter);
 
 db.sync({}).then(() => {
-	app.listen(6000, () => {
+	app.listen50(4000, () => {
 		console.log('server-started');
 	});
 });
