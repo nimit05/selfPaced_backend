@@ -9,7 +9,7 @@ const session = require('express-session');
 
 // middlewares
 
-app.use('/', exp.static('public'));
+app.use('/', exp.static('build'));
 app.use('/api/pro-img', exp.static(`${__dirname}/routes/api/pro-img`));
 app.use(exp.json());
 app.use(exp.urlencoded({ extended: true }));
