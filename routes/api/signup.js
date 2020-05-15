@@ -1,13 +1,13 @@
-const { Router } = require('express')
-const route = Router()
-const { createusers, findUserByOTP, verified, findUserByEmail } = require('../../controllers/user')
-const fs = require('fs')
-const { getrandomstring } = require('../../utils/string')
-const { auth } = require('../../middleware/auth')
-const { sendOtpToMail } = require('../../utils/emailVeri')
-
+const { Router } = require('express');
+const route = Router();
+const { createusers, findUserByOTP, verified, findUserByEmail } = require('../../controllers/user');
+const fs = require('fs');
+const { getrandomstring } = require('../../utils/string');
+const { auth } = require('../../middleware/auth');
+const { sendOtpToMail } = require('../../utils/emailVeri');
 
 route.post('/', async (req, res) => {
+<<<<<<< HEAD
     const a = req.body
     let img_url = null;
     let otp = getrandomstring(6)
@@ -61,78 +61,91 @@ route.post('/', async (req, res) => {
     res.send(user)
 })
 
+=======
+	console.log(req.body);
+	const a = req.body.user;
+	let img_url = null;
+	let otp = getrandomstring(6);
+	sendOtpToMail(a.email, otp).catch((err) => {
+		console.log({ error: 'unable to send email error :- ' + err });
+		res.send({ error: 'can not register your account internal error' });
+	});
+	setTimeout(() => {
+		user.OTP = null;
+		user.save();
+	}, 300000);
+	if (req.files) {
+		const ran_name = getrandomstring(32);
+		const img_name = req.files.pro_img.name;
+		const data = req.files.pro_img.data;
+
+		fs.writeFile(`${__dirname}/pro-img/${ran_name}${img_name}`, data, (err) => {
+			if (err) {
+				console.log(err);
+				res.send({ error: 'image can not be uploaded try not to upload that now ' });
+			} else {
+				img_url = ran_name + img_name;
+
+				console.log('pro_image_saved');
+			}
+		});
+	}
+
+	const user = await createusers(a.name, a.username, a.email, a.password, a.phone_Number, a.Address, img_url, otp);
+	if (user.error) {
+		res.send(user);
+	} else {
+		res.send({ email: user.email });
+	}
+});
+>>>>>>> 53ab54a90f826bda0bb548deceb919ab96a37c38
 
 route.post('/email-verification', async (req, res) => {
+	let user = await findUserByEmail(req.body.email);
 
-    let user = await findUserByEmail(req.body.email)
+	console.log(user.OTP);
 
-    console.log(user.OTP)
+	if (user) {
+		if (user.OTP === req.body.otp) {
+			let ifVeri = await verified(req.body.email);
 
-    if (user) {
-        if (user.OTP === req.body.otp) {
-
-            let ifVeri = await verified(req.body.email)
-
-            if (ifVeri) {
-                res.send({ success: req.body.email })
-            }
-            else {
-                res.send({ error: "internal error try again later" })
-            }
-
-        }
-
-        else {
-            res.send({ error: "wrong otp" })
-        }
-
-    }
-
-    else {
-        res.send({ error: "email not registered" })
-    }
-})
-
-
-
+			if (ifVeri) {
+				res.send({ success: req.body.email });
+			} else {
+				res.send({ error: 'internal error try again later' });
+			}
+		} else {
+			res.send({ error: 'wrong otp' });
+		}
+	} else {
+		res.send({ error: 'email not registered' });
+	}
+});
 
 route.put('/', auth, async (req, res) => {
-    const user = req.user
-    let img_url = null;
+	const user = req.user;
+	let img_url = null;
 
+	if (req.files) {
+		const ran_name = getrandomstring(32);
+		const img_name = req.files.pro_img.name;
+		const data = req.files.pro_img.data;
 
+		fs.writeFile(`${__dirname}/pro-img/${ran_name}${img_name}`, data, (err) => {
+			if (err) {
+				console.log(err);
+				res.send({ error: 'image can not be uploaded try not to upload that now ' });
+			} else {
+				img_url = ran_name + img_name;
 
-    if (req.files) {
+				console.log('pro_image_saved');
+			}
+		});
+	}
 
-        const ran_name = getrandomstring(32)
-        const img_name = req.files.pro_img.name
-        const data = req.files.pro_img.data
+	let upUser = updateUserDet(user.name, user.password, img_url ? img_url : user.pro_img);
 
+	res.send(upUser);
+});
 
-
-        fs.writeFile(`${__dirname}/pro-img/${ran_name}${img_name}`, data, (err) => {
-
-            if (err) {
-                console.log(err)
-                res.send({ error: "image can not be uploaded try not to upload that now " })
-            }
-            else {
-
-                img_url = ran_name + img_name
-
-
-                console.log("pro_image_saved")
-            }
-
-        })
-    }
-
-
-    let upUser = updateUserDet(user.name, user.password, img_url ? img_url : user.pro_img)
-
-
-    res.send(upUser)
-})
-
-
-module.exports = { route }
+module.exports = { route };

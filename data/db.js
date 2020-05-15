@@ -1,14 +1,14 @@
-const Sequelize = require('sequelize')
-const dotenv = require('dotenv')
+const Sequelize = require('sequelize');
+const dotenv = require('dotenv');
 dotenv.config();
 
 const db = new Sequelize({
-    dialect: "mysql",
-    // host: process.env.aws_mysql_host,
-    database: "puranibook",
-    username: 'creator',
-    password: 'letmein',
-})
+	dialect: 'mysql',
+	host: process.env.aws_mysql_host,
+	database: 'puraniBooks',
+	username: process.env.aws_mysql_username,
+	password: process.env.aws_mysql_pass
+});
 
 const Users = db.define('users', {
     name: {
@@ -46,64 +46,53 @@ const Users = db.define('users', {
     },
     pro_img: {
         type: Sequelize.STRING(50),
-
-    },
-    favourites : {
-        type : Sequelize.TEXT,
-        get(){
-         return this.getDataValue('favourites')
-     },
-     set(val){
-         this.setDataValue('favourites', val.join(','))
     }
-}
 })
 
-const Products = db.define('products' , {
-    id : {
-        type : Sequelize.INTEGER,
-        autoIncrement : true,
-        primaryKey : true
-    },
-    refrenceId : {
-        type : Sequelize.STRING(16),
-        primaryKey : true,
-        unique : true
-    },
-    category : {
-        type : Sequelize.TEXT,
-        allowNull : false
-    },
-   BookName : {
-       type :Sequelize.TEXT
-   },
-   BookAuthor : {
-       type : Sequelize.STRING(60),
-   },
-   Edition : {
-       type : Sequelize.INTEGER
-   },
-   Description : {
-       type : Sequelize.TEXT   
-   },
-   old : {
-       type : Sequelize.BOOLEAN,
-       allowNull : false
-    },
-   MRP : {
-       type : Sequelize.INTEGER
-   },
-  Value : {
-      type : Sequelize.INTEGER
-  }
+const Products = db.define('products', {
+	id: {
+		type: Sequelize.INTEGER,
+		autoIncrement: true,
+		primaryKey: true
+	},
+	refrenceId: {
+		type: Sequelize.STRING(16),
+		primaryKey: true,
+		unique: true
+	},
+	category: {
+		type: Sequelize.TEXT,
+		allowNull: false
+	},
+	BookName: {
+		type: Sequelize.TEXT
+	},
+	BookAuthor: {
+		type: Sequelize.STRING(60)
+	},
+	Edition: {
+		type: Sequelize.INTEGER
+	},
+	Description: {
+		type: Sequelize.TEXT
+	},
+	old: {
+		type: Sequelize.BOOLEAN,
+		allowNull: false
+	},
+	MRP: {
+		type: Sequelize.INTEGER
+	},
+	Value: {
+		type: Sequelize.INTEGER
+	}
+});
 
-})
-
-Products.belongsTo(Users , {as : 'Seller'})
-Users.hasMany(Products , {as : 'Seller'})
+Products.belongsTo(Users, { as: 'Seller' });
+Users.hasMany(Products, { as: 'Seller' });
 
 module.exports = {
-    Users,
-    db,
-    Products
-}
+	Users,
+	db,
+	Products
+};
