@@ -45,15 +45,6 @@ const Users = db.define('users', {
 	},
 	pro_img: {
 		type: Sequelize.STRING(50)
-	},
-	favourites: {
-		type: Sequelize.TEXT,
-		get() {
-			return this.getDataValue('favourites');
-		},
-		set(val) {
-			this.setDataValue('favourites', val.join(','));
-		}
 	}
 });
 

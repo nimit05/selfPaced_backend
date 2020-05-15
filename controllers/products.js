@@ -42,4 +42,6 @@ const product = await Products.findOne({
   return product
 }
 
+
+
 module.exports = {createProduct , getAllProducts}

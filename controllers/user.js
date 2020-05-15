@@ -2,24 +2,23 @@ const { Users } = require('../data/db');
 const { getrandomstring } = require('../utils/string');
 
 async function createusers(name, username, email, password, phone_Number, pro_img, otp) {
-	try {
-		const user = await Users.create({
-			name,
-			username,
-			email,
-			password,
-			phone_Number,
+	const user = await Users.create({
+		name,
+		username,
+		email,
+		password,
+		phone_Number,
+		token: getrandomstring(32),
+		OTP: otp,
+		Verified: false,
+		pro_img
+	});
 
-			token: getrandomstring(32),
-			OTP: otp,
-			Verified: false,
-			pro_img
-		});
-
-		return user;
-	} catch (err) {
-		return { error: 'Database Error + ' + err };
-	}
+	const newuser = await Users.findOne({
+		attributes: [ 'name', 'username', 'email', 'phone_Number', 'token' ],
+		where: { token: user.token }
+	});
+	return newuser;
 }
 
 async function findUserByOTP(OTP) {

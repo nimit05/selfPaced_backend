@@ -34,8 +34,8 @@ route.post('/:refrenceId/favourite' ,auth ,  async(req,res) => {
 
 })
 
-route.get('/myproducts' ,auth ,  async (req,res) => {
-    const products = await getAllProducts(req.user.username)
+route.get('/myproducts/:username'  ,  async (req,res) => {
+    const products = await getAllProducts(req.params.username)
     res.send({products})
 })
 
