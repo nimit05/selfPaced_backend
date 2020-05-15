@@ -32,8 +32,7 @@ const Users = db.define('users', {
 		allowNull: false
 	},
 	Address: {
-		type: Sequelize.TEXT,
-		allowNull: false
+		type: Sequelize.TEXT
 	},
 	token: {
 		type: Sequelize.STRING(50)

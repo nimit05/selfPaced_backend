@@ -17,6 +17,7 @@ route.post('/', async (req, res) => {
 	});
 	setTimeout(() => {
 		user.OTP = null;
+		b;
 		user.save();
 	}, 300000);
 	if (req.files) {
@@ -36,7 +37,7 @@ route.post('/', async (req, res) => {
 		});
 	}
 
-	const user = await createusers(a.name, a.username, a.email, a.password, a.phone_Number, a.Address, img_url, otp);
+	const user = await createusers(a.name, a.username, a.email, a.password, a.phone_Number, img_url, otp);
 	if (user.error) {
 		res.send(user);
 	} else {

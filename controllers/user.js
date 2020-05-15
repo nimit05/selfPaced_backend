@@ -1,7 +1,7 @@
 const { Users } = require('../data/db');
 const { getrandomstring } = require('../utils/string');
 
-async function createusers(name, username, email, password, phone_Number, Address, pro_img, otp) {
+async function createusers(name, username, email, password, phone_Number, pro_img, otp) {
 	try {
 		const user = await Users.create({
 			name,
@@ -9,7 +9,7 @@ async function createusers(name, username, email, password, phone_Number, Addres
 			email,
 			password,
 			phone_Number,
-			Address,
+
 			token: getrandomstring(32),
 			OTP: otp,
 			Verified: false,
@@ -18,7 +18,7 @@ async function createusers(name, username, email, password, phone_Number, Addres
 
 		return user;
 	} catch (err) {
-		return { error: 'Database Error' };
+		return { error: 'Database Error + ' + err };
 	}
 }
 
