@@ -11,7 +11,9 @@ async function createusers(name, username, email, password, phone_Number,  pro_i
         token: getrandomstring(32),
         OTP: otp,
         Verified: false,
-        pro_img
+		pro_img,
+		Cart:[],
+		Library : []
     })
 
     const newuser = await Users.findOne({

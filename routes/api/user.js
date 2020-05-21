@@ -12,5 +12,18 @@ route.get('/' , auth , async(req , res) => {
     res.send(user)
 })
 
+route.get('/Cart' , auth, async(req, res) => {
+   const user = await Users.findOne({
+       where :{username :req.user.username}
+   })
+   res.send(user.Cart)
+})
+
+route.get('/Library' , auth , async(req,res) => {
+    const user = await Users.findOne({
+        where:{username :req.user.username}
+    })
+    res.send(user.Library[0])
+})
 
 module.exports = {route}
