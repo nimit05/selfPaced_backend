@@ -2,6 +2,40 @@ const { Users } = require('../data/db');
 const { getrandomstring } = require('../utils/string');
 
 async function createusers(name, username, email, password, phone_Number, pro_img, otp) {
+	let finduser = await Users.findOne({
+		where: {
+			username: username
+		}
+	});
+
+	let efinduser = await Users.findOne({
+		where: {
+			email: email
+		}
+	});
+
+	let pfinduser = await Users.findOne({
+		where: {
+			phone_Number: phone_Number
+		}
+	});
+
+	if (finduser || efinduser || pfinduser) {
+		let err = '';
+
+		if (finduser) {
+			err = err + ' username exist';
+		}
+		if (efinduser) {
+			err = err + ' email exist';
+		}
+		if (pfinduser) {
+			err = err + ' phonenumber exist';
+		}
+
+		return { error: err };
+	}
+
 	const user = await Users.create({
 		name,
 		username,

@@ -7,7 +7,7 @@ const { auth } = require('../../middleware/auth');
 const { sendOtpToMail } = require('../../utils/emailVeri');
 
 route.post('/', async (req, res) => {
-	const a = req.body;
+	const a = req.body.user;
 	let img_url = null;
 	let otp = getrandomstring(6);
 	sendOtpToMail(a.email, otp).catch((err) => {
@@ -42,8 +42,6 @@ route.post('/', async (req, res) => {
 
 route.post('/email-verification', async (req, res) => {
 	let user = await findUserByEmail(req.body.email);
-
-	console.log(user.OTP);
 
 	if (user) {
 		if (user.OTP === req.body.otp) {
