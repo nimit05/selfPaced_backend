@@ -8,7 +8,7 @@ const {AddToCart , AddToLibrary} = require('../../controllers/userLibrary')
 var lib = []
 
 route.post('/:refrenceId/Buy' , auth, async(req,res) => {
-    const item = await AddToLibrary(req.params.refrenceId , req.user.username)
+    const item = await AddToLibrary( req.user.username , req.params.refrenceId )
 
     res.send(item)
 })

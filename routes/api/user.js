@@ -30,10 +30,23 @@ route.get('/Cart' , auth, async(req, res) => {
 })
 
 route.get('/Library' , auth , async(req,res) => {
+    var items = []
     const item = await Library.findAll({
         where : {username : req.user.username}
     })
-    res.send(item)
+    console.log(item[0].Product_RefrenceId)
+    for(let i=0;i<item.length;i++){
+        let prdct = await Products.findOne({
+            attributes : ['id','refrenceId' ,'category' , 'BookName' , 'BookAuthor' , 'Edition' 
+            , 'Description' , 'old' , 'Value'],
+            where:{refrenceId : item[i].Product_RefrenceId}
+        })
+        items.push(prdct)
+        
+    }
+
+    res.send(items)
+    
 })
 
 module.exports = {route}

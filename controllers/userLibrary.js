@@ -1,22 +1,13 @@
 const {Library , Users , Products} = require('../data/db')
 
 
-async function AddToLibrary(itemsRefrenceId , username){
+async function AddToLibrary( username , Product_RefrenceId){
     const item = await Library.create({
-        itemsRefrenceId,
-        username
+        username,
+        Product_RefrenceId
     })
     
-    const newitem = await Library.findOne({
-        where :{username : item.username},
-        include : [{
-            attributes : [ 'refrenceId' ,'category' , 'BookName' , 'BookAuthor' , 'Edition' 
-            , 'Description' , 'old' , 'Value'],
-            model : Products,
-            as : 'items'
-        }]
-    })
-    return newitem
+    return item
 }
 
 async function LibraryProducts(username){
