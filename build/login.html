@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="reg.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="227148383445-9in8dql50spjpv96cfvpc9ce2io6rg23.apps.googleusercontent.com.apps.googleusercontent.com">
+  <script src="email-verify.js"></script>
+  <title>PuraniBooks</title>
+</head>
+
+<body>
+  <div class="form">
+
+    <ul class="tab-group">
+      <li class="tab  tabp"><a id="tab_left" href="#login">Register</a></li>
+      <li class="tab tabn active"><a id="tab_right" href="#signup">Login</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="signup">
+
+
+        <form action="/" method="GET">
+            <div class="field-wrap">
+       
+                <input type="email" required id="log_username"  name = "username" placeholder="Username" />
+               
+              </div>  
+                <div class="field-wrap">
+             
+                <input type="password" required  name="password" placeholder="Password" id="wrong_pass" />
+                <div id = "warning"></div>
+                <div class="psw">
+                  Forgot <a  className ="pass" href="#">password?</a>
+                </div>            
+              </div>
+        
+               <div class="divbtn">
+              <button id="submit_btn" class="button button-block" onclick="Validation(); Adder()" />Login</button>
+               </div>
+
+      </div>
+
+
+
+      <div id="login">
+
+        <div class="top-row">
+            <div class="field-wrap">
+    
+              <input type="text" name="Name" required  placeholder="Name" id="name"/>
+              <div id="below_name" class="p"></div>
+
+            </div>
+            <div class="field-wrap">
+             
+              <input type="text" name="lastn" placeholder="Username"  required id="username"/>
+              <div id="below_username" class="p"></div>
+            </div>
+          </div>
+
+
+
+          <div class="field-wrap">
+           
+            <input type="email" name="email"placeholder="E-mail" required id="email" />
+            <div id="below_email" class="p"></div>
+
+          </div>
+
+          <div class="field-wrap">
+         
+           
+            <input id="pass" type="password" required placeholder="Password" />
+            <div id = "warning" class="p"></div>
+          </div>
+          
+
+          <div class="field-wrap">
+            
+            <input id="conPass" type="password" required placeholder="Confirm Password" />
+        
+          </div>
+          <div class="field-wrap">
+          
+            <input type="number" required placeholder="Phone Number" id="phone_Number" />
+            <div id="below_number" class="p"></div>
+
+          </div>
+          <br>
+        
+
+          <button type="submit" class="button button-block" onclick="Pass_Validation(); Linker()" />Register</button>
+          
+      
+
+      
+
+        </form>
+
+     
+
+    </div><!-- tab-content -->
+
+  </div> <!-- /form -->
+</body>
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+</html>

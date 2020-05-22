@@ -50,8 +50,10 @@ const Users = db.define('users', {
 	Cart:{
 		type : Sequelize.TEXT,
     
-		get(){
+		get(val){
+			if(this.getDataValue('Cart') != null){
 			return this.getDataValue('Cart').split(';')
+			}
 		},
 		set(val){
 			this.setDataValue('Cart', val.join(','));

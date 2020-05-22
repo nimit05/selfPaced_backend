@@ -11,9 +11,7 @@ async function createusers(name, username, email, password, phone_Number,  pro_i
         token: getrandomstring(32),
         OTP: otp,
         Verified: false,
-		pro_img,
-		Cart:[],
-		Library : []
+		pro_img
     })
 
     const newuser = await Users.findOne({
@@ -101,4 +99,13 @@ async function verified(email) {
 	}
 }
 
-module.exports = { createusers, findUserByOTP, findUserByToken, findUser, findUserByEmail, verified };
+async function Libraryfounder(username){
+
+	let user = await Users.findOne({
+		where:{username}
+	})
+
+	return user.Library[1]
+}
+
+module.exports = { createusers, findUserByOTP, findUserByToken, findUser, findUserByEmail, verified ,Libraryfounder};

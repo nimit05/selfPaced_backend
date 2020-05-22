@@ -1,4 +1,4 @@
-const {Users} = require('../../data/db')
+const {Users , Products , Library} = require('../../data/db')
 const {Router} = require('express')
 route = Router()
 const {auth} = require('../../middleware/auth')
@@ -20,10 +20,10 @@ route.get('/Cart' , auth, async(req, res) => {
 })
 
 route.get('/Library' , auth , async(req,res) => {
-    const user = await Users.findOne({
-        where:{username :req.user.username}
+    const item = await Library.findAll({
+        where : {username : req.user.username}
     })
-    res.send(user.Library[0])
+    res.send(item)
 })
 
 module.exports = {route}

@@ -4,7 +4,6 @@ const {auth} = require('../../middleware/auth')
 const {Users , Products} = require('../../data/db')
 const {getAllProducts} = require('../../controllers/products')
 
-var arr = []
 var lib = []
 
 route.post('/:refrenceId/Buy' , auth, async(req,res) => {
@@ -16,9 +15,8 @@ route.post('/:refrenceId/Buy' , auth, async(req,res) => {
     })
 
   console.log(user.Library)
+                  
 
-  let arr3 = user.Library
-   
  if(user.Library != null){
    lib =  lib.concat(arr3)
  }
@@ -28,9 +26,6 @@ route.post('/:refrenceId/Buy' , auth, async(req,res) => {
  
  user.Library = lib
  user.save()
-
-
-  
 
  res.send(product.BookName + " is added to your Library")
 
@@ -45,17 +40,20 @@ route.post('/:refrenceId/AddToCart' ,auth ,  async(req,res) => {
      })
 
    console.log(user.Cart)
-
-   let arr2 = user.Cart
-    
+   var arr = []
+   
+   if(user.Cart != null){
+    var arr2 = user.Cart[0].split(',') 
+   }   
+   console.log(arr2)
   if(user.Cart != null){
     arr =  arr.concat(arr2)
   }
- 
-
-  arr.push(product.refrenceId)
-  
+    
+   arr.push(product.refrenceId)
+  console.log(arr)
   user.Cart = arr
+  user.Cart = user.Cart[0].split(',')
   user.save()
 
    console.log(user.Cart)
