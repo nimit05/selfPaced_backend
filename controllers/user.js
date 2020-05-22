@@ -133,4 +133,12 @@ async function verified(email) {
 	}
 }
 
-module.exports = { createusers, findUserByOTP, findUserByToken, findUser, findUserByEmail, verified };
+async function Libraryfounder(username) {
+	let user = await Users.findOne({
+		where: { username }
+	});
+
+	return user.Library[1];
+}
+
+module.exports = { createusers, findUserByOTP, findUserByToken, findUser, findUserByEmail, verified, Libraryfounder };
