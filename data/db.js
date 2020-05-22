@@ -50,7 +50,7 @@ const Users = db.define('users', {
 	Cart:{
 		type : Sequelize.TEXT,
     
-		get(val){
+		get(){
 			if(this.getDataValue('Cart') != null){
 			return this.getDataValue('Cart').split(';')
 			}
@@ -59,16 +59,23 @@ const Users = db.define('users', {
 			this.setDataValue('Cart', val.join(','));
 		},
 	
-	} ,
-	Library:{
-		type : Sequelize.TEXT,
-    
-		get(){
-			return this.getDataValue('Library').split(';')
-		},
-		set(val){
-			this.setDataValue('Library', val.join(','));
-		}
+	} 
+})
+
+const Library = db.define('libraries' , {
+	id: {
+		type: Sequelize.INTEGER,
+		autoIncrement: true,
+		primaryKey: true
+	},
+	username :{
+		type : Sequelize.STRING(20),
+		primaryKey : true
+	},
+	Product_RefrenceId:{
+		type: Sequelize.STRING(16),
+		primaryKey: true,
+		unique: true
 	}
 })
 
@@ -114,8 +121,10 @@ const Products = db.define('products', {
 Products.belongsTo(Users, { as: 'Seller' });
 Users.hasMany(Products, { as: 'Seller' });
 
+
 module.exports = {
 	Users,
 	db,
-	Products
+	Products,
+	Library
 };

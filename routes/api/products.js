@@ -3,63 +3,19 @@ const route = Router()
 const {auth} = require('../../middleware/auth')
 const {Users , Products} = require('../../data/db')
 const {getAllProducts} = require('../../controllers/products')
+const {AddToCart , AddToLibrary} = require('../../controllers/userLibrary')
 
 var lib = []
 
 route.post('/:refrenceId/Buy' , auth, async(req,res) => {
-    const user = await Users.findOne({
-        where : {username : req.user.username}
-    })
-    const product = await Products.findOne({
-        where : {refrenceId : req.params.refrenceId}
-    })
+    const item = await AddToLibrary(req.params.refrenceId , req.user.username)
 
-  console.log(user.Library)
-                  
-
- if(user.Library != null){
-   lib =  lib.concat(arr3)
- }
-
- lib.push(product.refrenceId)
-
- 
- user.Library = lib
- user.save()
-
- res.send(product.BookName + " is added to your Library")
-
+    res.send(item)
 })
 
 route.post('/:refrenceId/AddToCart' ,auth ,  async(req,res) => {
-     const user = await Users.findOne({
-         where : {username : req.user.username}
-     })
-     const product = await Products.findOne({
-         where : {refrenceId : req.params.refrenceId}
-     })
-
-   console.log(user.Cart)
-   var arr = []
-   
-   if(user.Cart != null){
-    var arr2 = user.Cart[0].split(',') 
-   }   
-   console.log(arr2)
-  if(user.Cart != null){
-    arr =  arr.concat(arr2)
-  }
-    
-   arr.push(product.refrenceId)
-  console.log(arr)
-  user.Cart = arr
-  user.Cart = user.Cart[0].split(',')
-  user.save()
-
-   console.log(user.Cart)
-
-  res.send(product.BookName + " is added to your cart")
-
+    const cart = await AddToCart(req.user.username , req.params.refrenceId)
+    res.send(cart)
 })
 
 route.get('/myproducts/:username'  ,  async (req,res) => {
