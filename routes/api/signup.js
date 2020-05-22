@@ -7,66 +7,8 @@ const { auth } = require('../../middleware/auth');
 const { sendOtpToMail } = require('../../utils/emailVeri');
 
 route.post('/', async (req, res) => {
-<<<<<<< HEAD
 	const a = req.body.user;
-=======
-<<<<<<< HEAD
-    const a = req.body
-    let img_url = null;
-    let otp = getrandomstring(6)
-    sendOtpToMail(a.email, otp).catch((err) => {
-        console.log({ error: "unable to send email error :- " + err })
-        res.send({ error: "can not register your account internal error" })
-    })
-    setTimeout(() => {
-   
-        user.OTP = null
-        user.save()
-    }, 300000)
-    if (req.files) {
 
-        const ran_name = getrandomstring(32)
-        const img_name = req.files.pro_img.name
-        const data = req.files.pro_img.data
-
-
-
-        fs.writeFile(`${__dirname}/pro-img/${ran_name}${img_name}`, data, (err) => {
-
-            if (err) {
-                console.log(err)
-                res.send({ error: "image can not be uploaded try not to upload that now " })
-            }
-            else {
-
-                img_url = ran_name + img_name
-
-
-                console.log("pro_image_saved")
-            }
-
-        })
-    }
-
-
-
-    const user = await createusers(
-        a.name,
-        a.username,
-        a.email,
-        a.password,
-        a.phone_Number,
-        img_url,
-        otp
-    )
-
-
-    res.send(user)
-})
-
-=======
-	const a = req.body;
->>>>>>> f8f2117e1049c4b9819591dce93ad2f0f4d634a1
 	let img_url = null;
 	let otp = getrandomstring(6);
 	sendOtpToMail(a.email, otp).catch((err) => {
@@ -98,7 +40,6 @@ route.post('/', async (req, res) => {
 
 	res.send(user);
 });
->>>>>>> 06cd907f43bf41dd343f4e65a4c78a3aff6d6189
 
 route.post('/email-verification', async (req, res) => {
 	let user = await findUserByEmail(req.body.email);
