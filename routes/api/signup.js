@@ -64,8 +64,6 @@ route.post('/', async (req, res) => {
 route.post('/email-verification', async (req, res) => {
 	let user = await findUserByEmail(req.body.email);
 
-	console.log(user.OTP);
-
 	if (user) {
 		if (user.OTP === req.body.otp) {
 			let ifVeri = await verified(req.body.email);

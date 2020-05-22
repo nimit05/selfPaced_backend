@@ -1,24 +1,62 @@
 const { Users } = require('../data/db');
 const { getrandomstring } = require('../utils/string');
 
-async function createusers(name, username, email, password, phone_Number,  pro_img, otp) {
-    const user = await Users.create({
-        name,
-        username,
-        email,
-        password,
-        phone_Number,
-        token: getrandomstring(32),
-        OTP: otp,
-        Verified: false,
-		pro_img
-    })
+async function createusers(name, username, email, password, phone_Number, pro_img, otp) {
+	let finduser = await Users.findOne({
+		where: {
+			username: username
+		}
+	});
 
-    const newuser = await Users.findOne({
-        attributes: ['name', 'username', 'email', 'phone_Number', 'token'],
-        where: { token: user.token }
-    })
-    return newuser;
+	let efinduser = await Users.findOne({
+		where: {
+			email: email
+		}
+	});
+
+	let pfinduser = await Users.findOne({
+		where: {
+			phone_Number: phone_Number
+		}
+	});
+
+	if (finduser || efinduser || pfinduser) {
+		let err = '';
+
+		if (finduser) {
+			err = err + ' username exist';
+		}
+		if (efinduser) {
+			err = err + ' email exist';
+		}
+		if (pfinduser) {
+			err = err + ' phonenumber exist';
+		}
+
+		return { error: err };
+	}
+
+	const user = await Users.create({
+		name,
+		username,
+		email,
+		password,
+		phone_Number,
+		token: getrandomstring(32),
+		OTP: otp,
+		Verified: false,
+		pro_img
+	});
+
+	const newuser = await Users.findOne({
+		attributes: [ 'name', 'username', 'email', 'phone_Number', 'token' ],
+		where: { token: user.token }
+	});
+	setTimeout(() => {
+		newuser.OTP = null;
+		Users.save();
+	}, 300000);
+	return newuser;
 }
 
 async function findUserByOTP(OTP) {
@@ -99,13 +137,12 @@ async function verified(email) {
 	}
 }
 
-async function Libraryfounder(username){
-
+async function Libraryfounder(username) {
 	let user = await Users.findOne({
-		where:{username}
-	})
+		where: { username }
+	});
 
-	return user.Library[1]
+	return user.Library[1];
 }
 
-module.exports = { createusers, findUserByOTP, findUserByToken, findUser, findUserByEmail, verified ,Libraryfounder};
+module.exports = { createusers, findUserByOTP, findUserByToken, findUser, findUserByEmail, verified, Libraryfounder };

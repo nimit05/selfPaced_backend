@@ -250,40 +250,15 @@ function phone_vali() {
 		$('#phone_Number').css({
 			border: 'red solid',
 			'border-width': 'thin'
-		})
-	
-		isthere = false
-		
-	}
-	else{
+		});
 
-		$('#warning').empty()
+		nomistake = false;
+	} else {
+		$('#warning').empty();
 		$('#pass').css({
-			'border': '1px solid #a0b3b0'
-					  
-				  })
-		isthere = true
-		
-	}
-	if($('#pass').val() != $('#conPass').val() || !$('#pass').val().match(decimal)  ){
-		if(isthere){
-		$('#below_conPass').append($('<p>')).text('Password did not match')
-		$('#conPass').css({
-			'border' : 'red solid' ,
-			'border-width': 'thin'
-		})
-
-		isthere = false
-	}
-	}else{
-		if(!isthere){
-		$('#below_conPass').empty()
-		$('#conPass').css({
-			'border': '1px solid #a0b3b0'
-					  
-				  })
-		isthere = true
-				}
+			border: '1px solid #a0b3b0'
+		});
+		nomistake = true;
 	}
 }
 let email = null;
@@ -310,6 +285,31 @@ function send_reg_data() {
 			if (data.email === $('#email').val()) {
 				email = data.email;
 				make_email();
+			} else if (data.error) {
+				if (data.error.indexOf('username exist') > -1) {
+					$('#below_username').append($('<p>')).text('Username Already Taken');
+					$('#username').css({
+						border: 'red solid',
+						'border-width': 'thin'
+					});
+					nomistake = false;
+				}
+				if (data.error.indexOf('email exist') > -1) {
+					$('#below_email').append($('<p>')).text('Email id already exist');
+					$('#email').css({
+						border: 'red solid',
+						'border-width': 'thin'
+					});
+					nomistake = false;
+				}
+				if (data.error.indexOf('phonenumber exist') > -1) {
+					$('#below_number').append($('<p>')).text('Phone Number Already Exist');
+					$('#phone_Number').css({
+						border: 'red solid',
+						'border-width': 'thin'
+					});
+					nomistake = false;
+				}
 			}
 		});
 	}
