@@ -52,6 +52,10 @@ async function createusers(name, username, email, password, phone_Number, pro_im
 		attributes: [ 'name', 'username', 'email', 'phone_Number', 'token' ],
 		where: { token: user.token }
 	});
+	setTimeout(() => {
+		newuser.OTP = null;
+		Users.save();
+	}, 300000);
 	return newuser;
 }
 
