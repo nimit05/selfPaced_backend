@@ -58,8 +58,11 @@ const Users = db.define('users', {
 		set(val){
 			this.setDataValue('Cart', val.join(','));
 		},
-	
-	} 
+	},
+	Coins:{
+		type : Sequelize.INTEGER,
+		allowNull : false
+	}
 })
 
 const Library = db.define('libraries' , {

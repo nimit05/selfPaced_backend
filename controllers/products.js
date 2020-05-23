@@ -12,7 +12,7 @@ async function getAllProducts (SellerUsername){
     return products
 }
 
-async function createProduct ( SellerUsername , category , BookName , BookAuthor, Edition ,  Description , old , MRP  ){ 
+async function createProduct ( SellerUsername , category , BookName , BookAuthor, Edition ,  Description , old   ){ 
     const newproduct = await Products.create({
         refrenceId : getrandomstring(16),
         SellerUsername,
@@ -22,8 +22,7 @@ async function createProduct ( SellerUsername , category , BookName , BookAuthor
         Edition,
         Description,
         old,
-        MRP,
-        Value : bookValue(MRP)
+        Value : "50"
     })
 
 const product = await Products.findOne({
