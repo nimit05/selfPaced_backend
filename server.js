@@ -6,14 +6,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 const upload = require('express-fileupload');
 const session = require('express-session');
+const path = require('path');
 
 // middlewares
-
-app.use('/', exp.static('build'));
-app.use('/api/pro-img', exp.static(`${__dirname}/routes/api/pro-img`));
-app.use(exp.json());
-app.use(exp.urlencoded({ extended: true }));
-app.use(upload());
 app.use(
 	session({
 		secret: process.env.session_sec,
@@ -24,10 +19,19 @@ app.use(
 		}
 	})
 );
-
+app.use(exp.json());
+app.use(exp.urlencoded({ extended: true }));
+app.use(exp.static(path.join(__dirname, 'build')));
 app.use('/api', apiRouter);
 
-db.sync({force : true}).then(() => {
+app.get('/*', function(req, res) {
+	res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+app.use('/api/pro-img', exp.static(`${__dirname}/routes/api/pro-img`));
+app.use(upload());
+
+db.sync({}).then(() => {
 	app.listen(4444, () => {
 		console.log('server-started');
 	});
