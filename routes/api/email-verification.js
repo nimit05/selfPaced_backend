@@ -53,19 +53,31 @@ route.put('/', async (req, res) => {
 });
 
 route.post('/', async (req, res) => {
-	const user = await Users.findOne({
-		where: { email: req.body.email }
-	});
+	try {
+		const user = await Users.findOne({
+			where: { email: req.body.email }
+		});
 
-	if (req.body.email_otp === user.OTP) {
-		user.Verified = true;
-		user.save();
-		req.session.token = user.token;
-		req.session.save();
+		if (!user) {
+			res.send({ error: 'unable to find the user email' });
+		}
 
-		res.send({ email: user.email, otp: user.OTP });
-	} else {
-		res.send({ error: 'Invalid otp' });
+		if (req.body.email_otp === user.OTP) {
+			user.Verified = true;
+			user.save();
+
+			req.session.token = user.token;
+			req.session.save();
+
+			res.send({ email: user.email, otp: user.OTP });
+		} else {
+			res.send({ error: 'Invalid otp' });
+		}
+	} catch (err) {
+		res.send({
+			error: 'server internal error',
+			msg: '(at email post handling)'
+		});
 	}
 });
 

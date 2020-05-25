@@ -1,46 +1,44 @@
-const {Users , Products} = require('../data/db')
-const {getrandomstring} = require('../utils/string')
-const {bookValue} = require('../utils/BookValue')
+const { Users, Products } = require('../data/db');
+const { getrandomstring } = require('../utils/string');
+const { bookValue } = require('../utils/BookValue');
 
-async function getAllProducts (SellerUsername){
-    const products = await Products.findAll({
-        attributes : [ 'refrenceId' ,'category' , 'BookName' , 'BookAuthor' , 'Edition' 
-        , 'Description' , 'old' , 'Value'],
-        where : {SellerUsername : SellerUsername}
-    })
+async function getAllProducts(SellerUsername) {
+	const products = await Products.findAll({
+		attributes: [ 'refrenceId', 'category', 'BookName', 'BookAuthor', 'Edition', 'Description', 'old', 'Value' ],
+		where: { SellerUsername: SellerUsername }
+	});
 
-    return products
+	return products;
 }
 
-async function createProduct ( SellerUsername , category , BookName , BookAuthor, Edition ,  Description , old   ){ 
-    const newproduct = await Products.create({
-        refrenceId : getrandomstring(16),
-        SellerUsername,
-        category,
-        BookName,
-        BookAuthor,
-        Edition,
-        Description,
-        old,
-        Value : "50"
-    })
+async function createProduct(SellerUsername, category, BookName, BookAuthor, Edition, Description, tag, MRP) {
+	let mrp = parseInt(MRP);
 
-const product = await Products.findOne({
-    attributes : [ 'refrenceId' ,'category' , 'BookName' , 'BookAuthor' , 'Edition' 
-, 'Description' , 'old' , 'Value'],
-    where : {refrenceId : newproduct.refrenceId},
-    include : [{
-        attributes : [
-            'username' , 'Address' , 'phone_Number' , 'email'
-        ],
-        model : Users,
-        as : 'Seller'
-    }]
-})
+	const newproduct = await Products.create({
+		refrenceId: getrandomstring(16),
+		SellerUsername,
+		category,
+		BookName,
+		BookAuthor,
+		Edition,
+		Description,
+		tag,
+		Value: mrp + mrp * 0.1
+	});
 
-  return product
+	const product = await Products.findOne({
+		attributes: [ 'refrenceId', 'category', 'BookName', 'BookAuthor', 'Edition', 'Description', 'tag', 'Value' ],
+		where: { refrenceId: newproduct.refrenceId },
+		include: [
+			{
+				attributes: [ 'username', 'Address', 'phone_Number', 'email' ],
+				model: Users,
+				as: 'Seller'
+			}
+		]
+	});
+
+	return product;
 }
 
-
-
-module.exports = {createProduct , getAllProducts}
+module.exports = { createProduct, getAllProducts };

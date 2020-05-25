@@ -261,6 +261,40 @@ function phone_vali() {
 		nomistake = true;
 	}
 }
+let nologmistake = false;
+function log_username_vali() {
+	if ($('#log_username').val().length == 0) {
+		$('#below_logUser').append($('<p>')).text('Enter your username');
+		$('#log_username').css({
+			border: 'red solid',
+			'border-width': 'thin'
+		});
+		nologmistake = false;
+	} else {
+		$('#below_logUser').empty();
+		$('#log_username').css({
+			border: '1px solid #1eff00'
+		});
+		nologmistake = true;
+	}
+}
+function log_pass_vali() {
+	if ($('#wrong_pass').val().length == 0) {
+		$('#below_logPass').append($('<p>')).text('Enter your password');
+		$('#wrong_pass').css({
+			border: 'red solid',
+			'border-width': 'thin'
+		});
+		nologmistake = false;
+	} else {
+		$('#below_logUser').empty();
+		$('#wrong_pass').css({
+			border: '1px solid #1eff00'
+		});
+		nologmistake = true;
+	}
+}
+
 let email = null;
 function send_reg_data() {
 	re_pass_vali();
@@ -334,10 +368,42 @@ function otp_confirm() {
 	};
 
 	postData('/api/email-verification/', data1).then((data) => {
+		console.log(data);
 		if (data.otp) {
 			location.replace('/');
 		} else {
 			alert('otp is invalid , Try Resending');
 		}
 	});
+}
+
+function send_log_data() {
+	log_pass_vali();
+	log_username_vali();
+
+	let data3 = {
+		user: {
+			username: $('#log_username').val(),
+			password: $('#wrong_pass').val()
+		}
+	};
+	if (nologmistake) {
+		postData('/api/login', data3).then((data) => {
+			if (data.username) {
+				location.replace('/');
+			} else if (data.error) {
+				$('#below_logUser').append($('<p>')).text('Username Or Password is Incorrect');
+				$('#log_username').css({
+					border: 'red solid',
+					'border-width': 'thin'
+				});
+				$('#below_passUser').append($('<p>')).text('Enter your username');
+				$('#wrong_pass').css({
+					border: 'red solid',
+					'border-width': 'thin'
+				});
+				nologmistake = false;
+			}
+		});
+	}
 }
