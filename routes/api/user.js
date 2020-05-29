@@ -19,7 +19,7 @@ route.get('/Cart' , auth, async(req, res) => {
    for(let i=0;i<cart.length;i++){
        let item = await Products.findOne({
            attributes : ['id','refrenceId' ,'category' , 'BookName' , 'BookAuthor' , 'Edition' 
-           , 'Description' , 'old' , 'Value'],
+           , 'Description'  , 'Value' , 'tag'],
            where:{refrenceId : cart[i]}
        })
        products.push(item)
