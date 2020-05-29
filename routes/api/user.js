@@ -6,7 +6,7 @@ const {CartProducts} = require('../../controllers/userLibrary')
 
 route.get('/' , auth , async(req , res) => {
     const user = await Users.findOne({
-        attributes: ['name', 'username', 'email', 'phone_Number', 'Address', 'token'],
+        attributes: ['name', 'username', 'email', 'phone_Number', 'Address', 'token' , 'Coins'],
         where : {username : req.user.username}
     })
 
@@ -47,6 +47,31 @@ route.get('/Library' , auth , async(req,res) => {
 
     res.send(items)
     
+})
+
+route.put('/' , auth ,  (req,res) => {
+     const a = req.body
+     if(a.username){
+         req.user.username = 'nimi'
+         console.log(req.user.username)
+         req.user.save()
+         console.log(a.username)
+     }
+     if(a.email){
+        req.user.email = a.email
+        req.user.save()
+    }
+    if(a.phone_Number){
+        req.user.phone_Number = a.phone_Number
+        req.user.save()
+    }
+    if(a.Address){
+        req.user.Address = a.Address
+        req.user.save()
+    }
+
+   res.send(req.user)
+
 })
 
 module.exports = {route}
