@@ -3,12 +3,12 @@ const route = Router();
 const { auth } = require('../../middleware/auth');
 const { Users, Products } = require('../../data/db');
 const { getAllProducts } = require('../../controllers/products');
-const { AddToCart, AddToLibrary } = require('../../controllers/userLibrary');
+const { AddToCart, AddToLibrary , CartProducts} = require('../../controllers/userLibrary');
 
 var lib = [];
 
-route.post('/:refrenceId/Buy', auth, async (req, res) => {
-	const item = await AddToLibrary(req.user.username, req.params.refrenceId);
+route.post('/Buy', auth, async (req, res) => {
+	const item = await AddToLibrary(req.user.username, req.body.refrenceId);
 	const product = await Products.findOne({
 		where: { refrenceId: req.params.refrenceId }
 	});
@@ -25,6 +25,14 @@ route.post('/AddToCart', auth, async (req, res) => {
 	const cart = await AddToCart(req.user.username, req.body.refrenceId);
 	res.send(cart);
 });
+
+route.post('/RemoveFromCart' , auth , async(req,res) => {
+	const cart = await CartProducts(req.user.username)
+	cart.splice(cart.indexOf(req.body.refrenceId) , 1)
+	req.user.Cart = cart.join(';')
+	req.user.save()
+	res.send(req.user.Cart)
+})
 
 route.get('/myproducts', auth ,  async (req, res) => {
 	const products = await getAllProducts(req.user.username);
