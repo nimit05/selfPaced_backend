@@ -22,8 +22,11 @@ route.get('/Cart' , auth, async(req, res) => {
            , 'Description'  , 'Value'],
            where:{refrenceId : cart[i]}
        })
+       if(item != null){
        products.push(item)
+       }
    }
+   console.log(products.length)
    res.send(products)
 
 })
