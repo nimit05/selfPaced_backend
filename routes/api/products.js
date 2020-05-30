@@ -21,8 +21,8 @@ route.post('/:refrenceId/Buy', auth, async (req, res) => {
 	res.send(item);
 });
 
-route.post('/:refrenceId/AddToCart', auth, async (req, res) => {
-	const cart = await AddToCart(req.user.username, req.params.refrenceId);
+route.post('/AddToCart', auth, async (req, res) => {
+	const cart = await AddToCart(req.user.username, req.body.refrenceId);
 	res.send(cart);
 });
 
