@@ -25,6 +25,8 @@ async function AddToCart(username, refrenceId){
         where : {refrenceId}
     })
 
+
+
   let arr = []
   
   if(user.Cart != null){
@@ -45,9 +47,11 @@ async function CartProducts(username){
     const user = await Users.findOne({
         where : {username}
     })
- 
 if(user.Cart != null){
   var arr = user.Cart[0].split(',') 
+  if(arr[0] == null){
+      arr.splice(0,1)
+  }
    }   
 return arr
 

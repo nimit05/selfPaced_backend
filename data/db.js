@@ -55,7 +55,9 @@ const Users = db.define('users', {
 			}
 		},
 		set(val) {
+			if(val != null){
 			this.setDataValue('Cart', val.join(','));
+			}
 		}
 	},
 	Coins: {

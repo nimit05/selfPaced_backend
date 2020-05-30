@@ -19,14 +19,34 @@ route.get('/Cart' , auth, async(req, res) => {
    for(let i=0;i<cart.length;i++){
        let item = await Products.findOne({
            attributes : ['id','refrenceId' ,'category' , 'BookName' , 'BookAuthor' , 'Edition' 
-           , 'Description'  , 'Value' , 'tag'],
+           , 'Description'  , 'Value'],
            where:{refrenceId : cart[i]}
        })
        products.push(item)
    }
-   console.log(products[0].BookName)
    res.send(products)
 
+})
+
+route.get('/Cart/total' , auth , async(req,res) => {
+    var products = []
+    let total = 0;
+    var arr = []
+    const cart = await CartProducts(req.user.username)
+    for(let i=0;i<cart.length;i++){
+        let item = await Products.findOne({
+            attributes : ['id','refrenceId' ,'category' , 'BookName' , 'BookAuthor' , 'Edition' 
+            , 'Description'  , 'Value'],
+            where:{refrenceId : cart[i]}
+        })
+        products.push(item)
+    }
+    // total = parseInt(total)
+    for(let i=0;i<products.length;i++){
+        total = total + products[i].Value
+    }
+    arr.push(total)
+    res.send(arr[0])
 })
 
 route.get('/Library' , auth , async(req,res) => {
