@@ -1,60 +1,62 @@
-const {Library , Users , Products} = require('../data/db')
+const { Library, Users, Products } = require('../data/db');
 
+async function AddToLibrary(username, Product_RefrenceId) {
+	const item = await Library.create({
+		username,
+		Product_RefrenceId
+	});
 
-async function AddToLibrary( username , Product_RefrenceId){
-    const item = await Library.create({
-        username,
-        Product_RefrenceId
-    })
-    
-    return item
+	return item;
 }
 
-async function LibraryProducts(username){
-    const item = await Library.findAll({
-        where : {librarianUsername : username}
-    })
-    return item.ProductRefrenceId[0]
+async function LibraryProducts(username) {
+	const item = await Library.findAll({
+		where: { librarianUsername: username }
+	});
+	return item.ProductRefrenceId[0];
 }
 
-async function AddToCart(username, refrenceId){
-    const user = await Users.findOne({
-        where : {username}
-    })
-    const product = await Products.findOne({
-        where : {refrenceId}
-    })
+async function AddToCart(username, refrenceId) {
+	try {
+		const user = await Users.findOne({
+			where: { username: 'tushar' }
+		});
+		const product = await Products.findOne({
+			where: { refrenceId }
+		});
+		console.log(user);
+		let arr = user.Cart.split(';');
 
-  let arr = []
-  
-  if(user.Cart != null){
-   var arr2 = user.Cart[0].split(',') 
-  }   
- if(user.Cart != null){
-   arr =  arr.concat(arr2)
- }
-   
-  arr.push(product.refrenceId)
- user.Cart = arr
- user.save()
+		console.log(user.Cart);
+		arr.push(product.refrenceId);
+		user.Cart = arr.join(';');
+		user.save();
+		console.log(user.Cart);
 
- return arr
-} 
+		return true;
+	} catch (err) {
+		return false;
+	}
+}
+// AddToCart();
 
-async function CartProducts(username){
-    const user = await Users.findOne({
-        where : {username}
-    })
- 
-if(user.Cart != null){
-  var arr = user.Cart[0].split(',') 
-   }   
-return arr
+async function CartProducts(username) {
+	const user = await Users.findOne({
+		where: { username }
+	});
 
+	if (user.Cart != null) {
+		var arr = user.Cart.split(';');
+		console.log(user.Cart);
+		return arr;
+	} else {
+		return [];
+	}
 }
 
 module.exports = {
-    AddToLibrary,
-    LibraryProducts,
-    AddToCart,CartProducts
-}
+	AddToLibrary,
+	LibraryProducts,
+	AddToCart,
+	CartProducts
+};

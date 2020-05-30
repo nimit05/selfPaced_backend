@@ -48,15 +48,7 @@ const Users = db.define('users', {
 	},
 	Cart: {
 		type: Sequelize.TEXT,
-
-		get() {
-			if (this.getDataValue('Cart') != null) {
-				return this.getDataValue('Cart').split(';');
-			}
-		},
-		set(val) {
-			this.setDataValue('Cart', val.join(','));
-		}
+		defaultValue: ' '
 	},
 	Coins: {
 		type: Sequelize.INTEGER,
