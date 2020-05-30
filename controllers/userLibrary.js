@@ -19,7 +19,7 @@ async function LibraryProducts(username) {
 async function AddToCart(username, refrenceId) {
 	try {
 		const user = await Users.findOne({
-			where: { username: 'tushar' }
+			where: { username}
 		});
 		const product = await Products.findOne({
 			where: { refrenceId }
@@ -31,7 +31,7 @@ async function AddToCart(username, refrenceId) {
 		arr.push(product.refrenceId);
 		user.Cart = arr.join(';');
 		user.save();
-		console.log(user.Cart);
+		// console.log(user.Cart);
 
 		return true;
 	} catch (err) {
