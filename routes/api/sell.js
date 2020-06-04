@@ -4,21 +4,25 @@ const { auth } = require('../../middleware/auth');
 const { createProduct } = require('../../controllers/products');
 
 route.post('/', auth, async (req, res) => {
-	console.log(req.user.username);
-	const a = req.body.product;
 	console.log(req.body);
+	console.log(req.files);
+	const a = req.body;
 	const product = await createProduct(
 		req.user.username,
 		a.category,
-		a.BookName,
-		a.BookAuthor,
-		a.Edition,
-		a.Description,
+		a.title,
+		a.short_title,
+		a.short_des,
+		a.des,
 		a.tag,
-		a.MRP
+		a.price,
+		req.files
 	);
-
-	res.send(product);
+	if (product) {
+		res.redirect('/');
+	} else {
+		res.send(product);
+	}
 });
 
 module.exports = { route };

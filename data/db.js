@@ -110,6 +110,12 @@ const Products = db.define('products', {
 	},
 	Value: {
 		type: Sequelize.INTEGER
+	},
+	cover_img: {
+		type: Sequelize.TEXT
+	},
+	product_file: {
+		type: Sequelize.TEXT
 	}
 });
 

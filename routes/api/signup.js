@@ -10,10 +10,6 @@ route.post('/', async (req, res) => {
 	const a = req.body.user;
 	let img_url = null;
 	let otp = getrandomstring(6);
-	sendOtpToMail(a.email, otp).catch((err) => {
-		console.log({ error: 'unable to send email error :- ' + err });
-		res.send({ error: 'can not register your account internal error' });
-	});
 
 	if (req.files) {
 		const ran_name = getrandomstring(32);
@@ -33,7 +29,11 @@ route.post('/', async (req, res) => {
 	}
 
 	const user = await createusers(a.name, a.username, a.email, a.password, a.phone_Number, img_url, otp);
-
+	sendOtpToMail(a.email, otp).catch((err) => {
+		user.delete();
+		console.log({ error: 'unable to send email error :- ' + err });
+		res.send({ error: 'can not register your account internal error' });
+	});
 	res.send(user);
 });
 

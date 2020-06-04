@@ -7,6 +7,7 @@ dotenv.config();
 const upload = require('express-fileupload');
 const session = require('express-session');
 const path = require('path');
+const { auth } = require('./middleware/auth');
 
 // middlewares
 app.use(
@@ -21,7 +22,13 @@ app.use(
 );
 app.use(exp.json());
 app.use(exp.urlencoded({ extended: true }));
+app.use(upload());
 app.use(exp.static(path.join(__dirname, 'build')));
+
+// files
+app.use('/covers', exp.static(path.join(__dirname, 'data/covers')));
+app.use('/files', auth, exp.static(path.join(__dirname, 'data/files')));
+
 app.use('/api', apiRouter);
 
 app.get('/*', function(req, res) {
@@ -29,9 +36,8 @@ app.get('/*', function(req, res) {
 });
 
 app.use('/api/pro-img', exp.static(`${__dirname}/routes/api/pro-img`));
-app.use(upload());
 
-db.sync({}).then(() => {
+db.sync().then(() => {
 	app.listen(4444, () => {
 		console.log('server-started');
 	});
