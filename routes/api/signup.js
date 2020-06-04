@@ -20,7 +20,7 @@ route.post('/', async (req, res) => {
 		const img_name = req.files.pro_img.name;
 		const data = req.files.pro_img.data;
 
-		fs.writeFile(`${__dirname}/pro-img/${ran_name}${img_name}`, data, (err) => {
+		fs.writeFile(`${__dirname}../../data/pro-img/${ran_name}${img_name}`, data, (err) => {
 			if (err) {
 				console.log(err);
 				res.send({ error: 'image can not be uploaded try not to upload that now ' });

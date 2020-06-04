@@ -27,13 +27,13 @@ route.post('/', async (req, res) => {
 	}
 });
 
-route.delete('/out', auth , async(req,res) => {
-	req.session.token = null
-	req.session.save()
-	if(!req.session.token){
-         res.send('logout succesfull')
+route.delete('/out', auth, async (req, res) => {
+	req.session.token = null;
+	req.session.save();
+	if (!req.session.token) {
+		res.send('logout succesfull');
 	}
-})
+});
 
 route.get('/', auth, (req, res) => {
 	let user = req.user;
