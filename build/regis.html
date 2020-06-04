@@ -29,7 +29,7 @@
           <div >
             <div>
               <label for="otp">Enter the OTP sent at your email id..</label>
-              <input type="text" required id="otp"  name = "opt" placeholder="OTP" />
+              <input type="text"   id="otp"  name = "opt" placeholder="OTP" />
               <div class="divbtn">
              <button id="submit_btn" onclick="otp_confirm()" class="button button-block" />Submit</button>
            </div>
@@ -107,13 +107,13 @@
 
         <div class="field-wrap">
        
-          <input type="text" required id="log_username" onfocusout="log_username_vali()"  name = "username" placeholder="Username" />
+          <input type="text"   id="log_username" onfocusout="log_username_vali()"  name = "username" placeholder="Username" />
           <div id="below_logUser" class="p"></div>
          
         </div>  
           <div class="field-wrap">
        
-          <input type="password" required  name="password" onfocusout="log_pass_vali()" placeholder="Password" id="wrong_pass" />
+          <input type="password"    name="password" onfocusout="log_pass_vali()" placeholder="Password" id="wrong_pass" />
           <div id="below_logPass" class="p"></div>
           
           <div class="psw" id="psw">
@@ -122,7 +122,7 @@
         </div>
   
          <div class="divbtn">
-        <button id="submit_btn" class="button button-block" onclick="send_log_data()" />Login</button>
+        <button id="submit_btn" class="button button-block" onclick="send_log_data()" >Login</button>
          </div>
 
       

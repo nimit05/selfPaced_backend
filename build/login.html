@@ -27,21 +27,23 @@
         <form action="/" method="GET">
             <div class="field-wrap">
        
-                <input type="email" required id="log_username"  name = "username" placeholder="Username" />
-               
-              </div>  
-                <div class="field-wrap">
+              <input type="text" required id="log_username" onfocusout="log_username_vali()"  name = "username" placeholder="Username" />
+              <div id="below_logUser" class="p"></div>
              
-                <input type="password" required  name="password" placeholder="Password" id="wrong_pass" />
-                <div id = "warning"></div>
-                <div class="psw">
-                  Forgot <a  className ="pass" href="#">password?</a>
-                </div>            
-              </div>
-        
-               <div class="divbtn">
-              <button id="submit_btn" class="button button-block" onclick="Validation(); Adder()" />Login</button>
-               </div>
+            </div>  
+              <div class="field-wrap">
+           
+              <input type="password" required  name="password" onfocusout="log_pass_vali()" placeholder="Password" id="wrong_pass" />
+              <div id="below_logPass" class="p"></div>
+              
+              <div class="psw" id="psw">
+                Forgot <a  className ="pass" href="#">password?</a>
+              </div>            
+            </div>
+      
+             <div class="divbtn">
+            <button id="submit_btn" class="button button-block" onclick="log_details()" />Login</button>
+             </div>
 
                <hr>
                <div class="social_btn" >
