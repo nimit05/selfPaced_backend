@@ -58,4 +58,28 @@ route.get('/', async (req, res) => {
 	res.send({ products });
 });
 
+route.get('/specific/:refrenceId' , auth , async(req,res) => {
+	const product = await Products.findOne({
+		where:{refrenceId : req.params.refrenceId},
+		attributes: [
+			'refrenceId',
+			'category',
+			'BookName',
+			'BookAuthor',
+			'Edition',
+			'Description',
+			'tag',
+			'Value',
+			'cover_img',
+			'product_file'
+		]
+
+	})
+	console.log('hua')
+	res.send(product)
+})
+
+
+
+
 module.exports = { route };
