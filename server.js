@@ -27,7 +27,7 @@ app.use(exp.static(path.join(__dirname, 'build')));
 
 // files
 app.use('/covers', exp.static(path.join(__dirname, 'data/covers')));
-app.use('/files', auth, exp.static(path.join(__dirname, 'data/files')));
+app.use('/files', auth , exp.static(path.join(__dirname, 'data/files')));
 
 app.use('/api', apiRouter);
 
@@ -37,7 +37,7 @@ app.get('/*', function(req, res) {
 
 app.use('/api/pro-img', exp.static(`${__dirname}/routes/api/pro-img`));
 
-db.sync({ alter: true }).then(() => {
+db.sync({  }).then(() => {
 	app.listen(4444, () => {
 		console.log('server-started');
 	});
