@@ -1,9 +1,9 @@
 const { Library, Users, Products } = require('../data/db');
 
-async function AddToLibrary(username, Product_RefrenceId) {
+async function AddToLibrary(userId, ProductId) {
 	const item = await Library.create({
-		username,
-		Product_RefrenceId
+		userId,
+		ProductId
 	});
 
 	return item;
@@ -19,7 +19,7 @@ async function LibraryProducts(username) {
 async function AddToCart(username, refrenceId) {
 	try {
 		const user = await Users.findOne({
-			where: { username}
+			where: { username }
 		});
 		const product = await Products.findOne({
 			where: { refrenceId }

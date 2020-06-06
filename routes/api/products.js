@@ -1,24 +1,29 @@
 const { Router } = require('express');
 const route = Router();
 const { auth } = require('../../middleware/auth');
-const { Users, Products } = require('../../data/db');
+const { Users, Products, Library } = require('../../data/db');
 const { getAllProducts } = require('../../controllers/products');
 const { AddToCart, AddToLibrary, CartProducts } = require('../../controllers/userLibrary');
 
 var lib = [];
 
 route.post('/Buy', auth, async (req, res) => {
-	const item = await AddToLibrary(req.user.username, req.body.refrenceId);
+	console.log(req.body);
 	const product = await Products.findOne({
-		where: { refrenceId: req.params.refrenceId }
+		where: { refrenceId: req.body.refrenceId }
 	});
-	if (req.user.Coins - product.Value < 0) {
-		res.send('Insufficient Coins');
+	if (req.user.Coins - product.Value < -1000) {
+		res.send({ error: 'insuficient Balance' });
 	} else {
+		const item = await AddToLibrary(req.user.username, product.id).catch((err) => {
+			console.log(err);
+			res.send({ error: 'internal error' + err });
+		});
+		console.log(item);
 		req.user.Coins = req.user.Coins - product.Value;
 		req.user.save();
+		res.send(item);
 	}
-	res.send(item);
 });
 
 route.post('/AddToCart', auth, async (req, res) => {
@@ -35,8 +40,17 @@ route.post('/RemoveFromCart', auth, async (req, res) => {
 });
 
 route.get('/myproducts', auth, async (req, res) => {
-	const products = await getAllProducts(req.user.username);
-	res.send({ products });
+	let pro_ref = await Library.findAll({
+		where: { userId: req.user.username },
+		include: { model: Products, as: 'Product' }
+	}).catch((err) => {
+		console.log(err);
+		res.send({ error: 'internal error' });
+	});
+
+	console.log(pro_ref);
+
+	res.send(pro_ref);
 });
 
 route.get('/', async (req, res) => {
@@ -50,8 +64,7 @@ route.get('/', async (req, res) => {
 			'Description',
 			'tag',
 			'Value',
-			'cover_img',
-			'product_file'
+			'cover_img'
 		]
 	});
 

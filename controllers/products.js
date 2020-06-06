@@ -5,7 +5,6 @@ const { bookValue } = require('../utils/BookValue');
 
 async function getAllProducts(SellerUsername) {
 	const products = await Products.findAll({
-		attributes: [ 'refrenceId', 'category', 'BookName', 'BookAuthor', 'Edition', 'Description', 'Value' ],
 		where: { SellerUsername: SellerUsername }
 	});
 

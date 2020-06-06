@@ -46,7 +46,7 @@ async function createusers(name, username, email, password, phone_Number, pro_im
 		OTP: otp,
 		Verified: false,
 		pro_img,
-		Coins: '100'
+		Coins: '1000'
 	});
 
 	const newuser = await Users.findOne({

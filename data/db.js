@@ -61,23 +61,6 @@ const Users = db.define('users', {
 	}
 });
 
-const Library = db.define('libraries', {
-	id: {
-		type: Sequelize.INTEGER,
-		autoIncrement: true,
-		primaryKey: true
-	},
-	username: {
-		type: Sequelize.STRING(20),
-		primaryKey: true
-	},
-	Product_RefrenceId: {
-		type: Sequelize.STRING(16),
-		primaryKey: true,
-		unique: true
-	}
-});
-
 const Products = db.define('products', {
 	id: {
 		type: Sequelize.INTEGER,
@@ -124,8 +107,24 @@ const Products = db.define('products', {
 	}
 });
 
+const Library = db.define('libraries', {
+	id: {
+		type: Sequelize.INTEGER,
+		autoIncrement: true,
+		primaryKey: true
+	},
+	userId: {
+		type: Sequelize.STRING(20)
+	},
+	Product_RefrenceId: {
+		type: Sequelize.STRING(20)
+	}
+});
+
 Products.belongsTo(Users, { as: 'Seller' });
 Users.hasMany(Products, { as: 'Seller' });
+Library.belongsTo(Products, { as: 'Product' });
+// Products.hasMany(Library, { as: 'Products' });
 
 module.exports = {
 	Users,
