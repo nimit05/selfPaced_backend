@@ -10,9 +10,9 @@ const db = new Sequelize({
 	database: 'puraniBooks',
 	// username: 'creator',
 
-	username: aws_mysql_username,
+	username: process.env.aws_mysql_username,
 	// password: 'letmein'
-	password: aws_mysql_pass
+	password: process.env.aws_mysql_pass
 });
 
 const Users = db.define('users', {
