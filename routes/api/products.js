@@ -4,6 +4,7 @@ const { auth } = require('../../middleware/auth');
 const { Users, Products, Library } = require('../../data/db');
 const { getAllProducts } = require('../../controllers/products');
 const { AddToCart, AddToLibrary, CartProducts } = require('../../controllers/userLibrary');
+const Sequelize = require('sequelize')
 
 var lib = [];
 
@@ -99,8 +100,8 @@ route.get('/specific/:refrenceId', auth, async (req, res) => {
 });
 
 route.get('/search/:name', auth, async (req, res) => {
+	var arr = []
 	const products = await Products.findAll({
-		where: { BookName: req.params.name },
 		attributes: [
 			'refrenceId',
 			'category',
@@ -114,8 +115,18 @@ route.get('/search/:name', auth, async (req, res) => {
 			'product_file'
 		]
 	});
-	console.log('hogya');
-	res.send(products);
+	for(let i =0;i<products.length;i++){
+		if(products[i].BookName.indexOf(req.params.name.toLowerCase()) > -1 || products[i].BookAuthor.indexOf(req.params.name.toLowerCase()) > -1 ){
+			arr.push(products[i])
+			continue;
+		}
+		else if(products[i].BookName.indexOf(req.params.name.toUpperCase()) > -1 || products[i].BookAuthor.indexOf(req.params.name.toUpperCase()) > -1 ){
+			arr.push(products[i])
+			continue;
+		}
+	}
+	console.log('hogya')
+	res.send(arr);
 });
 
 module.exports = { route };
