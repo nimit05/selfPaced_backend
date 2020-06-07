@@ -92,7 +92,25 @@ route.get('/specific/:refrenceId' , auth , async(req,res) => {
 	res.send(product)
 })
 
-
+route.get('/search/:name', auth , async(req,res) => {
+	const products = await Products.findAll({
+		where : {BookName : req.params.name},
+		attributes: [
+			'refrenceId',
+			'category',
+			'BookName',
+			'BookAuthor',
+			'Edition',
+			'Description',
+			'tag',
+			'Value',
+			'cover_img',
+			'product_file'
+		]
+	})
+	console.log('hogya')
+	res.send(products)
+})
 
 
 module.exports = { route };

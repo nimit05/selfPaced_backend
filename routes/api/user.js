@@ -18,7 +18,7 @@ route.get('/Cart', auth, async (req, res) => {
 	const cart = await CartProducts(req.user.username);
 	for (let i = 0; i < cart.length; i++) {
 		let item = await Products.findOne({
-			attributes: [ 'id', 'refrenceId', 'category', 'BookName', 'BookAuthor', 'Edition', 'Description', 'Value' ],
+			attributes: [ 'id', 'refrenceId', 'category', 'BookName', 'BookAuthor', 'Edition', 'Description', 'Value','cover_img' ],
 			where: { refrenceId: cart[i] }
 		});
 		if (item != null) {

@@ -9,14 +9,14 @@ const {
 	createGoogleUser
 } = require('../../controllers/user');
 const fs = require('fs');
-const { getrandomstring } = require('../../utils/string');
+const { getrandomstring , getrandomnum } = require('../../utils/string');
 const { auth } = require('../../middleware/auth');
 const { sendOtpToMail } = require('../../utils/emailVeri');
 
 route.post('/', async (req, res) => {
 	const a = req.body.user;
 	let img_url = null;
-	let otp = getrandomstring(6);
+	let otp = getrandomnum(6);
 
 	if (req.files) {
 		const ran_name = getrandomstring(32);

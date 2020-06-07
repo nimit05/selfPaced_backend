@@ -27,7 +27,7 @@ app.use(exp.static(path.join(__dirname, 'build')));
 
 // files
 app.use('/covers', exp.static(path.join(__dirname, 'data/covers')));
-app.use('/files', auth, exp.static(path.join(__dirname, 'data/files')));
+app.use('/files', auth , exp.static(path.join(__dirname, 'data/files')));
 
 app.use('/api', apiRouter);
 
