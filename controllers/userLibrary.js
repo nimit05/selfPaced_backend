@@ -1,10 +1,15 @@
 const { Library, Users, Products } = require('../data/db');
 
 async function AddToLibrary(userId, ProductId) {
+	console.log('lib');
 	const item = await Library.create({
 		userId,
 		ProductId
+	}).catch((err) => {
+		console.log(err);
 	});
+
+	console.log(item);
 
 	return item;
 }

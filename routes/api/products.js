@@ -70,31 +70,17 @@ route.get('/', async (req, res) => {
 
 	res.send({ products });
 });
-
-route.get('/specific/:refrenceId' , auth , async(req,res) => {
-	const product = await Products.findOne({
-		where:{refrenceId : req.params.refrenceId},
-		attributes: [
-			'refrenceId',
-			'category',
-			'BookName',
-			'BookAuthor',
-			'Edition',
-			'Description',
-			'tag',
-			'Value',
-			'cover_img',
-			'product_file'
-		]
-
-	})
-	console.log('hua')
-	res.send(product)
-})
-
-route.get('/search/:name', auth , async(req,res) => {
+route.get('/Name', async (req, res) => {
 	const products = await Products.findAll({
-		where : {BookName : req.params.name},
+		attributes: [ 'refrenceId', 'BookName' ]
+	});
+
+	res.send({ products });
+});
+
+route.get('/specific/:refrenceId', auth, async (req, res) => {
+	const product = await Products.findOne({
+		where: { refrenceId: req.params.refrenceId },
 		attributes: [
 			'refrenceId',
 			'category',
@@ -107,10 +93,29 @@ route.get('/search/:name', auth , async(req,res) => {
 			'cover_img',
 			'product_file'
 		]
-	})
-	console.log('hogya')
-	res.send(products)
-})
+	});
+	console.log('hua');
+	res.send(product);
+});
 
+route.get('/search/:name', auth, async (req, res) => {
+	const products = await Products.findAll({
+		where: { BookName: req.params.name },
+		attributes: [
+			'refrenceId',
+			'category',
+			'BookName',
+			'BookAuthor',
+			'Edition',
+			'Description',
+			'tag',
+			'Value',
+			'cover_img',
+			'product_file'
+		]
+	});
+	console.log('hogya');
+	res.send(products);
+});
 
 module.exports = { route };

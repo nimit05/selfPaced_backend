@@ -49,7 +49,7 @@ const Users = db.define('users', {
 		type: Sequelize.BOOLEAN
 	},
 	pro_img: {
-		type: Sequelize.STRING(50)
+		type: Sequelize.TEXT
 	},
 	Cart: {
 		type: Sequelize.TEXT,
@@ -114,10 +114,10 @@ const Library = db.define('libraries', {
 		primaryKey: true
 	},
 	userId: {
-		type: Sequelize.STRING(20)
+		type: Sequelize.TEXT
 	},
 	Product_RefrenceId: {
-		type: Sequelize.STRING(20)
+		type: Sequelize.STRING(50)
 	}
 });
 

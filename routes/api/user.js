@@ -6,7 +6,7 @@ const { CartProducts } = require('../../controllers/userLibrary');
 
 route.get('/', auth, async (req, res) => {
 	const user = await Users.findOne({
-		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Address', 'token', 'Coins' ],
+		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Address', 'pro_img', 'Coins' ],
 		where: { username: req.user.username }
 	});
 
@@ -18,7 +18,17 @@ route.get('/Cart', auth, async (req, res) => {
 	const cart = await CartProducts(req.user.username);
 	for (let i = 0; i < cart.length; i++) {
 		let item = await Products.findOne({
-			attributes: [ 'id', 'refrenceId', 'category', 'BookName', 'BookAuthor', 'Edition', 'Description', 'Value','cover_img' ],
+			attributes: [
+				'id',
+				'refrenceId',
+				'category',
+				'BookName',
+				'BookAuthor',
+				'Edition',
+				'Description',
+				'Value',
+				'cover_img'
+			],
 			where: { refrenceId: cart[i] }
 		});
 		if (item != null) {

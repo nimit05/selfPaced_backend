@@ -9,7 +9,7 @@ const {
 	createGoogleUser
 } = require('../../controllers/user');
 const fs = require('fs');
-const { getrandomstring , getrandomnum } = require('../../utils/string');
+const { getrandomstring, getrandomnum } = require('../../utils/string');
 const { auth } = require('../../middleware/auth');
 const { sendOtpToMail } = require('../../utils/emailVeri');
 
@@ -115,7 +115,9 @@ route.post('/google', async (req, res) => {
 	});
 
 	if (user) {
+		console.log(user);
 		let exist = await isUserExistEmail(user.email);
+		console.log(exist);
 		if (!(exist === false)) {
 			req.session.token = exist.token;
 			req.session.save();
@@ -123,6 +125,7 @@ route.post('/google', async (req, res) => {
 			res.send({ email: user.email });
 		} else if (exist === false) {
 			let newUser = await createGoogleUser(user);
+			console.log(newUser);
 
 			if (newUser.email) {
 				req.session.token = newUser.token;
