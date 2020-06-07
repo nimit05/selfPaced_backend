@@ -146,4 +146,47 @@ async function Libraryfounder(username) {
 	return user.Library[1];
 }
 
-module.exports = { createusers, findUserByOTP, findUserByToken, findUser, findUserByEmail, verified, Libraryfounder };
+async function isUserExistEmail(email) {
+	let user = await Users.findOne({
+		where: {
+			email
+		}
+	});
+
+	if (user) {
+		return user;
+	} else {
+		return false;
+	}
+}
+
+async function createGoogleUser(user) {
+	try {
+		let token = getrandomstring(32);
+		let newUser = await Users.create({
+			username: user.email,
+			email: user.email,
+			name: user.name,
+			pro_img: user.pro_pic,
+			Verified: true,
+			Coins: '1000',
+			token: token
+		});
+
+		return newUser;
+	} catch (err) {
+		return { error: err };
+	}
+}
+
+module.exports = {
+	createusers,
+	findUserByOTP,
+	findUserByToken,
+	findUser,
+	findUserByEmail,
+	verified,
+	Libraryfounder,
+	isUserExistEmail,
+	createGoogleUser
+};

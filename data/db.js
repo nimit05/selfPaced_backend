@@ -29,12 +29,12 @@ const Users = db.define('users', {
 		allowNull: false
 	},
 	password: {
-		type: Sequelize.STRING(30),
-		allowNull: false
+		type: Sequelize.STRING(30)
+		// allowNull: false
 	},
 	phone_Number: {
-		type: Sequelize.STRING(15),
-		allowNull: false
+		type: Sequelize.STRING(15)
+		// allowNull: false
 	},
 	Address: {
 		type: Sequelize.TEXT

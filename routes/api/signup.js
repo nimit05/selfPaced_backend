@@ -1,6 +1,13 @@
 const { Router } = require('express');
 const route = Router();
-const { createusers, findUserByOTP, verified, findUserByEmail } = require('../../controllers/user');
+const {
+	createusers,
+	findUserByOTP,
+	verified,
+	findUserByEmail,
+	isUserExistEmail,
+	createGoogleUser
+} = require('../../controllers/user');
 const fs = require('fs');
 const { getrandomstring } = require('../../utils/string');
 const { auth } = require('../../middleware/auth');
@@ -81,6 +88,59 @@ route.put('/', auth, async (req, res) => {
 	let upUser = updateUserDet(user.name, user.password, img_url ? img_url : user.pro_img);
 
 	res.send(upUser);
+});
+
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client('462910295856-266vqnfa4rummelmbin515fqa070eo7j.apps.googleusercontent.com');
+
+route.post('/google', async (req, res) => {
+	let user = null;
+
+	async function verify() {
+		const ticket = await client.verifyIdToken({
+			idToken: req.body.tokenId,
+			audience: '462910295856-266vqnfa4rummelmbin515fqa070eo7j.apps.googleusercontent.com'
+		});
+		const payload = ticket.getPayload();
+
+		user = {
+			email: payload.email,
+			name: payload.name,
+			pro_pic: payload.picture
+		};
+	}
+	await verify().catch((error) => {
+		console.log(error);
+		res.send({ error: 'google auth error' });
+	});
+
+	if (user) {
+		let exist = await isUserExistEmail(user.email);
+		if (!(exist === false)) {
+			req.session.token = exist.token;
+			req.session.save();
+
+			res.send({ email: user.email });
+		} else if (exist === false) {
+			let newUser = await createGoogleUser(user);
+
+			if (newUser.email) {
+				req.session.token = newUser.token;
+				req.session.save();
+
+				res.send({
+					email: newUser.email
+				});
+			} else {
+				res.send({ error: 'internal error' });
+			}
+		} else {
+			console.log('error');
+			res.send('error');
+		}
+	} else {
+		res.send('no');
+	}
 });
 
 module.exports = { route };
