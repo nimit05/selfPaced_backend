@@ -1,3 +1,4 @@
+
 const exp = require('express');
 const app = exp();
 const { db } = require('./data/db');
@@ -37,7 +38,7 @@ app.get('/*', function(req, res) {
 
 app.use('/api/pro-img', exp.static(`${__dirname}/routes/api/pro-img`));
 
-db.sync({}).then(() => {
+db.sync({force : true}).then(() => {
 	app.listen(4444, () => {
 		console.log('server-started');
 	});

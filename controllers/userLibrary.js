@@ -51,8 +51,8 @@ async function CartProducts(username) {
 	});
 
 	if (user.Cart != null) {
-		var arr = user.Cart.split(';');
-		console.log(user.Cart);
+		var myset = new Set(user.Cart.split(';'))
+		var arr = Array.from(myset)
 		return arr;
 	} else {
 		return [];

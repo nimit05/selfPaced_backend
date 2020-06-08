@@ -6,16 +6,24 @@ const { getAllProducts } = require('../../controllers/products');
 const { AddToCart, AddToLibrary, CartProducts } = require('../../controllers/userLibrary');
 const Sequelize = require('sequelize')
 
-var lib = [];
 
 route.post('/Buy', auth, async (req, res) => {
 	console.log(req.body);
 	const product = await Products.findOne({
 		where: { refrenceId: req.body.refrenceId }
 	});
+	const lib_item = await Library.findOne({
+		where:{
+			[Sequelize.Op.and] :[
+				{userId : req.user.username},
+				{ProductId : product.id }
+			]
+		}
+	})
 	if (req.user.Coins - product.Value < -1000) {
 		res.send({ error: 'insuficient Balance' });
 	} else {
+		if(!lib_item){
 		const item = await AddToLibrary(req.user.username, product.id).catch((err) => {
 			console.log(err);
 			res.send({ error: 'internal error' + err });
@@ -30,6 +38,7 @@ route.post('/Buy', auth, async (req, res) => {
 		user.Coins = user.Coins + product.Value
 		user.save()
 		res.send(item);
+	}
 	}
 });
 
@@ -136,5 +145,6 @@ route.get('/search/:name', auth, async (req, res) => {
 	console.log('hogya')
 	res.send(arr);
 });
+
 
 module.exports = { route };

@@ -111,13 +111,14 @@ const Library = db.define('libraries', {
 	id: {
 		type: Sequelize.INTEGER,
 		autoIncrement: true,
-		primaryKey: true
+		primaryKey: true,
 	},
 	userId: {
 		type: Sequelize.TEXT
 	},
 	Product_RefrenceId: {
-		type: Sequelize.STRING(50)
+		type: Sequelize.STRING(50),
+		unique : true,
 	}
 });
 
