@@ -2,6 +2,7 @@ const { Router } = require('express');
 const route = Router();
 const { auth } = require('../../middleware/auth');
 const { createProduct } = require('../../controllers/products');
+const {Users} = require('../../data/db')
 
 route.post('/', auth, async (req, res) => {
 	console.log(req.body);

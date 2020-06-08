@@ -23,6 +23,12 @@ route.post('/Buy', auth, async (req, res) => {
 		console.log(item);
 		req.user.Coins = req.user.Coins - product.Value;
 		req.user.save();
+		const user = await Users.findOne({
+			where : {username : product.SellerUsername}
+		})
+
+		user.Coins = user.Coins + product.Value
+		user.save()
 		res.send(item);
 	}
 });
@@ -116,11 +122,13 @@ route.get('/search/:name', auth, async (req, res) => {
 		]
 	});
 	for(let i =0;i<products.length;i++){
-		if(products[i].BookName.indexOf(req.params.name.toLowerCase()) > -1 || products[i].BookAuthor.indexOf(req.params.name.toLowerCase()) > -1 ){
+		if(products[i].BookName.indexOf(req.params.name.toLowerCase()) > -1 
+		|| products[i].BookAuthor.indexOf(req.params.name.toLowerCase()) > -1 ){
 			arr.push(products[i])
 			continue;
 		}
-		else if(products[i].BookName.indexOf(req.params.name.toUpperCase()) > -1 || products[i].BookAuthor.indexOf(req.params.name.toUpperCase()) > -1 ){
+		else if(products[i].BookName.indexOf(req.params.name.toUpperCase()) > -1 
+		|| products[i].BookAuthor.indexOf(req.params.name.toUpperCase()) > -1 ){
 			arr.push(products[i])
 			continue;
 		}
