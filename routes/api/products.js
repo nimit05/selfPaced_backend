@@ -131,13 +131,8 @@ route.get('/search/:name', auth, async (req, res) => {
 		]
 	});
 	for(let i =0;i<products.length;i++){
-		if(products[i].BookName.indexOf(req.params.name.toLowerCase()) > -1 
-		|| products[i].BookAuthor.indexOf(req.params.name.toLowerCase()) > -1 ){
-			arr.push(products[i])
-			continue;
-		}
-		else if(products[i].BookName.indexOf(req.params.name.toUpperCase()) > -1 
-		|| products[i].BookAuthor.indexOf(req.params.name.toUpperCase()) > -1 ){
+		if(products[i].BookName.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1 
+		|| products[i].BookAuthor.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1 ){
 			arr.push(products[i])
 			continue;
 		}

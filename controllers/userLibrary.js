@@ -43,6 +43,29 @@ async function AddToCart(username, refrenceId) {
 		return false;
 	}
 }
+
+// async function RemoveFromCart(username, refrenceId) {
+// 	try {
+// 		const user = await Users.findOne({
+// 			where: { username }
+// 		});
+// 		const product = await Products.findOne({
+// 			where: { refrenceId }
+// 		});
+// 		console.log(user);
+// 		let arr = user.Cart.split(';');
+// 		let x = arr.indexOf(product.refrenceId)
+// 		arr.splice(x,1)
+// 		user.Cart = arr.join(';');
+// 		user.save();
+// 		// console.log(user.Cart);
+
+// 		return true;
+// 	} catch (err) {
+// 		return false;
+// 	}
+// }
+
 // AddToCart();
 
 async function CartProducts(username) {
@@ -63,5 +86,6 @@ module.exports = {
 	AddToLibrary,
 	LibraryProducts,
 	AddToCart,
-	CartProducts
+	CartProducts,
+	
 };

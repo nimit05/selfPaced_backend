@@ -2,7 +2,8 @@ const { Users, Products, Library } = require('../../data/db');
 const { Router } = require('express');
 route = Router();
 const { auth } = require('../../middleware/auth');
-const { CartProducts } = require('../../controllers/userLibrary');
+const { CartProducts  , AddToLibrary} = require('../../controllers/userLibrary');
+const Sequelize = require('sequelize')
 
 route.get('/', auth, async (req, res) => {
 	const user = await Users.findOne({
@@ -41,7 +42,10 @@ route.get('/Cart', auth, async (req, res) => {
 
 route.get('/CartRefID', auth, async (req, res) => {
 	if (req.user) {
-		let arr = req.user.Cart.split(';');
+		let arr = []
+		if(req.user.Cart != null){
+		 arr = req.user.Cart.split(';');
+		}
 		res.send(arr);
 	} else {
 		res.send({ error: 'internal cardRefId error' });
@@ -98,5 +102,53 @@ route.put('/', auth, (req, res) => {
 
 	res.send(req.user);
 });
+
+
+route.delete('/CheckoutFromCart' , auth , async(req,res) => {
+
+	const user = await Users.findOne({
+		where : {username : req.user.username}
+	})
+
+
+	const  arr = await CartProducts(req.user.username) 
+	for(let i = 0 ; i <arr.length;i++){
+		const product = await Products.findOne({
+			where: { refrenceId: arr[i] }
+		});
+		if(product){
+		const lib_item = await Library.findOne({
+			where:{
+				[Sequelize.Op.and] :[
+					{userId : req.user.username},
+					{ProductId : product.id }
+				]
+			}
+		})
+		
+		if(!lib_item){
+			const item = await AddToLibrary(req.user.username, product.id).catch((err) => {
+				console.log(err);
+				res.send({ error: 'internal error' + err });
+			})
+			const seller = await Users.findOne({
+				where : {username : product.SellerUsername}
+			})
+		
+		
+		seller.Coins = seller.Coins + product.Value
+		seller.save()
+		}
+	}
+}
+
+		user.Cart = ' '
+		user.save()
+
+		user.Coins = req.body.coins
+		user.save()
+
+	res.send(user)
+})
 
 module.exports = { route };

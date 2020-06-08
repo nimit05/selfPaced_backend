@@ -3,6 +3,7 @@ const route = Router();
 const { auth } = require('../../middleware/auth');
 const { createProduct } = require('../../controllers/products');
 const {Users} = require('../../data/db')
+const {AddToLibrary}  = require('../../controllers/userLibrary')
 
 route.post('/', auth, async (req, res) => {
 	console.log(req.body);
@@ -19,6 +20,7 @@ route.post('/', auth, async (req, res) => {
 		a.price,
 		req.files
 	);
+
 	if (product) {
 		res.redirect('/');
 	} else {
