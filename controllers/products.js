@@ -39,19 +39,7 @@ async function createProduct(SellerUsername, category, BookName, BookAuthor, Edi
 		cover_img: cover_img.url
 	});
 
-	const product = await Products.findOne({
-		attributes: [ 'refrenceId', 'category', 'BookName', 'BookAuthor', 'Edition', 'Description', 'tag', 'Value' ],
-		where: { refrenceId: newproduct.refrenceId },
-		include: [
-			{
-				attributes: [ 'username', 'Address', 'phone_Number', 'email' ],
-				model: Users,
-				as: 'Seller'
-			}
-		]
-	});
-
-	return product;
+	return newproduct;
 }
 
 module.exports = { createProduct, getAllProducts };
