@@ -4,15 +4,15 @@ dotenv.config();
 
 const db = new Sequelize({
 	dialect: 'mysql',
-	// host: process.env.aws_mysql_host,
+	host: process.env.aws_mysql_host,
 
-	database: 'puranibook',
-	// database: 'puraniBooks',
-	username: 'creator',
+	// database: 'puranibook',
+	database: 'puraniBooks',
+	// username: 'creator',
 
-	// username: process.env.aws_mysql_username,
-	password: 'letmein'
-	// password: process.env.aws_mysql_pass
+	username: process.env.aws_mysql_username,
+	// password: 'letmein'
+	password: process.env.aws_mysql_pass
 });
 
 const Users = db.define('users', {
@@ -111,14 +111,14 @@ const Library = db.define('libraries', {
 	id: {
 		type: Sequelize.INTEGER,
 		autoIncrement: true,
-		primaryKey: true,
+		primaryKey: true
 	},
 	userId: {
 		type: Sequelize.TEXT
 	},
 	Product_RefrenceId: {
 		type: Sequelize.STRING(50),
-		unique : true,
+		unique: true
 	}
 });
 
