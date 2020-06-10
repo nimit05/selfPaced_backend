@@ -23,7 +23,7 @@ app.use(
 app.use(exp.json());
 app.use(exp.urlencoded({ extended: true }));
 app.use(upload());
-app.use('/home', exp.static(path.join(__dirname, 'build')));
+app.use(exp.static(path.join(__dirname, 'build')));
 
 // files
 app.use('/covers', exp.static(path.join(__dirname, 'data/covers')));
@@ -31,9 +31,9 @@ app.use('/files', auth, exp.static(path.join(__dirname, 'data/files')));
 
 app.use('/api', apiRouter);
 
-// app.get('/*', function(req, res) {
-// 	res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
+app.get('/*', function(req, res) {
+	res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.use('/api/pro-img', exp.static(`${__dirname}/routes/api/pro-img`));
 
