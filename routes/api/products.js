@@ -107,11 +107,23 @@ route.get('/specific/:refrenceId', auth, async (req, res) => {
 			'tag',
 			'Value',
 			'cover_img',
-			'product_file'
+			'product_file',
+			'SellerUsername'
 		]
 	});
-	console.log('hua');
-	res.send(product);
+	if(req.user.username != product.SellerUsername){
+		console.log('hua')
+		res.send(product)
+	}else{
+		const product2 = await Products.findOne({
+			where: { refrenceId: req.params.refrenceId },
+			attributes: [
+				'product_file'
+			]
+		});
+		res.send(product2)
+		console.log(product2.product_file)
+	}
 });
 
 route.get('/search/:name', auth, async (req, res) => {
