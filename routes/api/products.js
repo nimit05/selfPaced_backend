@@ -4,7 +4,8 @@ const { auth } = require('../../middleware/auth');
 const { Users, Products, Library } = require('../../data/db');
 const { getAllProducts } = require('../../controllers/products');
 const { AddToCart, AddToLibrary, CartProducts } = require('../../controllers/userLibrary');
-const Sequelize = require('sequelize');
+const Sequelize = require('sequelize')
+
 
 route.post('/Buy', auth, async (req, res) => {
 	console.log(req.body);
@@ -12,29 +13,32 @@ route.post('/Buy', auth, async (req, res) => {
 		where: { refrenceId: req.body.refrenceId }
 	});
 	const lib_item = await Library.findOne({
-		where: {
-			[Sequelize.Op.and]: [ { userId: req.user.username }, { ProductId: product.id } ]
+		where:{
+			[Sequelize.Op.and] :[
+				{userId : req.user.username},
+				{ProductId : product.id }
+			]
 		}
-	});
+	})
 	if (req.user.Coins - product.Value < -1000) {
 		res.send({ error: 'insuficient Balance' });
 	} else {
-		if (!lib_item) {
-			const item = await AddToLibrary(req.user.username, product.id).catch((err) => {
-				console.log(err);
-				res.send({ error: 'internal error' + err });
-			});
-			console.log(item);
-			req.user.Coins = req.user.Coins - product.Value;
-			req.user.save();
-			const user = await Users.findOne({
-				where: { username: product.SellerUsername }
-			});
+		if(!lib_item){
+		const item = await AddToLibrary(req.user.username, product.id).catch((err) => {
+			console.log(err);
+			res.send({ error: 'internal error' + err });
+		});
+		console.log(item);
+		req.user.Coins = req.user.Coins - product.Value;
+		req.user.save();
+		const user = await Users.findOne({
+			where : {username : product.SellerUsername}
+		})
 
-			user.Coins = user.Coins + product.Value;
-			user.save();
-			res.send(item);
-		}
+		user.Coins = user.Coins + product.Value
+		user.save()
+		res.send(item);
+	}
 	}
 });
 
@@ -103,24 +107,15 @@ route.get('/specific/:refrenceId', auth, async (req, res) => {
 			'tag',
 			'Value',
 			'cover_img',
+			'product_file',
 			'SellerUsername'
 		]
 	});
-	if (req.user.username != product.SellerUsername) {
-		console.log('hua');
-		res.send(product);
-	} else {
-		const product2 = await Products.findOne({
-			where: { refrenceId: req.params.refrenceId },
-			attributes: [ 'product_file' ]
-		});
-		res.send(product2);
-		console.log(product2.product_file);
-	}
+	res.send(product)
 });
 
 route.get('/search/:name', auth, async (req, res) => {
-	var arr = [];
+	var arr = []
 	const products = await Products.findAll({
 		attributes: [
 			'refrenceId',
@@ -135,17 +130,16 @@ route.get('/search/:name', auth, async (req, res) => {
 			'product_file'
 		]
 	});
-	for (let i = 0; i < products.length; i++) {
-		if (
-			products[i].BookName.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1 ||
-			products[i].BookAuthor.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1
-		) {
-			arr.push(products[i]);
+	for(let i =0;i<products.length;i++){
+		if(products[i].BookName.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1 
+		|| products[i].BookAuthor.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1 ){
+			arr.push(products[i])
 			continue;
 		}
 	}
-	console.log('hogya');
+	console.log('hogya')
 	res.send(arr);
 });
+
 
 module.exports = { route };
