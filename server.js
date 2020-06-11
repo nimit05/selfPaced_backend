@@ -37,13 +37,8 @@ app.get('/*', function(req, res) {
 
 app.use('/api/pro-img', exp.static(`${__dirname}/routes/api/pro-img`));
 
-<<<<<<< HEAD
-db.sync({}).then(() => {
-	app.listen('4444', () => {
-=======
 db.sync().then(() => {
 	app.listen(process.env.port, () => {
->>>>>>> a9f22dedcd4de1426da7d1adfc0f372364db4a8a
 		console.log('server-started');
 	});
 });

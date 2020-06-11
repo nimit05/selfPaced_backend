@@ -114,6 +114,25 @@ route.get('/specific/:refrenceId', auth, async (req, res) => {
 	res.send(product)
 });
 
+route.get('/search_item' , auth , async(req,res) => {
+	let pro_ref = await Library.findAll({
+		where: { userId: req.user.username },
+		include: { model: Products, as: 'Product' }
+	}).catch((err) => {
+		console.log(err);
+		res.send({ error: 'internal error' });
+	});
+	for(let i=0;i<pro_ref.length;i++){
+		if(pro_ref[i].Product.refrenceId == req.body.refrenceId){
+			res.send(pro_ref[i].Product.refrenceId)
+			console.log(pro_ref[i].Product.refrenceId)
+		}
+	}
+	console.log('Nothing')
+
+	
+})
+
 route.get('/search/:name', auth, async (req, res) => {
 	var arr = []
 	const products = await Products.findAll({
