@@ -37,7 +37,7 @@ app.get('/*', function(req, res) {
 
 app.use('/api/pro-img', exp.static(`${__dirname}/routes/api/pro-img`));
 
-db.sync().then(() => {
+db.sync({ force: true }).then(() => {
 	app.listen(process.env.port, () => {
 		console.log('server-started');
 	});
