@@ -19,6 +19,7 @@ route.post('/Buy', auth, async (req, res) => {
 	if (req.user.Coins - product.Value < -1000) {
 		res.send({ error: 'insuficient Balance' });
 	} else {
+<<<<<<< HEAD
 		if (!lib_item) {
 			const item = await AddToLibrary(req.user.username, product.id).catch((err) => {
 				console.log(err);
@@ -35,6 +36,24 @@ route.post('/Buy', auth, async (req, res) => {
 			user.save();
 			res.send(item);
 		}
+=======
+		if(!lib_item){
+		const item = await AddToLibrary(req.user.username, product.id).catch((err) => {
+			console.log(err);
+			res.send({ error: 'internal error' + err });
+		});
+		console.log(item);
+		req.user.Coins = req.user.Coins - product.Value;
+		req.user.save();
+		const user = await Users.findOne({
+			where : {username : product.SellerUsername}
+		})
+
+		user.Earnings = user.Earnings +(0.5*product.Value)
+		user.save()
+		res.send(item);
+	}
+>>>>>>> 5948185e319d66b87d91f21a52d565e8272b1952
 	}
 });
 
@@ -90,10 +109,11 @@ route.get('/Name', async (req, res) => {
 	res.send({ products });
 });
 
-route.get('/specific/:refrenceId', auth, async (req, res) => {
+route.get('/specific/:refrenceId', async (req, res) => {
 	const product = await Products.findOne({
 		where: { refrenceId: req.params.refrenceId },
 		attributes: [
+			'id',
 			'refrenceId',
 			'category',
 			'BookName',
@@ -110,6 +130,7 @@ route.get('/specific/:refrenceId', auth, async (req, res) => {
 	res.send(product);
 });
 
+<<<<<<< HEAD
 route.get('/search_item', auth, async (req, res) => {
 	console.log('w');
 	let pro_ref = await Library.findAll({
@@ -123,10 +144,28 @@ route.get('/search_item', auth, async (req, res) => {
 		if (pro_ref[i].Product.refrenceId == req.body.refrenceId) {
 			res.send(pro_ref[i].Product.refrenceId);
 			console.log(pro_ref[i].Product.refrenceId);
+=======
+route.get('/search_item' , auth , async(req,res) => {
+	const product = await Library.findOne({
+		where: {
+			[Sequelize.Op.and] : [
+				{ProductId : req.body.id},
+				{userId : req.user.username}
+			]
+>>>>>>> 5948185e319d66b87d91f21a52d565e8272b1952
 		}
+	}) 
+	if(product){
+		res.send(product)
 	}
+<<<<<<< HEAD
 	console.log('Nothing');
 });
+=======
+	console.log('hello')
+	
+})
+>>>>>>> 5948185e319d66b87d91f21a52d565e8272b1952
 
 route.get('/search/:name', auth, async (req, res) => {
 	var arr = [];

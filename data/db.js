@@ -58,6 +58,9 @@ const Users = db.define('users', {
 	Coins: {
 		type: Sequelize.INTEGER,
 		allowNull: false
+	},
+	Earnings : {
+		type : Sequelize.INTEGER
 	}
 });
 
@@ -122,14 +125,32 @@ const Library = db.define('libraries', {
 	}
 });
 
+const Comments = db.define('comments' , {
+	id: {
+		type: Sequelize.INTEGER,
+		autoIncrement: true,
+		primaryKey: true
+	},
+	body: {
+		type : Sequelize.TEXT,
+	},
+	userId : {
+		type : Sequelize.STRING,
+
+	}
+})
+
 Products.belongsTo(Users, { as: 'Seller' });
 Users.hasMany(Products, { as: 'Seller' });
 Library.belongsTo(Products, { as: 'Product' });
-// Products.hasMany(Library, { as: 'Products' });
+
+Products.hasMany(Comments , {as : 'Comment'})
+Comments.belongsTo(Products , {as : 'Comment'})
 
 module.exports = {
 	Users,
 	db,
 	Products,
-	Library
+	Library,
+	Comments
 };
