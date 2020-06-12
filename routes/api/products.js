@@ -111,14 +111,16 @@ route.get('/specific/:refrenceId', async (req, res) => {
 	res.send(product);
 });
 
-route.get('/search_item', auth, async (req, res) => {
+route.get('/search_item/:refId', auth, async (req, res) => {
 	const product = await Library.findOne({
 		where: {
-			[Sequelize.Op.and]: [ { ProductId: req.body.id }, { userId: req.user.username } ]
+			[Sequelize.Op.and]: [ { ProductId: req.params.refId }, { userId: req.user.username } ]
 		}
 	});
 	if (product) {
 		res.send(product);
+	} else {
+		res.send({ error: 'not found' });
 	}
 	console.log('hello');
 });
@@ -135,8 +137,7 @@ route.get('/search/:name', auth, async (req, res) => {
 			'Description',
 			'tag',
 			'Value',
-			'cover_img',
-			'product_file'
+			'cover_img'
 		]
 	});
 	for (let i = 0; i < products.length; i++) {

@@ -16,10 +16,42 @@ async function postData(url = '', data = {}) {
 	return response.json(); // parses JSON response into native JavaScript objects
 }
 
+//  *************************  for login and register with enter key ***************
+let register = true;
+let login = false;
+let veri = false;
+
+document.getElementById('login_tab').onclick = () => {
+	login = true;
+	register = false;
+};
+
+document.getElementById('reg_tab').onclick = () => {
+	login = false;
+	register = true;
+};
+
+document.addEventListener('keypress', (e) => {
+	if (e.keyCode == 13) {
+		if (login === true && register === false) {
+			send_log_data();
+		}
+		if (login === false && register === true) {
+			send_reg_data();
+		}
+		if (login === false && register === false && veri === true) {
+			otp_confirm();
+		}
+	}
+});
+
+// *************************************
+
 $(() => {
 	let isActive = true;
 	$('.tabc').on('click', function(e) {
 		e.preventDefault();
+		alert(isAcitve);
 
 		$('.tabn').removeClass('active');
 
@@ -350,6 +382,9 @@ function send_reg_data() {
 }
 
 function make_email() {
+	veri = true;
+	login = false;
+	register = false;
 	document.getElementById('login_tab').style.display = 'none';
 	document.getElementById('email_tab').style.display = 'block';
 	$('#reg_tab').removeClass('active');

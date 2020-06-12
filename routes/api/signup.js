@@ -11,7 +11,6 @@ const {
 const fs = require('fs');
 const { getrandomstring, getrandomnum } = require('../../utils/string');
 const { auth } = require('../../middleware/auth');
-const { sendOtpToMail } = require('../../utils/emailVeri');
 
 route.post('/', async (req, res) => {
 	const a = req.body.user;
@@ -36,11 +35,7 @@ route.post('/', async (req, res) => {
 	}
 
 	const user = await createusers(a.name, a.username, a.email, a.password, a.phone_Number, img_url, otp);
-	sendOtpToMail(a.email, otp).catch((err) => {
-		user.delete();
-		console.log({ error: 'unable to send email error :- ' + err });
-		res.send({ error: 'can not register your account internal error' });
-	});
+
 	res.send(user);
 });
 

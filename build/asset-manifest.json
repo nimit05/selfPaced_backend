@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.e4e5486e.chunk.css",
-    "main.js": "/static/js/main.2f111a63.chunk.js",
-    "main.js.map": "/static/js/main.2f111a63.chunk.js.map",
+    "main.css": "/static/css/main.51611fe3.chunk.css",
+    "main.js": "/static/js/main.e2139f2f.chunk.js",
+    "main.js.map": "/static/js/main.e2139f2f.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.64818af3.js",
     "runtime-main.js.map": "/static/js/runtime-main.64818af3.js.map",
-    "static/js/2.0625d423.chunk.js": "/static/js/2.0625d423.chunk.js",
-    "static/js/2.0625d423.chunk.js.map": "/static/js/2.0625d423.chunk.js.map",
+    "static/js/2.ae2231a7.chunk.js": "/static/js/2.ae2231a7.chunk.js",
+    "static/js/2.ae2231a7.chunk.js.map": "/static/js/2.ae2231a7.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.000d62c254f1183eace9af334ecc3358.js": "/precache-manifest.000d62c254f1183eace9af334ecc3358.js",
+    "precache-manifest.66fc88d4e3f7ef89c1890aa91539eccb.js": "/precache-manifest.66fc88d4e3f7ef89c1890aa91539eccb.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/main.e4e5486e.chunk.css.map": "/static/css/main.e4e5486e.chunk.css.map",
-    "static/js/2.0625d423.chunk.js.LICENSE.txt": "/static/js/2.0625d423.chunk.js.LICENSE.txt",
+    "static/css/main.51611fe3.chunk.css.map": "/static/css/main.51611fe3.chunk.css.map",
+    "static/js/2.ae2231a7.chunk.js.LICENSE.txt": "/static/js/2.ae2231a7.chunk.js.LICENSE.txt",
     "static/media/style.scss": "/static/media/search.4b329ecd.svg",
     "static/media/bin.svg": "/static/media/bin.650cdc57.svg",
     "static/media/bookcover.jpg": "/static/media/bookcover.74dcbe09.jpg",
@@ -20,15 +20,15 @@
     "static/media/icon.svg": "/static/media/icon.1d4f583c.svg",
     "static/media/info.svg": "/static/media/info.2508df20.svg",
     "static/media/lib.svg": "/static/media/lib.4e53e8d4.svg",
-    "static/media/mainLOGO.png": "/static/media/mainLOGO.ce7e29f6.png",
     "static/media/money.svg": "/static/media/money.5ce23e72.svg",
+    "static/media/name-logo.png": "/static/media/name-logo.6e230433.png",
     "static/media/plus.svg": "/static/media/plus.452f3397.svg",
     "static/media/propic.svg": "/static/media/propic.5ca40737.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.64818af3.js",
-    "static/js/2.0625d423.chunk.js",
-    "static/css/main.e4e5486e.chunk.css",
-    "static/js/main.2f111a63.chunk.js"
+    "static/js/2.ae2231a7.chunk.js",
+    "static/css/main.51611fe3.chunk.css",
+    "static/js/main.e2139f2f.chunk.js"
   ]
 }

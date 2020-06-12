@@ -1,5 +1,6 @@
 const { Users } = require('../data/db');
 const { getrandomstring } = require('../utils/string');
+const { sendOtpToMail } = require('../utils/emailVeri');
 
 async function createusers(name, username, email, password, phone_Number, pro_img, otp) {
 	let finduser = await Users.findOne({
@@ -47,17 +48,22 @@ async function createusers(name, username, email, password, phone_Number, pro_im
 		Verified: false,
 		pro_img,
 		Coins: '1000',
-		Earnings : 0
+		Earnings: 0
+	});
+	await sendOtpToMail(email, otp).catch((err) => {
+		user.delete();
+		console.log({ error: 'unable to send email error :- ' + err });
+		return { error: 'can not register your account internal error' };
 	});
 
 	const newuser = await Users.findOne({
-		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Coins', 'token' , 'Earnings' ],
+		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Coins', 'token', 'Earnings' ],
 		where: { token: user.token }
 	});
 	setTimeout(() => {
 		newuser.OTP = null;
 		newuser.save();
-	}, 300000);
+	}, 150000);
 	return newuser;
 }
 
