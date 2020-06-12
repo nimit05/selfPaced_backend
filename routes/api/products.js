@@ -35,7 +35,7 @@ route.post('/Buy', auth, async (req, res) => {
 			where : {username : product.SellerUsername}
 		})
 
-		user.Coins = user.Coins + product.Value
+		user.Earnings = user.Earnings +(0.5*product.Value)
 		user.save()
 		res.send(item);
 	}
@@ -94,10 +94,11 @@ route.get('/Name', async (req, res) => {
 	res.send({ products });
 });
 
-route.get('/specific/:refrenceId', auth, async (req, res) => {
+route.get('/specific/:refrenceId', async (req, res) => {
 	const product = await Products.findOne({
 		where: { refrenceId: req.params.refrenceId },
 		attributes: [
+			'id',
 			'refrenceId',
 			'category',
 			'BookName',
@@ -115,21 +116,18 @@ route.get('/specific/:refrenceId', auth, async (req, res) => {
 });
 
 route.get('/search_item' , auth , async(req,res) => {
-	let pro_ref = await Library.findAll({
-		where: { userId: req.user.username },
-		include: { model: Products, as: 'Product' }
-	}).catch((err) => {
-		console.log(err);
-		res.send({ error: 'internal error' });
-	});
-	for(let i=0;i<pro_ref.length;i++){
-		if(pro_ref[i].Product.refrenceId == req.body.refrenceId){
-			res.send(pro_ref[i].Product.refrenceId)
-			console.log(pro_ref[i].Product.refrenceId)
+	const product = await Library.findOne({
+		where: {
+			[Sequelize.Op.and] : [
+				{ProductId : req.body.id},
+				{userId : req.user.username}
+			]
 		}
+	}) 
+	if(product){
+		res.send(product)
 	}
-	console.log('Nothing')
-
+	console.log('hello')
 	
 })
 

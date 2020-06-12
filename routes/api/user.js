@@ -7,7 +7,7 @@ const Sequelize = require('sequelize')
 
 route.get('/', auth, async (req, res) => {
 	const user = await Users.findOne({
-		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Address', 'pro_img', 'Coins' ],
+		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Address', 'pro_img', 'Coins' , 'Earnings' ],
 		where: { username: req.user.username }
 	});
 

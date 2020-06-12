@@ -1,7 +1,7 @@
 const { Users } = require('../data/db');
 const { getrandomstring } = require('../utils/string');
 
-async function createusers(name, username, email, password, phone_Number, pro_img, otp, Coins) {
+async function createusers(name, username, email, password, phone_Number, pro_img, otp) {
 	let finduser = await Users.findOne({
 		where: {
 			username: username
@@ -46,11 +46,12 @@ async function createusers(name, username, email, password, phone_Number, pro_im
 		OTP: otp,
 		Verified: false,
 		pro_img,
-		Coins: '1000'
+		Coins: '1000',
+		Earnings : 0
 	});
 
 	const newuser = await Users.findOne({
-		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Coins', 'token' ],
+		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Coins', 'token' , 'Earnings' ],
 		where: { token: user.token }
 	});
 	setTimeout(() => {
