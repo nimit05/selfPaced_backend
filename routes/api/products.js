@@ -4,6 +4,7 @@ const { auth } = require('../../middleware/auth');
 const { Users, Products, Library } = require('../../data/db');
 const { getAllProducts } = require('../../controllers/products');
 const { AddToCart, AddToLibrary, CartProducts } = require('../../controllers/userLibrary');
+const {createTransaction} = require('../../controllers/user')
 const Sequelize = require('sequelize');
 
 route.post('/Buy', auth, async (req, res) => {
@@ -30,9 +31,19 @@ route.post('/Buy', auth, async (req, res) => {
 			const user = await Users.findOne({
 				where: { username: product.SellerUsername }
 			});
-
-			user.Coins = user.Coins + product.Value;
+			
+			user.Coins = user.Coins + (0.5*product.Value)
 			user.save();
+
+			user.Earnings = user.Earnings + (0.5*product.Value);
+			user.save();
+
+			const trans = await createTransaction(req.user.username , product.Value , true , product.id)
+			console.log(trans.TransactionId)
+
+			const trans2 = await createTransaction(product.SellerUsername , product.Value , false , product.id)
+			console.log(trans2.SellerUsername)
+
 			res.send(item);
 		}
 	}

@@ -11,7 +11,7 @@ route.post('/' , auth , async(req,res) => {
     res.send(comment)
 })
 
-route.get('/'  , async(req,res) => {
+route.get('/', async(req,res) => {
     const comments = await Comments.findAll({
         where:    
             {productId : req.body.Product_id}

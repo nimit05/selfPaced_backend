@@ -8,10 +8,7 @@ const db = new Sequelize({
 
 	// database: 'puranibook',
 	database: 'puraniBooks',
-	// username: 'creator',
-
 	username: process.env.aws_mysql_username,
-	// password: 'letmein'
 	password: process.env.aws_mysql_pass
 });
 
@@ -60,7 +57,8 @@ const Users = db.define('users', {
 		allowNull: false
 	},
 	Earnings : {
-		type : Sequelize.INTEGER
+		type : Sequelize.INTEGER,
+		defaultValue: '0'
 	}
 });
 
@@ -140,6 +138,32 @@ const Comments = db.define('comments' , {
 	}
 })
 
+
+const Transaction  = db.define('transactions' , {
+	id : {
+		type : Sequelize.INTEGER,
+		primaryKey : true,
+		autoIncrement: true,
+	},
+	TransactionId : {
+		type : Sequelize.STRING(30),
+		primaryKey : true,
+		unique : true
+	},
+	Debited : {
+		type : Sequelize.BOOLEAN,
+		allowNull : false
+	},
+	Value : {
+		type : Sequelize.INTEGER,
+	},
+	productId : {
+		type :Sequelize.STRING,
+	}
+})
+
+Transaction.belongsTo(Users , {as : 'user'})
+
 Products.belongsTo(Users, { as: 'Seller' });
 Users.hasMany(Products, { as: 'Seller' });
 Library.belongsTo(Products, { as: 'Product' });
@@ -152,5 +176,6 @@ module.exports = {
 	db,
 	Products,
 	Library,
-	Comments
+	Comments,
+	Transaction
 };

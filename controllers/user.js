@@ -1,4 +1,4 @@
-const { Users } = require('../data/db');
+const { Users , Transaction } = require('../data/db');
 const { getrandomstring } = require('../utils/string');
 const { sendOtpToMail } = require('../utils/emailVeri');
 
@@ -186,6 +186,28 @@ async function createGoogleUser(user) {
 	}
 }
 
+
+async function createTransaction(userUsername , Value , Debited , productId){
+	const trans = await Transaction.create({
+		TransactionId : getrandomstring(30),
+		userUsername,
+		Value,
+		Debited,
+		productId
+	})
+
+	const new_transc = await Transaction.findOne({
+		where : {TransactionId : trans.TransactionId},
+		attributes : ['TransactionId' , 'Value' , 'Debited' , 'productId'],
+		include : {
+			attributes : ['username'],
+			model : Users,
+			as : 'user'
+		}
+	})
+	return new_transc
+}
+
 module.exports = {
 	createusers,
 	findUserByOTP,
@@ -195,5 +217,6 @@ module.exports = {
 	verified,
 	Libraryfounder,
 	isUserExistEmail,
-	createGoogleUser
+	createGoogleUser,
+	createTransaction
 };
