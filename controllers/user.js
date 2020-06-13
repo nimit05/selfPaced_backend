@@ -47,8 +47,7 @@ async function createusers(name, username, email, password, phone_Number, pro_im
 		OTP: otp,
 		Verified: false,
 		pro_img,
-		Coins: '1000',
-		Earnings: 0
+		Coins: '1000'
 	});
 	await sendOtpToMail(email, otp).catch((err) => {
 		user.delete();
@@ -57,7 +56,7 @@ async function createusers(name, username, email, password, phone_Number, pro_im
 	});
 
 	const newuser = await Users.findOne({
-		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Coins', 'token', 'Earnings' ],
+		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Coins', 'token',  ],
 		where: { token: user.token }
 	});
 	setTimeout(() => {

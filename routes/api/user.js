@@ -1,4 +1,4 @@
-const { Users, Products, Library } = require('../../data/db');
+const { Users, Products, Library , Transaction } = require('../../data/db');
 const { Router } = require('express');
 route = Router();
 const { auth } = require('../../middleware/auth');
@@ -149,6 +149,23 @@ route.delete('/CheckoutFromCart' , auth , async(req,res) => {
 		user.save()
 
 	res.send(user)
+})
+
+route.get('/transaction' , auth , async(req,res) => {
+	const trans = await Transaction.findAll({
+		where : {userUsername : req.user.username}
+	})
+	console.log(trans)
+	res.send(trans)
+	
+})
+
+route.get('/products' , auth , async(req,res) => {
+	const products = await Products.findAll({
+		where : {SellerUsername : req.user.username}
+	})
+	console.log('hogybhaiyaa' )
+	res.send(products)
 })
 
 module.exports = { route };
