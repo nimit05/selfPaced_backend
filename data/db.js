@@ -8,8 +8,10 @@ const db = new Sequelize({
 
 	database: 'puranibook',
 	// database: 'puraniBooks',
-	username: process.env.aws_mysql_username,
-	password: process.env.aws_mysql_pass
+	// username: process.env.aws_mysql_username,
+	// password: process.env.aws_mysql_pass
+	username: 'root',
+	password: 'classmate'
 });
 
 const Users = db.define('users', {
@@ -56,8 +58,8 @@ const Users = db.define('users', {
 		type: Sequelize.INTEGER,
 		allowNull: false
 	},
-	Earnings : {
-		type : Sequelize.INTEGER,
+	Earnings: {
+		type: Sequelize.INTEGER,
 		defaultValue: '0'
 	}
 });
@@ -105,10 +107,6 @@ const Products = db.define('products', {
 	},
 	product_file: {
 		type: Sequelize.TEXT
-	},
-	Num_buyers : {
-		type : Sequelize.INTEGER,
-		defaultValue : '0'
 	}
 });
 
@@ -127,53 +125,51 @@ const Library = db.define('libraries', {
 	}
 });
 
-const Comments = db.define('comments' , {
+const Comments = db.define('comments', {
 	id: {
 		type: Sequelize.INTEGER,
 		autoIncrement: true,
 		primaryKey: true
 	},
 	body: {
-		type : Sequelize.TEXT,
+		type: Sequelize.TEXT
 	},
-	userId : {
-		type : Sequelize.STRING,
-
+	userId: {
+		type: Sequelize.STRING
 	}
-})
+});
 
-
-const Transaction  = db.define('transactions' , {
-	id : {
-		type : Sequelize.INTEGER,
-		primaryKey : true,
-		autoIncrement: true,
+const Transaction = db.define('transactions', {
+	id: {
+		type: Sequelize.INTEGER,
+		primaryKey: true,
+		autoIncrement: true
 	},
-	TransactionId : {
-		type : Sequelize.STRING(30),
-		primaryKey : true,
-		unique : true
+	TransactionId: {
+		type: Sequelize.STRING(30),
+		primaryKey: true,
+		unique: true
 	},
-	Debited : {
-		type : Sequelize.BOOLEAN,
-		allowNull : false
+	Debited: {
+		type: Sequelize.BOOLEAN,
+		allowNull: false
 	},
-	Value : {
-		type : Sequelize.INTEGER,
+	Value: {
+		type: Sequelize.INTEGER
 	},
-	productId : {
-		type :Sequelize.STRING,
+	productId: {
+		type: Sequelize.STRING
 	}
-})
+});
 
-Transaction.belongsTo(Users , {as : 'user'})
+Transaction.belongsTo(Users, { as: 'user' });
 
 Products.belongsTo(Users, { as: 'Seller' });
 Users.hasMany(Products, { as: 'Seller' });
 Library.belongsTo(Products, { as: 'Product' });
 
-Products.hasMany(Comments , {as : 'Comment'})
-Comments.belongsTo(Products , {as : 'Comment'})
+Products.hasMany(Comments, { as: 'Comment' });
+Comments.belongsTo(Products, { as: 'Comment' });
 
 module.exports = {
 	Users,

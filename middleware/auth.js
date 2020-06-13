@@ -19,7 +19,7 @@ async function auth(req, res, next) {
 		req.user = authUser;
 		next();
 	} else {
-		res.send({ error: 'auth error' });
+		res.redirect('/regis.html');
 	}
 }
 
