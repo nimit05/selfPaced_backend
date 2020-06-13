@@ -11,12 +11,15 @@ route.post('/' , auth , async(req,res) => {
     res.send(comment)
 })
 
-route.get('/', async(req,res) => {
+route.get('/:id', async(req,res) => {
+    console.log(req.params.id)
     const comments = await Comments.findAll({
         where:    
-            {productId : req.body.Product_id}
+            {productId : req.params.id}
         
     })
+
+    console.log('comments aaye' + req.params.id)
     res.send(comments)
 })
 

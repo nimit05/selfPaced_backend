@@ -42,7 +42,7 @@ async function createProduct(SellerUsername, category, BookName, BookAuthor, Edi
 	return newproduct;
 }
 
-async function createComment(  body ,userId ,  productId){
+async function createComment(  userId ,body ,  productId){
 	const comment = await Comments.create({
 		body,
 		userId,
