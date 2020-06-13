@@ -126,10 +126,10 @@ route.get('/specific/:refrenceId', async (req, res) => {
 	res.send(product);
 });
 
-route.get('/search_item/:refId', auth, async (req, res) => {
+route.get('/search_item/:id', auth, async (req, res) => {
 	const product = await Library.findOne({
 		where: {
-			[Sequelize.Op.and]: [ { ProductId: req.params.refId }, { userId: req.user.username } ]
+			[Sequelize.Op.and]: [ { ProductId: req.params.id }, { userId: req.user.username } ]
 		}
 	});
 	if (product) {
