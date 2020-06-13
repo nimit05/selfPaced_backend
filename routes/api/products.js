@@ -28,6 +28,10 @@ route.post('/Buy', auth, async (req, res) => {
 			console.log(item);
 			req.user.Coins = req.user.Coins - product.Value;
 			req.user.save();
+
+			product.Num_buyers = product.Num_buyers + 1;
+			product.save()
+
 			const user = await Users.findOne({
 				where: { username: product.SellerUsername }
 			});
@@ -38,10 +42,10 @@ route.post('/Buy', auth, async (req, res) => {
 			user.Earnings = user.Earnings + (0.5*product.Value);
 			user.save();
 
-			const trans = await createTransaction(req.user.username , product.Value , true , product.id)
+			const trans = await createTransaction(req.user.username , product.Value , true , product.BookName)
 			console.log(trans.TransactionId)
 
-			const trans2 = await createTransaction(product.SellerUsername , product.Value , false , product.id)
+			const trans2 = await createTransaction(product.SellerUsername , product.Value , false , product.BookName)
 			console.log(trans2.SellerUsername)
 
 			res.send(item);
