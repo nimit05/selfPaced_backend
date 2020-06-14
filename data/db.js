@@ -105,6 +105,9 @@ const Products = db.define('products', {
 	},
 	product_file: {
 		type: Sequelize.TEXT
+	},
+	sample_pro: {
+		type: Sequelize.TEXT
 	}
 });
 

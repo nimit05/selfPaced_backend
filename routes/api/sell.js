@@ -10,6 +10,7 @@ route.post('/', auth, async (req, res) => {
 		console.log(req.body);
 		console.log(req.files);
 		const a = req.body;
+		let sample_end = parseInt(a.sample_pages) + parseInt(a.sample_start) - 1;
 		const product = await createProduct(
 			req.user.username,
 			a.category,
@@ -19,6 +20,8 @@ route.post('/', auth, async (req, res) => {
 			a.B_des,
 			a.tag,
 			a.price,
+			a.sample_start,
+			sample_end,
 			req.files
 		);
 		console.log(product);
