@@ -29,11 +29,11 @@ route.post('/', auth, async (req, res) => {
 		if (product) {
 			res.redirect('/');
 		} else {
-			res.send(product);
+			res.redirect('/sell-your-product/error');
 		}
 	} catch (err) {
 		console.log(err);
-		res.send({ error: 'internal error' });
+		res.redirect('/sell-your-product/internal-error');
 	}
 });
 
