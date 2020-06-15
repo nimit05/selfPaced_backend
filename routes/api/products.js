@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const route = Router();
 const { auth } = require('../../middleware/auth');
-const { Users, Products, Library } = require('../../data/db');
+const { Users, Products, Library  , Review} = require('../../data/db');
 const { getAllProducts } = require('../../controllers/products');
 const { AddToCart, AddToLibrary, CartProducts } = require('../../controllers/userLibrary');
 const { createTransaction } = require('../../controllers/user');
@@ -38,12 +38,11 @@ route.post('/Buy', auth, async (req, res) => {
 			user.Earnings = user.Earnings + 0.5 * product.Value;
 			user.save();
 
-			const trans = await createTransaction(req.user.username, product.Value, true, product.BookName);
+			const trans = await createTransaction(product.id , product.Value , true , req.user.username);
 			console.log(trans.TransactionId);
 
-			const trans2 = await createTransaction(product.SellerUsername, product.Value, false, product.BookName);
-			console.log(trans2.SellerUsername);
-
+			const trans2 = await createTransaction(product.id , 0.5*product.Value , false , product.SellerUsername);
+			console.log(trans2.refrenceId)
 			res.send(item);
 		}
 	}
@@ -87,7 +86,8 @@ route.get('/', async (req, res) => {
 			'Description',
 			'tag',
 			'Value',
-			'cover_img'
+			'cover_img',
+			'rating'
 		]
 	});
 
@@ -111,6 +111,7 @@ route.get('/specific/:refrenceId', async (req, res) => {
 			'BookName',
 			'BookAuthor',
 			'Edition',
+			'rating',
 			'Description',
 			'tag',
 			'Value',
@@ -164,7 +165,8 @@ route.get('/search/:name', auth, async (req, res) => {
 			'Description',
 			'tag',
 			'Value',
-			'cover_img'
+			'cover_img',
+			'rating'
 		]
 	});
 	for (let i = 0; i < products.length; i++) {
@@ -179,5 +181,8 @@ route.get('/search/:name', auth, async (req, res) => {
 	console.log('hogya');
 	res.send(arr);
 });
+
+
+
 
 module.exports = { route };

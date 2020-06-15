@@ -1,4 +1,4 @@
-const { Users, Products , Comments } = require('../data/db');
+const { Users, Products , Review } = require('../data/db');
 const { getrandomstring } = require('../utils/string');
 const { saveThis } = require('../utils/FileSaver');
 const { bookValue } = require('../utils/BookValue');
@@ -42,17 +42,15 @@ async function createProduct(SellerUsername, category, BookName, BookAuthor, Edi
 	return newproduct;
 }
 
-async function createComment(  userId ,body ,  productId){
-	const comment = await Comments.create({
-		body,
+async function createReview( userId ,comment , Rating , productId , user_img){
+	const review = await Review.create({
+		comment,
 		userId,
-		productId
+		Rating,
+		productId,
+		user_img
 	})
-	const newcomment = await Comments.findOne({
-		where : {id : comment.id},
-		attributes : ['id' , 'body' , 'userId' , 'productId']
-	})
-	return newcomment;
+	return review
 }
 
-module.exports = { createProduct, getAllProducts , createComment };
+module.exports = { createProduct, getAllProducts , createReview };

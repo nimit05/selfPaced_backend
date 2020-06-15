@@ -4,6 +4,7 @@ route = Router();
 const { auth } = require('../../middleware/auth');
 const { CartProducts  , AddToLibrary} = require('../../controllers/userLibrary');
 const Sequelize = require('sequelize')
+const {createTransaction} = require('../../controllers/user')
 
 route.get('/', auth, async (req, res) => {
 	const user = await Users.findOne({
@@ -138,6 +139,17 @@ route.delete('/CheckoutFromCart' , auth , async(req,res) => {
 		
 		seller.Coins = seller.Coins + product.Value
 		seller.save()
+		
+		user.Coins = req.body.coins
+		user.save()
+
+		const trans = await createTransaction(product.id , product.Value , true , req.user.username);
+			console.log(trans.TransactionId);
+
+			const trans2 = await createTransaction(product.id , 0.5*product.Value , false , product.SellerUsername);
+			console.log(trans2.refrenceId)
+
+
 		}
 	}
 }
@@ -145,17 +157,16 @@ route.delete('/CheckoutFromCart' , auth , async(req,res) => {
 		user.Cart = ' '
 		user.save()
 
-		user.Coins = req.body.coins
-		user.save()
-
 	res.send(user)
 })
 
 route.get('/transaction' , auth , async(req,res) => {
 	const trans = await Transaction.findAll({
-		where : {userUsername : req.user.username}
+		where : {userId : req.user.username},
+		include : {model : Products , as : 'item'}
 	})
 	console.log(trans)
+	console.log('recieved here')
 	res.send(trans)
 	
 })
@@ -166,6 +177,26 @@ route.get('/products' , auth , async(req,res) => {
 	})
 	console.log('hogybhaiyaa' )
 	res.send(products)
+})
+
+route.get('/myorders' , auth , async(req,res) => {
+	const orders = await Transaction.findAll({
+		where : {[Sequelize.Op.and] : [
+			{Debited : true},
+			{userId : req.user.username}
+		] },
+		include : {model : Products , as : 'item'}
+	})
+	console.log(orders)
+	console.log("orders has arrived")
+	res.send(orders)
+})
+
+route.get('/getUser' , async(req,res) => {
+	const user = await Users.findOne({
+		where : {username : req.body.username}
+	})
+	res.send(user)
 })
 
 module.exports = { route };

@@ -186,22 +186,33 @@ async function createGoogleUser(user) {
 }
 
 
-async function createTransaction(userUsername , Value , Debited , productId){
+async function createTransaction(itemId , Value , Debited , userId ){
 	const trans = await Transaction.create({
 		TransactionId : getrandomstring(30),
-		userUsername,
+		itemId,
 		Value,
 		Debited,
-		productId
+		userId
 	})
 
 	const new_transc = await Transaction.findOne({
 		where : {TransactionId : trans.TransactionId},
-		attributes : ['TransactionId' , 'Value' , 'Debited' , 'productId'],
 		include : {
-			attributes : ['username'],
-			model : Users,
-			as : 'user'
+			attributes : [
+			'id',
+			'refrenceId',
+			'category',
+			'BookName',
+			'BookAuthor',
+			'Edition',
+			'Description',
+			'tag',
+			'Value',
+			'cover_img',
+			'product_file',
+			'SellerUsername' ],
+			model : Products,
+			as : 'item'
 		}
 	})
 	return new_transc

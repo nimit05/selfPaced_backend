@@ -98,6 +98,9 @@ const Products = db.define('products', {
 	MRP: {
 		type: Sequelize.INTEGER
 	},
+	rating : {
+		type : Sequelize.FLOAT
+	},
 	Value: {
 		type: Sequelize.INTEGER
 	},
@@ -124,18 +127,27 @@ const Library = db.define('libraries', {
 	}
 });
 
-const Comments = db.define('comments', {
+const Review = db.define('reviews', {
 	id: {
 		type: Sequelize.INTEGER,
 		autoIncrement: true,
 		primaryKey: true
 	},
-	body: {
+	comment: {
 		type: Sequelize.TEXT
 	},
 	userId: {
 		type: Sequelize.STRING
-	}
+	},
+	Rating : {
+	   type :Sequelize.INTEGER
+	},
+   productId : {
+	   type : Sequelize.INTEGER
+   },
+   user_img : {
+	   type : Sequelize.TEXT
+   }
 });
 
 const Transaction = db.define('transactions', {
@@ -156,25 +168,23 @@ const Transaction = db.define('transactions', {
 	Value: {
 		type: Sequelize.INTEGER
 	},
-	productId: {
-		type: Sequelize.STRING
-	}
+   userId : {
+	   type : Sequelize.STRING
+   }
 });
 
-Transaction.belongsTo(Users, { as: 'user' });
+Transaction.belongsTo(Products, { as: 'item' });
 
 Products.belongsTo(Users, { as: 'Seller' });
 Users.hasMany(Products, { as: 'Seller' });
 Library.belongsTo(Products, { as: 'Product' });
 
-Products.hasMany(Comments, { as: 'Comment' });
-Comments.belongsTo(Products, { as: 'Comment' });
 
 module.exports = {
 	Users,
 	db,
 	Products,
 	Library,
-	Comments,
+	Review,
 	Transaction
 };
