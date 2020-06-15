@@ -110,7 +110,7 @@ function renderButton() {
 	});
 }
 
-let nomistake = false;
+let nomistake = true;
 function pass_validation() {
 	let p1 = $('#pass').val().match(/^.{8,20}$/);
 	let p2 = $('#pass').val().match(/^(?=.*[a-z]).{8,20}$/);
@@ -169,7 +169,6 @@ function pass_validation() {
 		$('#pass').css({
 			border: '1px solid #1eff00'
 		});
-		nomistake = true;
 	}
 }
 
@@ -196,7 +195,6 @@ function re_pass_vali() {
 		$('#conPass').css({
 			border: '1px solid #1eff00'
 		});
-		nomistake = true;
 	}
 }
 
@@ -221,7 +219,6 @@ function name_vali() {
 		$('#name').css({
 			border: '1px solid #1eff00'
 		});
-		nomistake = true;
 	}
 }
 
@@ -247,7 +244,6 @@ function email_vali() {
 		$('#email').css({
 			border: '1px solid #1eff00'
 		});
-		nomistake = true;
 	}
 }
 
@@ -266,7 +262,6 @@ function username_vali() {
 		$('#username').css({
 			border: '1px solid #1eff00'
 		});
-		nomistake = true;
 	}
 }
 function phone_vali() {
@@ -290,10 +285,9 @@ function phone_vali() {
 		$('#pass').css({
 			border: '1px solid #a0b3b0'
 		});
-		nomistake = true;
 	}
 }
-let nologmistake = false;
+let nologmistake = true;
 function log_username_vali() {
 	if ($('#log_username').val().length == 0) {
 		$('#below_logUser').append($('<p>')).text('Enter your username');
@@ -307,7 +301,6 @@ function log_username_vali() {
 		$('#log_username').css({
 			border: '1px solid #1eff00'
 		});
-		nologmistake = true;
 	}
 }
 function log_pass_vali() {
@@ -323,18 +316,19 @@ function log_pass_vali() {
 		$('#wrong_pass').css({
 			border: '1px solid #1eff00'
 		});
-		nologmistake = true;
 	}
 }
 
 let email = null;
 function send_reg_data() {
+	nomistake = true;
 	re_pass_vali();
 	phone_vali();
 	pass_validation();
 	email_vali();
 	name_vali();
 	username_vali();
+	re_pass_vali();
 
 	if (nomistake) {
 		let data = {
