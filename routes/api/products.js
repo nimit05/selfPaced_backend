@@ -116,7 +116,7 @@ route.get('/specific/:refrenceId', async (req, res) => {
 			'tag',
 			'Value',
 			'cover_img',
-			'product_file',
+			'sample_pro',
 			'SellerUsername'
 		]
 	});

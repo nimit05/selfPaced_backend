@@ -1,10 +1,10 @@
 const fs = require('fs');
 const { getrandomstring } = require('./string');
 const { slugify } = require('./slugify');
-
-async function saveThis(file, type) {
+const { split } = require('./FileSpliter');
+async function saveThis(file, type, start, end) {
 	let name = getrandomstring(30);
-
+	let sampleName = getrandomstring(30);
 	let n = slugify(file.name);
 
 	let dir;
@@ -18,10 +18,13 @@ async function saveThis(file, type) {
 		if (err) {
 			return { error: err };
 		} else {
-			return { url: name + n };
+			if (type === 'file') {
+				let res = split(name + n, sampleName, start, end);
+			}
+			return { url: name + n, sample_url: sampleName };
 		}
 	});
 
-	return { url: name + n };
+	return { url: name + n, sample_url: sampleName };
 }
 module.exports = { saveThis };
