@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-const { Users, Products , Review } = require('../data/db');
-=======
-const { Users, Products, Comments } = require('../data/db');
->>>>>>> f15f2a433522a2ccbc090970aec1ee774c95762d
+const { Users, Products, Review, Comments } = require('../data/db');
 const { getrandomstring } = require('../utils/string');
 const { saveThis } = require('../utils/FileSaver');
 const { bookValue } = require('../utils/BookValue');
@@ -60,20 +56,18 @@ async function createProduct(
 	return newproduct;
 }
 
-<<<<<<< HEAD
-async function createReview( userId ,comment , Rating , productId , user_img){
+async function createReview(userId, comment, Rating, productId, user_img) {
 	const review = await Review.create({
 		comment,
 		userId,
 		Rating,
 		productId,
 		user_img
-	})
-	return review
+	});
+	return review;
 }
 
-module.exports = { createProduct, getAllProducts , createReview };
-=======
+module.exports = { createProduct, getAllProducts, createReview };
 async function createComment(userId, body, productId) {
 	const comment = await Comments.create({
 		body,
@@ -86,6 +80,3 @@ async function createComment(userId, body, productId) {
 	});
 	return newcomment;
 }
-
-module.exports = { createProduct, getAllProducts, createComment };
->>>>>>> f15f2a433522a2ccbc090970aec1ee774c95762d
