@@ -81,4 +81,11 @@ route.get('/isAllowed/:id' , auth , async(req,res) => {
     }
 })
 
+route.get('/getAll/:userId' , auth , async(req,res) => {
+    const reviews = await Review.findAll({
+        where : {userId : req.params.userId}
+    })
+    res.send(reviews)
+})
+
 module.exports = {route}

@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const route = Router();
 const { auth } = require('../../middleware/auth');
-const { Users, Products, Library  , Review} = require('../../data/db');
+const { Users, Products, Library  , Review , Transaction} = require('../../data/db');
 const { getAllProducts } = require('../../controllers/products');
 const { AddToCart, AddToLibrary, CartProducts } = require('../../controllers/userLibrary');
 const { createTransaction } = require('../../controllers/user');
@@ -41,8 +41,7 @@ route.post('/Buy', auth, async (req, res) => {
 			const trans = await createTransaction(product.id , product.Value , true , req.user.username);
 			console.log(trans.TransactionId);
 
-			const trans2 = await createTransaction(product.id , 0.5*product.Value , false , product.SellerUsername);
-			console.log(trans2.refrenceId)
+			const trans_for_seller = await createTransaction(product.id , 0.5*product.Value , false , user.username);
 			res.send(item);
 		}
 	}
@@ -182,7 +181,24 @@ route.get('/search/:name', auth, async (req, res) => {
 	res.send(arr);
 });
 
+route.get('/Sold_products/:username' , auth , async(req,res) => {
+	const products = await Products.findAll({
+		where : {SellerUsername : req.params.username}
+	})
+	res.send(products)
+})
 
-
+route.get('/Ordered_products/:username' , auth , async(req,res) => {
+	const products = await Transaction.findAll({
+		where : {
+			[Sequelize.Op.and]:[
+				{Debited : true},
+				{userId : req.params.username}
+			]
+		},
+		include : {model : Products , as : 'item'}
+	})
+	res.send(products)
+})
 
 module.exports = { route };

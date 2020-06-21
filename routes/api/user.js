@@ -192,12 +192,18 @@ route.get('/myorders' , auth , async(req,res) => {
 	res.send(orders)
 })
 
-route.get('/getUser' , async(req,res) => {
+route.get('/getUser/:username' , async(req,res) => {
 	const user = await Users.findOne({
-		where : {username : req.body.username}
+		where : {username : req.params.username}
 	})
 	res.send(user)
 })
+
+route.get('/getAll' , auth , async(req,res) => {
+	const users = await Users.findAll()
+	res.send(users)
+})
+
 
 
 module.exports = { route };

@@ -1,4 +1,4 @@
-const { Users , Transaction } = require('../data/db');
+const { Users , Transaction ,Products } = require('../data/db');
 const { getrandomstring } = require('../utils/string');
 const { sendOtpToMail } = require('../utils/emailVeri');
 
