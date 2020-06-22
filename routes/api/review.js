@@ -107,4 +107,13 @@ route.delete('/:id' , auth , async(req,res) => {
     review.destroy()
 })
 
+route.get('/reports/:id' , async(req,res) => {
+	const review = await Review.findOne({
+		where : {id : req.params.id}
+	})
+	let arr = review.reports.split(';')
+	console.log(arr  + req.params.id)
+	res.send(arr)
+})
+
 module.exports = {route}
