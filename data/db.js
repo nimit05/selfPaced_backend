@@ -119,6 +119,10 @@ const Products = db.define('products', {
 	reports : {
 		type: Sequelize.TEXT,
 		defaultValue: ' '
+	},
+	deleted : {
+		type : Sequelize.BOOLEAN,
+		defaultValue : false
 	}
 });
 

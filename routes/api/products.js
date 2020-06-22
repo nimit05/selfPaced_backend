@@ -87,7 +87,8 @@ route.get('/', async (req, res) => {
 			'Value',
 			'cover_img',
 			'rating'
-		]
+		],
+		where : {deleted : false}
 	});
 
 	res.send({ products });
@@ -216,11 +217,13 @@ route.get('/reports/:refId' , auth , async(req,res) => {
 	res.send(arr)
 })
 
-route.delete('/:refId' , auth , async(req,res) => {
+route.post('/:refId' , auth , async(req,res) => {
 	const product = await Products.findOne({
 		where : {refrenceId : req.params.refId}
 	})
-	product.destroy()
+	product.deleted = true
+	product.save()
+	res.send(true)
 })
 
 module.exports = { route };

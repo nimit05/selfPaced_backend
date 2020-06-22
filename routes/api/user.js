@@ -222,7 +222,7 @@ route.delete('/:username' , auth , async(req,res) => {
 	const user = await Users.findOne({
 		where : {username : req.params.username}
 	})
-	console.log(user.email + 'dcnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn')
+	console.log(user.email )
 	user.destroy()
 })
 
