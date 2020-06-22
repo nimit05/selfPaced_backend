@@ -4,11 +4,11 @@ route = Router();
 const { auth } = require('../../middleware/auth');
 const { CartProducts  , AddToLibrary} = require('../../controllers/userLibrary');
 const Sequelize = require('sequelize')
-const {createTransaction} = require('../../controllers/user')
+const {createTransaction , addreport} = require('../../controllers/user')
 
 route.get('/', auth, async (req, res) => {
 	const user = await Users.findOne({
-		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Address', 'pro_img', 'Coins' , 'Earnings' ],
+		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Address', 'pro_img', 'Coins' , 'Earnings' , 'reports' ],
 		where: { username: req.user.username }
 	});
 
@@ -204,6 +204,26 @@ route.get('/getAll' , auth , async(req,res) => {
 	res.send(users)
 })
 
+route.post('/report' , auth , async(req,res) => {
+	const report = await addreport(req.user.username , req.body.username)
+	res.send(report)
+})
 
+route.get('/reports/:username' , async(req,res) => {
+	const user = await Users.findOne({
+		where : {username : req.params.username}
+	})
+	let arr = user.reports.split(';')
+	console.log(arr  + req.params.username)
+	res.send(arr)
+})
+
+route.delete('/:username' , auth , async(req,res) => {
+	const user = await Users.findOne({
+		where : {username : req.params.username}
+	})
+	console.log(user.email + 'dcnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn')
+	user.destroy()
+})
 
 module.exports = { route };

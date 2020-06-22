@@ -88,4 +88,23 @@ route.get('/getAll/:userId' , auth , async(req,res) => {
     res.send(reviews)
 })
 
+route.post('/report' , auth , async(req,res) => {
+    const review = await Review.findOne({
+        where : {id : req.body.id}
+    })
+    let arr = review.reports.split(';')
+    arr.push(req.user.username)
+    review.reports = arr.join(';')
+    review.save()
+    res.send(true)
+})
+
+route.delete('/:id' , auth , async(req,res) => {
+    const review = await Review.findOne({
+        where : {id : req.params.id}
+    })
+    console.log(req.params.id)
+    review.destroy()
+})
+
 module.exports = {route}

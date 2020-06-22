@@ -52,6 +52,10 @@ const Users = db.define('users', {
 		type: Sequelize.TEXT,
 		defaultValue: ' '
 	},
+	reports : {
+		type: Sequelize.TEXT,
+		defaultValue: ' '
+	},
 	Coins: {
 		type: Sequelize.INTEGER,
 		allowNull: false
@@ -111,6 +115,10 @@ const Products = db.define('products', {
 	},
 	sample_pro: {
 		type: Sequelize.TEXT
+	},
+	reports : {
+		type: Sequelize.TEXT,
+		defaultValue: ' '
 	}
 });
 
@@ -149,6 +157,10 @@ const Review = db.define('reviews', {
    },
    user_img : {
 	   type : Sequelize.TEXT
+   },
+   reports : {
+	   type : Sequelize.TEXT,
+	   defaultValue : ' '
    }
 });
 

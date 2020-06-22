@@ -2,7 +2,7 @@ const { Router } = require('express');
 const route = Router();
 const { auth } = require('../../middleware/auth');
 const { Users, Products, Library  , Review , Transaction} = require('../../data/db');
-const { getAllProducts } = require('../../controllers/products');
+const { getAllProducts , addreport } = require('../../controllers/products');
 const { AddToCart, AddToLibrary, CartProducts } = require('../../controllers/userLibrary');
 const { createTransaction } = require('../../controllers/user');
 const Sequelize = require('sequelize');
@@ -189,7 +189,7 @@ route.get('/Sold_products/:username' , auth , async(req,res) => {
 })
 
 route.get('/Ordered_products/:username' , auth , async(req,res) => {
-	const products = await Transaction.findAll({
+	const product = await Transaction.findAll({
 		where : {
 			[Sequelize.Op.and]:[
 				{Debited : true},
@@ -198,7 +198,29 @@ route.get('/Ordered_products/:username' , auth , async(req,res) => {
 		},
 		include : {model : Products , as : 'item'}
 	})
-	res.send(products)
+	res.send(product)
+})
+
+route.post('/report' , auth , async(req,res) => {
+	const report = await addreport(req.user.username , req.body.refId)
+	console.log(report + req.body.refId)
+	res.send(report)
+})
+
+route.get('/reports/:refId' , auth , async(req,res) => {
+	const product = await Products.findOne({
+		where : {refrenceId : req.params.refId}
+	})
+	let arr = product.reports.split(';')
+	console.log(arr)
+	res.send(arr)
+})
+
+route.delete('/:refId' , auth , async(req,res) => {
+	const product = await Products.findOne({
+		where : {refrenceId : req.params.refId}
+	})
+	product.destroy()
 })
 
 module.exports = { route };

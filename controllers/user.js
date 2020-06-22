@@ -218,6 +218,22 @@ async function createTransaction(itemId , Value , Debited , userId ){
 	return new_transc
 }
 
+async function addreport(username , SellerUsername){
+	try{
+	const seller = await Users.findOne({
+		where : {username : SellerUsername}
+	})	
+	let arr = seller.reports.split(';')
+	arr.push(username)
+	seller.reports = arr.join(';')
+	seller.save()
+	return true
+	  }
+	  catch(err){
+		return false
+	  }
+}
+
 module.exports = {
 	createusers,
 	findUserByOTP,
@@ -228,5 +244,6 @@ module.exports = {
 	Libraryfounder,
 	isUserExistEmail,
 	createGoogleUser,
-	createTransaction
+	createTransaction,
+	addreport
 };
