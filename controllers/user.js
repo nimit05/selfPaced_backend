@@ -1,4 +1,4 @@
-const { Users , Transaction } = require('../data/db');
+const { Users, Transaction } = require('../data/db');
 const { getrandomstring } = require('../utils/string');
 const { sendOtpToMail } = require('../utils/emailVeri');
 
@@ -56,13 +56,17 @@ async function createusers(name, username, email, password, phone_Number, pro_im
 	});
 
 	const newuser = await Users.findOne({
-		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Coins', 'token',  ],
+		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Coins', 'Verified' ],
 		where: { token: user.token }
 	});
 	setTimeout(() => {
 		newuser.OTP = null;
+
+		if (newuser.Verified === false) {
+			newuser.destroy();
+		}
 		newuser.save();
-	}, 150000);
+	}, 900000);
 	return newuser;
 }
 
@@ -185,37 +189,37 @@ async function createGoogleUser(user) {
 	}
 }
 
-
-async function createTransaction(itemId , Value , Debited , userId ){
+async function createTransaction(itemId, Value, Debited, userId) {
 	const trans = await Transaction.create({
-		TransactionId : getrandomstring(30),
+		TransactionId: getrandomstring(30),
 		itemId,
 		Value,
 		Debited,
 		userId
-	})
+	});
 
 	const new_transc = await Transaction.findOne({
-		where : {TransactionId : trans.TransactionId},
-		include : {
-			attributes : [
-			'id',
-			'refrenceId',
-			'category',
-			'BookName',
-			'BookAuthor',
-			'Edition',
-			'Description',
-			'tag',
-			'Value',
-			'cover_img',
-			'product_file',
-			'SellerUsername' ],
-			model : Products,
-			as : 'item'
+		where: { TransactionId: trans.TransactionId },
+		include: {
+			attributes: [
+				'id',
+				'refrenceId',
+				'category',
+				'title',
+				's_title',
+				'short_des',
+				'Description',
+				'tag',
+				'Value',
+				'cover_img',
+				'product_file',
+				'SellerUsername'
+			],
+			model: Products,
+			as: 'item'
 		}
-	})
-	return new_transc
+	});
+	return new_transc;
 }
 
 module.exports = {

@@ -1,14 +1,14 @@
-const { Users, Products, Library , Transaction } = require('../../data/db');
+const { Users, Products, Library, Transaction } = require('../../data/db');
 const { Router } = require('express');
 route = Router();
 const { auth } = require('../../middleware/auth');
-const { CartProducts  , AddToLibrary} = require('../../controllers/userLibrary');
-const Sequelize = require('sequelize')
-const {createTransaction} = require('../../controllers/user')
+const { CartProducts, AddToLibrary } = require('../../controllers/userLibrary');
+const Sequelize = require('sequelize');
+const { createTransaction } = require('../../controllers/user');
 
 route.get('/', auth, async (req, res) => {
 	const user = await Users.findOne({
-		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Address', 'pro_img', 'Coins' , 'Earnings' ],
+		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Address', 'pro_img', 'Coins', 'Earnings' ],
 		where: { username: req.user.username }
 	});
 
@@ -24,9 +24,9 @@ route.get('/Cart', auth, async (req, res) => {
 				'id',
 				'refrenceId',
 				'category',
-				'BookName',
-				'BookAuthor',
-				'Edition',
+				'title',
+				's_title',
+				'short_des',
 				'Description',
 				'Value',
 				'cover_img'
@@ -43,9 +43,9 @@ route.get('/Cart', auth, async (req, res) => {
 
 route.get('/CartRefID', auth, async (req, res) => {
 	if (req.user) {
-		let arr = []
-		if(req.user.Cart != null){
-		 arr = req.user.Cart.split(';');
+		let arr = [];
+		if (req.user.Cart != null) {
+			arr = req.user.Cart.split(';');
 		}
 		res.send(arr);
 	} else {
@@ -65,9 +65,9 @@ route.get('/Library', auth, async (req, res) => {
 				'id',
 				'refrenceId',
 				'category',
-				'BookName',
-				'BookAuthor',
-				'Edition',
+				'title',
+				's_title',
+				'short_des',
 				'Description',
 				'old',
 				'Value'
@@ -104,99 +104,88 @@ route.put('/', auth, (req, res) => {
 	res.send(req.user);
 });
 
-
-route.delete('/CheckoutFromCart' , auth , async(req,res) => {
-
+route.delete('/CheckoutFromCart', auth, async (req, res) => {
 	const user = await Users.findOne({
-		where : {username : req.user.username}
-	})
+		where: { username: req.user.username }
+	});
 
-
-	const  arr = await CartProducts(req.user.username) 
-	for(let i = 0 ; i <arr.length;i++){
+	const arr = await CartProducts(req.user.username);
+	for (let i = 0; i < arr.length; i++) {
 		const product = await Products.findOne({
 			where: { refrenceId: arr[i] }
 		});
-		if(product){
-		const lib_item = await Library.findOne({
-			where:{
-				[Sequelize.Op.and] :[
-					{userId : req.user.username},
-					{ProductId : product.id }
-				]
+		if (product) {
+			const lib_item = await Library.findOne({
+				where: {
+					[Sequelize.Op.and]: [ { userId: req.user.username }, { ProductId: product.id } ]
+				}
+			});
+
+			if (!lib_item) {
+				const item = await AddToLibrary(req.user.username, product.id).catch((err) => {
+					console.log(err);
+					res.send({ error: 'internal error' + err });
+				});
+				const seller = await Users.findOne({
+					where: { username: product.SellerUsername }
+				});
+
+				seller.Coins = seller.Coins + product.Value;
+				seller.save();
+
+				user.Coins = req.body.coins;
+				user.save();
+
+				const trans = await createTransaction(product.id, product.Value, true, req.user.username);
+				console.log(trans.TransactionId);
+
+				const trans2 = await createTransaction(product.id, 0.5 * product.Value, false, product.SellerUsername);
+				console.log(trans2.refrenceId);
 			}
-		})
-		
-		if(!lib_item){
-			const item = await AddToLibrary(req.user.username, product.id).catch((err) => {
-				console.log(err);
-				res.send({ error: 'internal error' + err });
-			})
-			const seller = await Users.findOne({
-				where : {username : product.SellerUsername}
-			})
-		
-		
-		seller.Coins = seller.Coins + product.Value
-		seller.save()
-		
-		user.Coins = req.body.coins
-		user.save()
-
-		const trans = await createTransaction(product.id , product.Value , true , req.user.username);
-			console.log(trans.TransactionId);
-
-			const trans2 = await createTransaction(product.id , 0.5*product.Value , false , product.SellerUsername);
-			console.log(trans2.refrenceId)
-
-
 		}
 	}
-}
 
-		user.Cart = ' '
-		user.save()
+	user.Cart = ' ';
+	user.save();
 
-	res.send(user)
-})
+	res.send(user);
+});
 
-route.get('/transaction' , auth , async(req,res) => {
+route.get('/transaction', auth, async (req, res) => {
 	const trans = await Transaction.findAll({
-		where : {userId : req.user.username},
-		include : {model : Products , as : 'item'}
-	})
-	console.log(trans)
-	console.log('recieved here')
-	res.send(trans)
-	
-})
+		where: { userId: req.user.username },
+		include: { model: Products, as: 'item' }
+	});
+	console.log(trans);
+	console.log('recieved here');
+	res.send(trans);
+});
 
-route.get('/products' , auth , async(req,res) => {
+route.get('/products', auth, async (req, res) => {
 	const products = await Products.findAll({
-		where : {SellerUsername : req.user.username}
-	})
-	console.log('hogybhaiyaa' )
-	res.send(products)
-})
+		where: { SellerUsername: req.user.username }
+	});
+	console.log('hogybhaiyaa');
+	res.send(products);
+});
 
-route.get('/myorders' , auth , async(req,res) => {
+route.get('/myorders', auth, async (req, res) => {
 	const orders = await Transaction.findAll({
-		where : {[Sequelize.Op.and] : [
-			{Debited : true},
-			{userId : req.user.username}
-		] },
-		include : {model : Products , as : 'item'}
-	})
-	console.log(orders)
-	console.log("orders has arrived")
-	res.send(orders)
-})
+		where: {
+			[Sequelize.Op.and]: [ { Debited: true }, { userId: req.user.username } ]
+		},
+		include: { model: Products, as: 'item' }
+	});
+	console.log(orders);
+	console.log('orders has arrived');
+	res.send(orders);
+});
 
-route.get('/getUser' , async(req,res) => {
+route.get('/getUser', async (req, res) => {
 	const user = await Users.findOne({
-		where : {username : req.body.username}
-	})
-	res.send(user)
-})
+		where: { username: req.body.username }
+	});
+	res.send(user);
+});
 
 module.exports = { route };

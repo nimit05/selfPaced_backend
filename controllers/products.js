@@ -14,9 +14,9 @@ async function getAllProducts(SellerUsername) {
 async function createProduct(
 	SellerUsername,
 	category,
-	BookName,
-	BookAuthor,
-	Edition,
+	title,
+	s_title,
+	short_des,
 	Description,
 	tag,
 	MRP,
@@ -38,19 +38,23 @@ async function createProduct(
 		}
 	}
 
+	let keyword = title + s_title + short_des + Description;
+	keyword = keyword.toLowerCase();
+
 	const newproduct = await Products.create({
 		refrenceId: getrandomstring(16),
 		SellerUsername,
 		category,
-		BookName,
-		BookAuthor,
-		Edition,
+		title,
+		s_title,
+		short_des,
 		Description,
 		tag,
 		Value: mrp,
 		product_file: file.url,
 		cover_img: cover_img.url,
-		sample_pro: file.sample_url
+		sample_pro: file.sample_url,
+		keywords: keyword
 	});
 
 	return newproduct;

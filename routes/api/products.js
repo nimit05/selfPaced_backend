@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const route = Router();
 const { auth } = require('../../middleware/auth');
-const { Users, Products, Library  , Review} = require('../../data/db');
+const { Users, Products, Library, Review } = require('../../data/db');
 const { getAllProducts } = require('../../controllers/products');
 const { AddToCart, AddToLibrary, CartProducts } = require('../../controllers/userLibrary');
 const { createTransaction } = require('../../controllers/user');
@@ -38,11 +38,11 @@ route.post('/Buy', auth, async (req, res) => {
 			user.Earnings = user.Earnings + 0.5 * product.Value;
 			user.save();
 
-			const trans = await createTransaction(product.id , product.Value , true , req.user.username);
+			const trans = await createTransaction(product.id, product.Value, true, req.user.username);
 			console.log(trans.TransactionId);
 
-			const trans2 = await createTransaction(product.id , 0.5*product.Value , false , product.SellerUsername);
-			console.log(trans2.refrenceId)
+			const trans2 = await createTransaction(product.id, 0.5 * product.Value, false, product.SellerUsername);
+			console.log(trans2.refrenceId);
 			res.send(item);
 		}
 	}
@@ -80,9 +80,9 @@ route.get('/', async (req, res) => {
 		attributes: [
 			'refrenceId',
 			'category',
-			'BookName',
-			'BookAuthor',
-			'Edition',
+			'title',
+			's_title',
+			'short_des',
 			'Description',
 			'tag',
 			'Value',
@@ -95,7 +95,7 @@ route.get('/', async (req, res) => {
 });
 route.get('/Name', async (req, res) => {
 	const products = await Products.findAll({
-		attributes: [ 'refrenceId', 'BookName' ]
+		attributes: [ 'refrenceId', 'title' ]
 	});
 
 	res.send({ products });
@@ -108,9 +108,9 @@ route.get('/specific/:refrenceId', async (req, res) => {
 			'id',
 			'refrenceId',
 			'category',
-			'BookName',
-			'BookAuthor',
-			'Edition',
+			'title',
+			's_title',
+			'short_des',
 			'rating',
 			'Description',
 			'tag',
@@ -153,27 +153,27 @@ route.get('/search_item/:refId', auth, async (req, res) => {
 	console.log('hello');
 });
 
-route.get('/search/:name', auth, async (req, res) => {
+route.get('/search/:name', async (req, res) => {
 	var arr = [];
+	console.log('aagya');
+
 	const products = await Products.findAll({
 		attributes: [
 			'refrenceId',
 			'category',
-			'BookName',
-			'BookAuthor',
-			'Edition',
+			'title',
+			's_title',
+			'short_des',
 			'Description',
 			'tag',
 			'Value',
 			'cover_img',
-			'rating'
+			'rating',
+			'keywords'
 		]
 	});
 	for (let i = 0; i < products.length; i++) {
-		if (
-			products[i].BookName.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1 ||
-			products[i].BookAuthor.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1
-		) {
+		if (products[i].keywords.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1) {
 			arr.push(products[i]);
 			continue;
 		}
@@ -181,8 +181,5 @@ route.get('/search/:name', auth, async (req, res) => {
 	console.log('hogya');
 	res.send(arr);
 });
-
-
-
 
 module.exports = { route };

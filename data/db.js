@@ -77,13 +77,13 @@ const Products = db.define('products', {
 		type: Sequelize.TEXT,
 		allowNull: false
 	},
-	BookName: {
+	title: {
 		type: Sequelize.TEXT
 	},
-	BookAuthor: {
+	s_title: {
 		type: Sequelize.STRING(60)
 	},
-	Edition: {
+	short_des: {
 		type: Sequelize.STRING(50)
 	},
 	Description: {
@@ -97,8 +97,8 @@ const Products = db.define('products', {
 	MRP: {
 		type: Sequelize.INTEGER
 	},
-	rating : {
-		type : Sequelize.FLOAT
+	rating: {
+		type: Sequelize.FLOAT
 	},
 	Value: {
 		type: Sequelize.INTEGER
@@ -110,6 +110,9 @@ const Products = db.define('products', {
 		type: Sequelize.TEXT
 	},
 	sample_pro: {
+		type: Sequelize.TEXT
+	},
+	keywords: {
 		type: Sequelize.TEXT
 	}
 });
@@ -141,15 +144,15 @@ const Review = db.define('reviews', {
 	userId: {
 		type: Sequelize.STRING
 	},
-	Rating : {
-	   type :Sequelize.INTEGER
+	Rating: {
+		type: Sequelize.INTEGER
 	},
-   productId : {
-	   type : Sequelize.INTEGER
-   },
-   user_img : {
-	   type : Sequelize.TEXT
-   }
+	productId: {
+		type: Sequelize.INTEGER
+	},
+	user_img: {
+		type: Sequelize.TEXT
+	}
 });
 
 const Transaction = db.define('transactions', {
@@ -170,9 +173,9 @@ const Transaction = db.define('transactions', {
 	Value: {
 		type: Sequelize.INTEGER
 	},
-   userId : {
-	   type : Sequelize.STRING
-   }
+	userId: {
+		type: Sequelize.STRING
+	}
 });
 
 Transaction.belongsTo(Products, { as: 'item' });
@@ -180,7 +183,6 @@ Transaction.belongsTo(Products, { as: 'item' });
 Products.belongsTo(Users, { as: 'Seller' });
 Users.hasMany(Products, { as: 'Seller' });
 Library.belongsTo(Products, { as: 'Product' });
-
 
 module.exports = {
 	Users,
