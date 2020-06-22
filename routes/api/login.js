@@ -2,7 +2,8 @@ const { Router } = require('express');
 const route = Router();
 const { findUser } = require('../../controllers/user');
 const { auth } = require('../../middleware/auth');
-const {Users} = require('../../data/db')
+const { adminAuth } = require('../../middleware/adminAuth');
+const { Users } = require('../../data/db');
 
 // for login request
 route.post('/', async (req, res) => {
@@ -59,12 +60,8 @@ route.delete('/', auth, (req, res) => {
 	res.redirect('/home');
 });
 
-route.get('/isAdmin' ,auth ,  async(req,res) => {
-	if(req.user.email == 'nimitwadhwa722@gmail.com'){
-		res.send(true)
-	}else{
-		res.send(false)
-	}
-})
+route.get('/isAdmin', adminAuth, async (req, res) => {
+	res.send(true);
+});
 
 module.exports = { route };

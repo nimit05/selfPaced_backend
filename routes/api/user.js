@@ -2,6 +2,7 @@ const { Users, Products, Library, Transaction } = require('../../data/db');
 const { Router } = require('express');
 route = Router();
 const { auth } = require('../../middleware/auth');
+const { adminAuth } = require('../../middleware/adminAuth');
 const { CartProducts, AddToLibrary } = require('../../controllers/userLibrary');
 const Sequelize = require('sequelize');
 const { createTransaction, addreport } = require('../../controllers/user');
@@ -198,7 +199,7 @@ route.get('/getUser/:username', async (req, res) => {
 	res.send(user);
 });
 
-route.get('/getAll', auth, async (req, res) => {
+route.get('/getAll', adminAuth, async (req, res) => {
 	const users = await Users.findAll();
 	res.send(users);
 });
