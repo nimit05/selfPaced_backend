@@ -71,16 +71,22 @@ async function createReview(userId, comment, Rating, productId, user_img) {
 	return review;
 }
 
-module.exports = { createProduct, getAllProducts, createReview };
-async function createComment(userId, body, productId) {
-	const comment = await Comments.create({
-		body,
-		userId,
-		productId
-	});
-	const newcomment = await Comments.findOne({
-		where: { id: comment.id },
-		attributes: [ 'id', 'body', 'userId', 'productId' ]
-	});
-	return newcomment;
+async function addreport(username , refId){
+	try{
+	const product = await Products.findOne({
+		where : {refrenceId : refId}
+	})	
+	let arr = product.reports.split(';')
+	arr.push(username)
+	product.reports = arr.join(';')
+	console.log(arr)
+	product.save()
+	return true
+	  }
+	  catch(err){
+		return false
+	  }
 }
+
+module.exports = { createProduct, getAllProducts, createReview , addreport };
+

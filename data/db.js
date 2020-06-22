@@ -4,10 +4,10 @@ dotenv.config();
 
 const db = new Sequelize({
 	dialect: 'mysql',
-	host: process.env.aws_mysql_host,
+	// host: process.env.aws_mysql_host,
 
-	// database: 'puranibook',
-	database: 'puraniBooks',
+	database: 'puranibook',
+	// database: 'puraniBooks',
 	username: process.env.aws_mysql_username,
 	password: process.env.aws_mysql_pass
 });
@@ -49,6 +49,10 @@ const Users = db.define('users', {
 		type: Sequelize.TEXT
 	},
 	Cart: {
+		type: Sequelize.TEXT,
+		defaultValue: ' '
+	},
+	reports: {
 		type: Sequelize.TEXT,
 		defaultValue: ' '
 	},
@@ -114,6 +118,14 @@ const Products = db.define('products', {
 	},
 	keywords: {
 		type: Sequelize.TEXT
+	},
+	reports: {
+		type: Sequelize.TEXT,
+		defaultValue: ' '
+	},
+	deleted: {
+		type: Sequelize.BOOLEAN,
+		defaultValue: false
 	}
 });
 
@@ -150,8 +162,15 @@ const Review = db.define('reviews', {
 	productId: {
 		type: Sequelize.INTEGER
 	},
+	productId: {
+		type: Sequelize.INTEGER
+	},
 	user_img: {
 		type: Sequelize.TEXT
+	},
+	reports: {
+		type: Sequelize.TEXT,
+		defaultValue: ' '
 	}
 });
 
