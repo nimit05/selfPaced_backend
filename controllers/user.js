@@ -47,7 +47,8 @@ async function createusers(name, username, email, password, phone_Number, pro_im
 		OTP: otp,
 		Verified: false,
 		pro_img,
-		Coins: '1000'
+		Coins: '200',
+		refferalCode : getrandomstring(24)
 	});
 	await sendOtpToMail(email, otp).catch((err) => {
 		user.delete();

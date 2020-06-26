@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const route = Router();
+const {Users} = require('../../data/db')
 const {
 	createusers,
 	findUserByOTP,
@@ -35,6 +36,24 @@ route.post('/', async (req, res) => {
 	}
 
 	const user = await createusers(a.name, a.username, a.email, a.password, a.phone_Number, img_url, otp);
+
+	if(a.refferalCode){
+		const referUser = await Users.findOne({
+			where : {refferalCode : a.refferalCode}
+		})
+		if(referUser){
+			user.Coins = user.Coins + 50
+			user.save()
+
+			referUser.Coins = referUser.Coins + 50
+			referUser.save()
+
+			if(referUser.refferCount == 10){
+				referUser.Coins = referUser.Coins + 200
+			    referUser.save()
+			}
+		}
+	}
 
 	res.send(user);
 });

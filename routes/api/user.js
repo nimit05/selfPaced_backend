@@ -18,7 +18,8 @@ route.get('/', auth, async (req, res) => {
 			'pro_img',
 			'Coins',
 			'Earnings',
-			'reports'
+			'reports',
+			'productsSold'
 		],
 		where: { username: req.user.username }
 	});
@@ -225,5 +226,6 @@ route.delete('/:username', auth, async (req, res) => {
 	console.log(user.email);
 	user.destroy();
 });
+
 
 module.exports = { route };
