@@ -4,10 +4,10 @@ dotenv.config();
 
 const db = new Sequelize({
 	dialect: 'mysql',
-	host: process.env.aws_mysql_host,
+	// host: process.env.aws_mysql_host,
 
-	// database: 'puranibook',
-	database: 'puraniBooks',
+	database: 'puranibook',
+	// database: 'puraniBooks',
 	username: process.env.aws_mysql_username,
 	password: process.env.aws_mysql_pass
 });
@@ -63,6 +63,17 @@ const Users = db.define('users', {
 	Earnings: {
 		type: Sequelize.INTEGER,
 		defaultValue: '0'
+	},
+	productsSold : {
+		type : Sequelize.INTEGER,
+		defaultValue : '0'
+	},
+	refferalCode : {
+		type : Sequelize.STRING
+	},
+	refferCount : {
+		type : Sequelize.INTEGER,
+		defaultValue : '0'
 	}
 });
 

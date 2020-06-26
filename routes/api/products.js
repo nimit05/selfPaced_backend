@@ -17,8 +17,8 @@ route.post('/Buy', auth, async (req, res) => {
 			[Sequelize.Op.and]: [ { userId: req.user.username }, { ProductId: product.id } ]
 		}
 	});
-	if (req.user.Coins - product.Value < -1000) {
-		res.send({ error: 'insuficient Balance' });
+	if (req.user.Coins < product.Value) {
+		res.send(false);
 	} else {
 		if (!lib_item) {
 			const item = await AddToLibrary(req.user.username, product.id).catch((err) => {
@@ -36,6 +36,9 @@ route.post('/Buy', auth, async (req, res) => {
 			user.save();
 
 			user.Earnings = user.Earnings + 0.5 * product.Value;
+			user.save();
+
+			user.productsSold = user.productsSold + 1 ; 
 			user.save();
 
 			const trans = await createTransaction(product.id, product.Value, true, req.user.username);
