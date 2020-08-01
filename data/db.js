@@ -1,15 +1,15 @@
-const Sequelize = require('sequelize');
-const dotenv = require('dotenv');
+const Sequelize = require("sequelize");
+const dotenv = require("dotenv");
 dotenv.config();
 
 const db = new Sequelize({
-	dialect: 'mysql',
-	// host: process.env.aws_mysql_host,
+  dialect: "mysql",
+  host: process.env.aws_mysql_host,
 
-	database: 'puranibook',
-	// database: 'puraniBooks',
-	username: process.env.aws_mysql_username,
-	password: process.env.aws_mysql_pass
+  // database: "puranibook",
+  database: "puraniBooks",
+  username: process.env.aws_mysql_username,
+  password: process.env.aws_mysql_pass
 });
 
 const Users = db.define('users', {
@@ -82,35 +82,35 @@ const Users = db.define('users', {
 	}
 });
 
-const Products = db.define('products', {
-	id: {
-		type: Sequelize.INTEGER,
-		autoIncrement: true,
-		primaryKey: true
-	},
-	refrenceId: {
-		type: Sequelize.STRING(16),
-		primaryKey: true,
-		unique: true
-	},
-	category: {
-		type: Sequelize.TEXT,
-		allowNull: false
-	},
-	title: {
-		type: Sequelize.TEXT
-	},
-	s_title: {
-		type: Sequelize.STRING(60)
-	},
-	short_des: {
-		type: Sequelize.STRING(50)
-	},
-	Description: {
-		type: Sequelize.TEXT
-	},
-	tag: {
-		type: Sequelize.STRING(15),
+const Products = db.define("products", {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  refrenceId: {
+    type: Sequelize.STRING(16),
+    primaryKey: true,
+    unique: true
+  },
+  category: {
+    type: Sequelize.TEXT,
+    allowNull: false
+  },
+  title: {
+    type: Sequelize.TEXT
+  },
+  s_title: {
+    type: Sequelize.STRING(60)
+  },
+  short_des: {
+    type: Sequelize.STRING(50)
+  },
+  Description: {
+    type: Sequelize.TEXT
+  },
+  tag: {
+    type: Sequelize.STRING(15),
 
 		allowNull: false
 	},
@@ -148,49 +148,49 @@ const Products = db.define('products', {
 	}
 });
 
-const Library = db.define('libraries', {
-	id: {
-		type: Sequelize.INTEGER,
-		autoIncrement: true,
-		primaryKey: true
-	},
-	userId: {
-		type: Sequelize.TEXT
-	},
-	Product_RefrenceId: {
-		type: Sequelize.STRING(50),
-		unique: true
-	}
+const Library = db.define("libraries", {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  userId: {
+    type: Sequelize.TEXT
+  },
+  Product_RefrenceId: {
+    type: Sequelize.STRING(50),
+    unique: true
+  }
 });
 
-const Review = db.define('reviews', {
-	id: {
-		type: Sequelize.INTEGER,
-		autoIncrement: true,
-		primaryKey: true
-	},
-	comment: {
-		type: Sequelize.TEXT
-	},
-	userId: {
-		type: Sequelize.STRING
-	},
-	Rating: {
-		type: Sequelize.INTEGER
-	},
-	productId: {
-		type: Sequelize.INTEGER
-	},
-	productId: {
-		type: Sequelize.INTEGER
-	},
-	user_img: {
-		type: Sequelize.TEXT
-	},
-	reports: {
-		type: Sequelize.TEXT,
-		defaultValue: ' '
-	}
+const Review = db.define("reviews", {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  comment: {
+    type: Sequelize.TEXT
+  },
+  userId: {
+    type: Sequelize.STRING
+  },
+  Rating: {
+    type: Sequelize.INTEGER
+  },
+  productId: {
+    type: Sequelize.INTEGER
+  },
+  productId: {
+    type: Sequelize.INTEGER
+  },
+  user_img: {
+    type: Sequelize.TEXT
+  },
+  reports: {
+    type: Sequelize.TEXT,
+    defaultValue: " "
+  }
 });
 
 const Transaction = db.define('transactions', {
@@ -218,17 +218,17 @@ const Transaction = db.define('transactions', {
 	}
 });
 
-Transaction.belongsTo(Products, { as: 'item' });
+Transaction.belongsTo(Products, { as: "item" });
 
-Products.belongsTo(Users, { as: 'Seller' });
-Users.hasMany(Products, { as: 'Seller' });
-Library.belongsTo(Products, { as: 'Product' });
+Products.belongsTo(Users, { as: "Seller" });
+Users.hasMany(Products, { as: "Seller" });
+Library.belongsTo(Products, { as: "Product" });
 
 module.exports = {
-	Users,
-	db,
-	Products,
-	Library,
-	Review,
-	Transaction
+  Users,
+  db,
+  Products,
+  Library,
+  Review,
+  Transaction
 };
