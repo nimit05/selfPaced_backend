@@ -32,20 +32,14 @@ route.post('/Buy', auth, async (req, res) => {
 				where: { username: product.SellerUsername }
 			});
 
-			user.Coins = user.Coins + 0.5 * product.Value;
+			user.Coins = user.Coins + 0.75 * product.Value;
 			user.save();
 
-			user.Earnings = user.Earnings + 0.5 * product.Value;
+			user.Earnings = user.Earnings + 0.75 * product.Value;
 			user.save();
 
-			user.productsSold = user.productsSold + 1 ; 
-			user.save();
-
-			const trans = await createTransaction(product.id, product.Value, true, req.user.username);
+			const trans = await createTransaction(product.id, product.Value, true, req.user.username  ,user.username);
 			console.log(trans.TransactionId);
-
-			const trans_for_seller = await createTransaction(product.id, 0.5 * product.Value, false, user.username);
-			res.send(item);
 		}
 	}
 });
@@ -225,5 +219,33 @@ route.post('/:refId', auth, async (req, res) => {
 	product.save();
 	res.send(true);
 });
+
+route.get('/earningInfo' , auth , async(req,res) => {
+
+	let my_pro = await Products.findAll({
+		where : {
+			SellerUsername : req.user.username
+		}
+	})
+
+	my_pro = my_pro.sort(function (a,b) {
+		return a.createdAt - b.createdAt
+	})
+
+	var arr = []
+
+	for(let i = 0 ; i < my_pro.length ; i++){
+
+		let trans = await Transaction.findAll({
+			where : {itemId : my_pro[i].id}
+		})
+
+		 arr.push(trans.length)
+	}
+	console.log(arr)
+
+	res.send(arr)
+
+})
 
 module.exports = { route };

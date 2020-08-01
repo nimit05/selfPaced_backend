@@ -9,18 +9,7 @@ const { createTransaction, addreport } = require('../../controllers/user');
 
 route.get('/', auth, async (req, res) => {
 	const user = await Users.findOne({
-		attributes: [
-			'name',
-			'username',
-			'email',
-			'phone_Number',
-			'Address',
-			'pro_img',
-			'Coins',
-			'Earnings',
-			'reports',
-			'productsSold'
-		],
+		
 		where: { username: req.user.username }
 	});
 
@@ -41,7 +30,8 @@ route.get('/Cart', auth, async (req, res) => {
 				'short_des',
 				'Description',
 				'Value',
-				'cover_img'
+				'cover_img',
+				'tag'
 			],
 			where: { refrenceId: cart[i] }
 		});
@@ -104,6 +94,10 @@ route.put('/', auth, (req, res) => {
 		req.user.email = a.email;
 		req.user.save();
 	}
+	if(a.name){
+		req.user.name = a.name;
+		req.user.save();
+	}
 	if (a.phone_Number) {
 		req.user.phone_Number = a.phone_Number;
 		req.user.save();
@@ -112,11 +106,23 @@ route.put('/', auth, (req, res) => {
 		req.user.Address = a.Address;
 		req.user.save();
 	}
+	if(a.bio){
+		req.user.bio = a.bio
+		req.user.save();
+	}
+	if(a.College){
+		req.user.College = a.College
+		req.user.save();
+	}
+	if(a.Qualification){
+		req.user.Qualification = a.Qualification
+		req.user.save();
+	}
 
 	res.send(req.user);
 });
 
-route.delete('/CheckoutFromCart', auth, async (req, res) => {
+route.post('/CheckoutFromCart', auth, async (req, res) => {
 	const user = await Users.findOne({
 		where: { username: req.user.username }
 	});
@@ -165,7 +171,10 @@ route.delete('/CheckoutFromCart', auth, async (req, res) => {
 
 route.get('/transaction', auth, async (req, res) => {
 	const trans = await Transaction.findAll({
-		where: { userId: req.user.username },
+		where: {[Sequelize.Op.or] : [
+			{Seller : req.user.username},
+			{Customer : req.user.username}
+		] },
 		include: { model: Products, as: 'item' }
 	});
 	console.log(trans);
@@ -226,6 +235,105 @@ route.delete('/:username', auth, async (req, res) => {
 	console.log(user.email);
 	user.destroy();
 });
+
+
+route.get('/earnings' , auth , async(req,res) => {
+	const trans = await Transaction.findAll({
+		where : {Seller : req.user.username}
+	})
+
+	const products = await Products.findAll({
+		where : {SellerUsername : req.user.username}
+	})
+
+	var date = new Date();
+    let month = date.getMonth() + 1;
+	let year = date.getFullYear()
+
+	if (parseInt(month) < 10) {
+		month = "0" + month;
+	  }
+
+	let sdate = year + '-' + month 
+
+	const monthly_copies = await Transaction.findAll({
+		where : {
+			[Sequelize.Op.and] : [
+				{Seller : req.user.username},
+				{date : {[Sequelize.Op.like] : [sdate + '%']}}
+			]
+		}
+	})
+
+	const m_Products = await Products.findAll({
+		where : {
+			[Sequelize.Op.and] : [
+				{SellerUsername : req.user.username},
+				{date : {[Sequelize.Op.like] : [sdate + '%']}}
+			]
+		}
+	})
+
+	let m_earnings = 0
+
+	monthly_copies.map(e => {
+		m_earnings = parseInt(m_earnings) + parseInt(e.Value)
+	})
+
+	res.send({copies : trans.length , products : products.length , 
+		mCopies : monthly_copies ,m_Products : m_Products.length  , m_earnings : m_earnings 
+	     ,earnings : req.user.Earnings })
+})
+
+route.get('/monthReport' , auth , async(req,res) => {
+	var date = new Date();
+    let month = date.getMonth() + 1;
+	let year = date.getFullYear()
+	let Det = []
+
+	if (parseInt(month) < 10) {
+		month = "0" + month;
+	  }
+	  let startdate = 1;
+	  let enddate = 7;
+  
+	  while (parseInt(enddate) < 32) {
+		if (parseInt(startdate) < 10) {
+		  startdate = "0" + startdate;
+		}
+		if (parseInt(enddate) < 10) {
+		  enddate = "0" + enddate;
+		}
+  
+		let sdate = year + "-" + month + "-" + startdate;
+		let edate = year + "-" + month + "-" + enddate;
+		console.log(sdate + '%')
+  
+		const earnings = await Transaction.findAll({
+		  where: {
+			[Sequelize.Op.and]: [
+			  { seller: req.user.username },
+			  { date: { [Sequelize.Op.between]: [sdate  , edate]} }
+			]
+		  }
+		});
+  
+
+  
+		Det.push(earnings);
+  
+		startdate = parseInt(startdate) + 7;
+		if(enddate === 21){
+		enddate = parseInt(enddate) + 10
+		}else{
+			enddate = parseInt(enddate) + 7
+		}
+	  }
+  
+	  res.status(200).send(Det);
+	
+
+})
 
 
 module.exports = { route };

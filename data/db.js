@@ -21,6 +21,15 @@ const Users = db.define('users', {
 		type: Sequelize.STRING(35),
 		primaryKey: true
 	},
+	bio : {
+		type : Sequelize.TEXT
+	},
+	College : {
+		type : Sequelize.TEXT
+	},
+	Qualification : {
+		type : Sequelize.STRING
+	},
 	email: {
 		type: Sequelize.STRING(100),
 		allowNull: false
@@ -63,10 +72,6 @@ const Users = db.define('users', {
 	Earnings: {
 		type: Sequelize.INTEGER,
 		defaultValue: '0'
-	},
-	productsSold : {
-		type : Sequelize.INTEGER,
-		defaultValue : '0'
 	},
 	refferalCode : {
 		type : Sequelize.STRING
@@ -137,6 +142,9 @@ const Products = db.define('products', {
 	deleted: {
 		type: Sequelize.BOOLEAN,
 		defaultValue: false
+	},
+	date : {
+		type : Sequelize.STRING
 	}
 });
 
@@ -196,15 +204,17 @@ const Transaction = db.define('transactions', {
 		primaryKey: true,
 		unique: true
 	},
-	Debited: {
-		type: Sequelize.BOOLEAN,
-		allowNull: false
-	},
 	Value: {
 		type: Sequelize.INTEGER
 	},
-	userId: {
+	Seller: {
 		type: Sequelize.STRING
+	},
+	Customer : {
+		type : Sequelize.STRING
+	},
+	date : {
+		type : Sequelize.STRING
 	}
 });
 

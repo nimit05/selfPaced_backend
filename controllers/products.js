@@ -24,6 +24,21 @@ async function createProduct(
 	end,
 	files
 ) {
+	var date = new Date();
+    let month = date.getMonth() + 1;
+	let year = date.getFullYear()
+	let today = date.getDate()
+
+	if (parseInt(month) < 10) {
+		month = "0" + month;
+	  }
+
+	  if (parseInt(today) < 10) {
+		today = "0" + today;
+	  }
+
+	let final = year + '-' + month + '-' + today
+
 	let mrp = parseInt(MRP);
 	let cover_img = await saveThis(files.cover_img, 'cover');
 	if (cover_img.error) {
@@ -54,7 +69,8 @@ async function createProduct(
 		product_file: file.url,
 		cover_img: cover_img.url,
 		sample_pro: file.sample_url,
-		keywords: keyword
+		keywords: keyword,
+		date : final
 	});
 
 	return newproduct;

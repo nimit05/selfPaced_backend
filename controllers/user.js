@@ -190,13 +190,29 @@ async function createGoogleUser(user) {
 	}
 }
 
-async function createTransaction(itemId, Value, Debited, userId) {
+async function createTransaction(itemId, Value, Debited, Customer , Seller) {
+	var date = new Date();
+    let month = date.getMonth() + 1;
+	let year = date.getFullYear()
+	let today = date.getDate()
+
+	if (parseInt(month) < 10) {
+		month = "0" + month;
+	  }
+
+	  if (parseInt(today) < 10) {
+		today = "0" + today;
+	  }
+
+	  let final = year + '-' + month + '-' + today;
 	const trans = await Transaction.create({
 		TransactionId: getrandomstring(30),
 		itemId,
 		Value,
 		Debited,
-		userId
+		Customer,
+		Seller,
+		date : final
 	});
 
 	const new_transc = await Transaction.findOne({
