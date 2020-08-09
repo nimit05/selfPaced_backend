@@ -12,74 +12,74 @@ const db = new Sequelize({
   password: process.env.aws_mysql_pass
 });
 
-const Users = db.define('users', {
-	name: {
-		type: Sequelize.STRING(40),
-		allowNull: false
-	},
-	username: {
-		type: Sequelize.STRING(35),
-		primaryKey: true
-	},
-	bio : {
-		type : Sequelize.TEXT
-	},
-	College : {
-		type : Sequelize.TEXT
-	},
-	Qualification : {
-		type : Sequelize.STRING
-	},
-	email: {
-		type: Sequelize.STRING(100),
-		allowNull: false
-	},
-	password: {
-		type: Sequelize.STRING(30)
-		// allowNull: false
-	},
-	phone_Number: {
-		type: Sequelize.STRING(15)
-		// allowNull: false
-	},
-	Address: {
-		type: Sequelize.TEXT
-	},
-	token: {
-		type: Sequelize.STRING(50)
-	},
-	OTP: {
-		type: Sequelize.STRING(6)
-	},
-	Verified: {
-		type: Sequelize.BOOLEAN
-	},
-	pro_img: {
-		type: Sequelize.TEXT
-	},
-	Cart: {
-		type: Sequelize.TEXT,
-		defaultValue: ' '
-	},
-	reports: {
-		type: Sequelize.TEXT,
-		defaultValue: ' '
-	},
-	Coins: {
-		type: Sequelize.INTEGER,
-		allowNull: false
-	},
-	Earnings: {
-		type: Sequelize.INTEGER,
-		defaultValue: '0'
-	},
-	refferalCode : {
-		type : Sequelize.STRING
-	},
-	refferCount : {
-		type : Sequelize.INTEGER,
-		defaultValue : '0'
-	}
+const Users = db.define("users", {
+  name: {
+    type: Sequelize.STRING(40),
+    allowNull: false
+  },
+  username: {
+    type: Sequelize.STRING(35),
+    primaryKey: true
+  },
+  bio: {
+    type: Sequelize.TEXT
+  },
+  College: {
+    type: Sequelize.TEXT
+  },
+  Qualification: {
+    type: Sequelize.STRING
+  },
+  email: {
+    type: Sequelize.STRING(100),
+    allowNull: false
+  },
+  password: {
+    type: Sequelize.STRING(30)
+    // allowNull: false
+  },
+  phone_Number: {
+    type: Sequelize.STRING(15)
+    // allowNull: false
+  },
+  Address: {
+    type: Sequelize.TEXT
+  },
+  token: {
+    type: Sequelize.STRING(50)
+  },
+  OTP: {
+    type: Sequelize.STRING(6)
+  },
+  Verified: {
+    type: Sequelize.BOOLEAN
+  },
+  pro_img: {
+    type: Sequelize.TEXT
+  },
+  Cart: {
+    type: Sequelize.TEXT,
+    defaultValue: " "
+  },
+  reports: {
+    type: Sequelize.TEXT,
+    defaultValue: " "
+  },
+  Coins: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  Earnings: {
+    type: Sequelize.INTEGER,
+    defaultValue: "0"
+  },
+  refferalCode: {
+    type: Sequelize.STRING
+  },
+  refferCount: {
+    type: Sequelize.INTEGER,
+    defaultValue: "0"
+  }
 });
 
 const Products = db.define("products", {
@@ -112,40 +112,51 @@ const Products = db.define("products", {
   tag: {
     type: Sequelize.STRING(15),
 
-		allowNull: false
-	},
-	MRP: {
-		type: Sequelize.INTEGER
-	},
-	rating: {
-		type: Sequelize.FLOAT
-	},
-	Value: {
-		type: Sequelize.INTEGER
-	},
-	cover_img: {
-		type: Sequelize.TEXT
-	},
-	product_file: {
-		type: Sequelize.TEXT
-	},
-	sample_pro: {
-		type: Sequelize.TEXT
-	},
-	keywords: {
-		type: Sequelize.TEXT
-	},
-	reports: {
-		type: Sequelize.TEXT,
-		defaultValue: ' '
-	},
-	deleted: {
-		type: Sequelize.BOOLEAN,
-		defaultValue: false
-	},
-	date : {
-		type : Sequelize.STRING
-	}
+    allowNull: false
+  },
+  MRP: {
+    type: Sequelize.INTEGER
+  },
+  rating: {
+    type: Sequelize.FLOAT
+  },
+  Value: {
+    type: Sequelize.INTEGER
+  },
+  cover_img: {
+    type: Sequelize.TEXT
+  },
+  product_file: {
+    type: Sequelize.TEXT
+  },
+  sample_pro: {
+    type: Sequelize.TEXT
+  },
+  keywords: {
+    type: Sequelize.TEXT
+  },
+  reports: {
+    type: Sequelize.TEXT,
+    defaultValue: " "
+  },
+  deleted: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  },
+  branch: {
+    type: Sequelize.STRING(20)
+  },
+  date: {
+    type: Sequelize.STRING
+  },
+  likes: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
+  ownBy: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  }
 });
 
 const Library = db.define("libraries", {
@@ -193,29 +204,29 @@ const Review = db.define("reviews", {
   }
 });
 
-const Transaction = db.define('transactions', {
-	id: {
-		type: Sequelize.INTEGER,
-		primaryKey: true,
-		autoIncrement: true
-	},
-	TransactionId: {
-		type: Sequelize.STRING(30),
-		primaryKey: true,
-		unique: true
-	},
-	Value: {
-		type: Sequelize.INTEGER
-	},
-	Seller: {
-		type: Sequelize.STRING
-	},
-	Customer : {
-		type : Sequelize.STRING
-	},
-	date : {
-		type : Sequelize.STRING
-	}
+const Transaction = db.define("transactions", {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  TransactionId: {
+    type: Sequelize.STRING(30),
+    primaryKey: true,
+    unique: true
+  },
+  Value: {
+    type: Sequelize.INTEGER
+  },
+  Seller: {
+    type: Sequelize.STRING
+  },
+  Customer: {
+    type: Sequelize.STRING
+  },
+  date: {
+    type: Sequelize.STRING
+  }
 });
 
 Transaction.belongsTo(Products, { as: "item" });

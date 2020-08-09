@@ -1,47 +1,29 @@
 const { Router } = require("express");
 const route = Router();
-const { auth } = require('../../middleware/auth');
-const { Users, Products, Library, Review, Transaction } = require('../../data/db');
-const { getAllProducts, addreport } = require('../../controllers/products');
-const { AddToCart, AddToLibrary, CartProducts } = require('../../controllers/userLibrary');
-const { createTransaction } = require('../../controllers/user');
-const Sequelize = require('sequelize');
+const { auth } = require("../../middleware/auth");
+const { Users, Products, Library, Review, Transaction } = require("../../data/db");
+const { getAllProducts, addreport } = require("../../controllers/products");
+const { AddToCart, AddToLibrary, CartProducts } = require("../../controllers/userLibrary");
+const { createTransaction } = require("../../controllers/user");
+const Sequelize = require("sequelize");
 
-route.post('/Buy', auth, async (req, res) => {
-	console.log(req.body);
-	const product = await Products.findOne({
-		where: { refrenceId: req.body.refrenceId }
-	});
-	const lib_item = await Library.findOne({
-		where: {
-			[Sequelize.Op.and]: [ { userId: req.user.username }, { ProductId: product.id } ]
-		}
-	});
-	if (req.user.Coins < product.Value) {
-		res.send(false);
-	} else {
-		if (!lib_item) {
-			const item = await AddToLibrary(req.user.username, product.id).catch((err) => {
-				console.log(err);
-				res.send({ error: 'internal error' + err });
-			});
-			console.log(item);
-			req.user.Coins = req.user.Coins - product.Value;
-			req.user.save();
-			const user = await Users.findOne({
-				where: { username: product.SellerUsername }
-			});
-
-			user.Coins = user.Coins + 0.75 * product.Value;
-			user.save();
-
-			user.Earnings = user.Earnings + 0.75 * product.Value;
-			user.save();
-
-			const trans = await createTransaction(product.id, product.Value, true, req.user.username  ,user.username);
-			console.log(trans.TransactionId);
-		}
-	}
+route.post("/Buy", auth, async (req, res) => {
+  const product = await Products.findOne({
+    where: { refrenceId: req.body.refrenceId }
+  });
+  product.ownBy++;
+  product.save();
+  const lib_item = await Library.findOne({
+    where: {
+      [Sequelize.Op.and]: [{ userId: req.user.username }, { ProductId: product.id }]
+    }
+  });
+  if (!lib_item) {
+    const item = await AddToLibrary(req.user.username, product.id).catch(err => {
+      console.log(err);
+      res.send({ error: "internal error" + err });
+    });
+  }
 });
 
 route.post("/AddToCart", auth, async (req, res) => {
@@ -70,25 +52,159 @@ route.get("/myproducts", auth, async (req, res) => {
 
   res.send(pro_ref);
 });
+route.get("/cat/:category/:limit/:offset", async (req, res) => {
+  try {
+    let Limit = 10;
+    let Offset = 0;
 
-route.get("/", async (req, res) => {
-  const products = await Products.findAll({
-    attributes: [
-      "refrenceId",
-      "category",
-      "title",
-      "s_title",
-      "short_des",
-      "Description",
-      "tag",
-      "Value",
-      "cover_img",
-      "rating"
-    ],
-    where: { deleted: false }
-  });
+    if (req.params.limit) {
+      Limit = parseInt(req.params.limit);
+    }
+    if (req.params.offset) {
+      Offset = parseInt(req.params.offset);
+    }
 
-  res.send({ products });
+    const products = await Products.findAll({
+      attributes: [
+        "refrenceId",
+        "category",
+        "title",
+        "s_title",
+        "short_des",
+        "Description",
+        "tag",
+        "Value",
+        "cover_img",
+        "createdAt",
+        "rating"
+      ],
+      order: [["createdAt", "DESC"]],
+      limit: Limit,
+      offset: Offset,
+      where: { [Sequelize.Op.and]: [{ deleted: false }, { branch: req.params.category }] }
+    });
+
+    res.send({ products });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).send({ error: "internal Error" });
+  }
+});
+route.get("/mostB/:limit/:offset", async (req, res) => {
+  try {
+    let Limit = 10;
+    let Offset = 0;
+
+    if (req.params.limit) {
+      Limit = parseInt(req.params.limit);
+    }
+    if (req.params.offset) {
+      Offset = parseInt(req.params.offset);
+    }
+    const products = await Products.findAll({
+      attributes: [
+        "refrenceId",
+        "category",
+        "title",
+        "s_title",
+        "short_des",
+        "Description",
+        "tag",
+        "Value",
+        "cover_img",
+        "createdAt",
+        "rating"
+      ],
+      order: [["ownBy", "DESC"]],
+      limit: Limit,
+      offset: Offset,
+      where: { deleted: false }
+    });
+
+    res.send({ products });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).send({ error: "internal Error" });
+  }
+});
+route.get("/rated/:limit/:offset", async (req, res) => {
+  try {
+    let Limit = 10;
+    let Offset = 0;
+
+    if (req.params.limit) {
+      Limit = parseInt(req.params.limit);
+    }
+    if (req.params.offset) {
+      Offset = parseInt(req.params.offset);
+    }
+    const products = await Products.findAll({
+      attributes: [
+        "refrenceId",
+        "category",
+        "title",
+        "s_title",
+        "short_des",
+        "Description",
+        "tag",
+        "Value",
+        "cover_img",
+        "createdAt",
+        "rating"
+      ],
+      order: [["rating", "DESC"]],
+      limit: Limit,
+      offset: Offset,
+      where: { deleted: false }
+    });
+
+    res.send({ products });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).send({ error: "internal Error" });
+  }
+});
+
+route.get("/latest/:limit/:offset", async (req, res) => {
+  try {
+    let Limit = 10;
+    let Offset = 0;
+
+    if (req.params.limit) {
+      Limit = parseInt(req.params.limit);
+    }
+    if (req.params.offset) {
+      Offset = parseInt(req.params.offset);
+    }
+    const products = await Products.findAll({
+      attributes: [
+        "refrenceId",
+        "category",
+        "title",
+        "s_title",
+        "short_des",
+        "Description",
+        "tag",
+        "Value",
+        "cover_img",
+        "createdAt",
+        "rating"
+      ],
+      order: [["createdAt", "DESC"]],
+      limit: Limit,
+      offset: Offset,
+      where: { deleted: false }
+    });
+
+    res.send({ products });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).send({ error: "internal Error" });
+  }
 });
 route.get("/Name", async (req, res) => {
   const products = await Products.findAll({
@@ -168,6 +284,7 @@ route.get("/search/:name", async (req, res) => {
   var arr = [];
   console.log("aagya");
 
+  let s = "%" + req.params.name + "%";
   const products = await Products.findAll({
     attributes: [
       "refrenceId",
@@ -181,16 +298,14 @@ route.get("/search/:name", async (req, res) => {
       "cover_img",
       "rating",
       "keywords"
-    ]
-  });
-  for (let i = 0; i < products.length; i++) {
-    if (products[i].keywords.toLowerCase().indexOf(req.params.name.toLowerCase()) > -1) {
-      arr.push(products[i]);
-      continue;
+    ],
+    where: {
+      keywords: { [Sequelize.Op.like]: s }
     }
-  }
-  console.log("hogya");
-  res.send(arr);
+  });
+  console.log("serach resut", products);
+
+  res.send(products);
 });
 
 route.get("/Sold_products/:username", auth, async (req, res) => {
@@ -234,32 +349,29 @@ route.post("/:refId", auth, async (req, res) => {
   res.send(true);
 });
 
-route.get('/earningInfo' , auth , async(req,res) => {
+route.get("/earningInfo", auth, async (req, res) => {
+  let my_pro = await Products.findAll({
+    where: {
+      SellerUsername: req.user.username
+    }
+  });
 
-	let my_pro = await Products.findAll({
-		where : {
-			SellerUsername : req.user.username
-		}
-	})
+  my_pro = my_pro.sort(function (a, b) {
+    return a.createdAt - b.createdAt;
+  });
 
-	my_pro = my_pro.sort(function (a,b) {
-		return a.createdAt - b.createdAt
-	})
+  var arr = [];
 
-	var arr = []
+  for (let i = 0; i < my_pro.length; i++) {
+    let trans = await Transaction.findAll({
+      where: { itemId: my_pro[i].id }
+    });
 
-	for(let i = 0 ; i < my_pro.length ; i++){
+    arr.push(trans.length);
+  }
+  console.log(arr);
 
-		let trans = await Transaction.findAll({
-			where : {itemId : my_pro[i].id}
-		})
-
-		 arr.push(trans.length)
-	}
-	console.log(arr)
-
-	res.send(arr)
-
-})
+  res.send(arr);
+});
 
 module.exports = { route };
