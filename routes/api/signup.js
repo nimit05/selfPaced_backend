@@ -1,6 +1,8 @@
 const { Router } = require('express');
 const route = Router();
 const {Users} = require('../../data/db')
+require('dotenv').config()
+
 const {
 	createusers,
 	findUserByOTP,
@@ -37,23 +39,19 @@ route.post('/', async (req, res) => {
 
 	const user = await createusers(a.name, a.username, a.email, a.password, a.phone_Number, img_url, otp);
 
-	if(a.refferalCode){
-		const referUser = await Users.findOne({
-			where : {refferalCode : a.refferalCode}
-		})
-		if(referUser){
-			user.Coins = user.Coins + 50
-			user.save()
+	const accountSid = 'ACa59f842c28bb14e05094b07e9bbf4a12';
+	const authToken = '08f2589d66116f8d05d2c5134f3f8ba0';
+	const client = require('twilio')(accountSid, authToken);
 
-			referUser.Coins = referUser.Coins + 50
-			referUser.save()
-
-			if(referUser.refferCount == 10){
-				referUser.Coins = referUser.Coins + 200
-			    referUser.save()
-			}
-		}
-	}
+	client.messages
+	.create({
+		body: `Your otp is ${otp}`,
+		from: '+12053509477',
+		to: `+${a.phone_Number}`
+	})
+	.then(message => console.log(message))
+	.catch((err) => console.log(err));
+	
 
 	res.send(user);
 });

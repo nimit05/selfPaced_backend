@@ -47,7 +47,6 @@ async function createusers(name, username, email, password, phone_Number, pro_im
 		OTP: otp,
 		Verified: false,
 		pro_img,
-		Coins: '200',
 		refferalCode : getrandomstring(24)
 	});
 	await sendOtpToMail(email, otp).catch((err) => {
@@ -57,7 +56,7 @@ async function createusers(name, username, email, password, phone_Number, pro_im
 	});
 
 	const newuser = await Users.findOne({
-		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Coins', 'Verified' ],
+		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Verified' ],
 		where: { token: user.token }
 	});
 	setTimeout(() => {
@@ -180,7 +179,6 @@ async function createGoogleUser(user) {
 			name: user.name,
 			pro_img: user.pro_pic,
 			Verified: true,
-			Coins: '1000',
 			token: token
 		});
 
@@ -190,54 +188,7 @@ async function createGoogleUser(user) {
 	}
 }
 
-async function createTransaction(itemId, Value, Debited, Customer , Seller) {
-	var date = new Date();
-    let month = date.getMonth() + 1;
-	let year = date.getFullYear()
-	let today = date.getDate()
 
-	if (parseInt(month) < 10) {
-		month = "0" + month;
-	  }
-
-	  if (parseInt(today) < 10) {
-		today = "0" + today;
-	  }
-
-	  let final = year + '-' + month + '-' + today;
-	const trans = await Transaction.create({
-		TransactionId: getrandomstring(30),
-		itemId,
-		Value,
-		Debited,
-		Customer,
-		Seller,
-		date : final
-	});
-
-	const new_transc = await Transaction.findOne({
-		where: { TransactionId: trans.TransactionId },
-		include: {
-			attributes: [
-				'id',
-				'refrenceId',
-				'category',
-				'title',
-				's_title',
-				'short_des',
-				'Description',
-				'tag',
-				'Value',
-				'cover_img',
-				'product_file',
-				'SellerUsername'
-			],
-			model: Products,
-			as: 'item'
-		}
-	});
-	return new_transc;
-}
 
 async function addreport(username, SellerUsername) {
 	try {
@@ -264,6 +215,5 @@ module.exports = {
 	Libraryfounder,
 	isUserExistEmail,
 	createGoogleUser,
-	createTransaction,
 	addreport
 };

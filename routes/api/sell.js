@@ -7,9 +7,8 @@ const { AddToLibrary } = require('../../controllers/userLibrary');
 
 route.post('/', auth, async (req, res) => {
 	try {
-		console.log(req.body);
-		console.log(req.files);
 		const a = req.body;
+		console.log(a.branch)
 		let sample_end = parseInt(a.sample_pages) + parseInt(a.sample_start) - 1;
 		const product = await createProduct(
 			req.user.username,
@@ -19,8 +18,8 @@ route.post('/', auth, async (req, res) => {
 			a.short_des,
 			a.B_des,
 			a.tag,
-			a.price,
 			a.sample_start,
+			a.branch ,
 			sample_end,
 			req.files
 		);

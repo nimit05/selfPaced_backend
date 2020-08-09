@@ -1,7 +1,6 @@
 const { Users, Products, Review, Comments } = require('../data/db');
 const { getrandomstring } = require('../utils/string');
 const { saveThis } = require('../utils/FileSaver');
-const { bookValue } = require('../utils/BookValue');
 
 async function getAllProducts(SellerUsername) {
 	const products = await Products.findAll({
@@ -19,7 +18,7 @@ async function createProduct(
 	short_des,
 	Description,
 	tag,
-	MRP,
+	branch,
 	start,
 	end,
 	files
@@ -39,7 +38,6 @@ async function createProduct(
 
 	let final = year + '-' + month + '-' + today
 
-	let mrp = parseInt(MRP);
 	let cover_img = await saveThis(files.cover_img, 'cover');
 	if (cover_img.error) {
 		return false;
@@ -65,7 +63,7 @@ async function createProduct(
 		short_des,
 		Description,
 		tag,
-		Value: mrp,
+		branch,
 		product_file: file.url,
 		cover_img: cover_img.url,
 		sample_pro: file.sample_url,

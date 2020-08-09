@@ -49,15 +49,6 @@ route.get('/:id', async(req,res) => {
 })
 
 route.get('/isAllowed/:id' , auth , async(req,res) => {
-    const bought = await Transaction.findOne({
-        where : {
-            [Sequelize.Op.and] :[
-                {userId : req.user.username},
-                {itemId : req.params.id},
-                {Debited : true}
-            ]
-        }
-    })
     const comment = await Review.findOne({
         where : {
             [Sequelize.Op.and] :[
@@ -70,11 +61,7 @@ route.get('/isAllowed/:id' , auth , async(req,res) => {
     console.log('comes in if condition ' + req.params.id)
     res.send(true)
     }
-    else if(bought == null){
-    res.send(true)
-    console.log('comes in else if condition ' + req.params.id)
 
-    }
     else{
         res.send(false)
         console.log('comes in else condition')

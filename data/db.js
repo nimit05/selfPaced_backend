@@ -4,10 +4,10 @@ dotenv.config();
 
 const db = new Sequelize({
   dialect: "mysql",
-  host: process.env.aws_mysql_host,
+//   host: process.env.aws_mysql_host,
 
-  // database: "puranibook",
-  database: "puraniBooks",
+  database: "puranibook",
+//   database: "puraniBooks",
   username: process.env.aws_mysql_username,
   password: process.env.aws_mysql_pass
 });
@@ -64,21 +64,6 @@ const Users = db.define('users', {
 	reports: {
 		type: Sequelize.TEXT,
 		defaultValue: ' '
-	},
-	Coins: {
-		type: Sequelize.INTEGER,
-		allowNull: false
-	},
-	Earnings: {
-		type: Sequelize.INTEGER,
-		defaultValue: '0'
-	},
-	refferalCode : {
-		type : Sequelize.STRING
-	},
-	refferCount : {
-		type : Sequelize.INTEGER,
-		defaultValue : '0'
 	}
 });
 
@@ -114,14 +99,9 @@ const Products = db.define("products", {
 
 		allowNull: false
 	},
-	MRP: {
-		type: Sequelize.INTEGER
-	},
+
 	rating: {
 		type: Sequelize.FLOAT
-	},
-	Value: {
-		type: Sequelize.INTEGER
 	},
 	cover_img: {
 		type: Sequelize.TEXT
@@ -145,6 +125,10 @@ const Products = db.define("products", {
 	},
 	date : {
 		type : Sequelize.STRING
+	},
+	branch : {
+		type : Sequelize.STRING,
+		allowNull : false
 	}
 });
 
@@ -193,32 +177,7 @@ const Review = db.define("reviews", {
   }
 });
 
-const Transaction = db.define('transactions', {
-	id: {
-		type: Sequelize.INTEGER,
-		primaryKey: true,
-		autoIncrement: true
-	},
-	TransactionId: {
-		type: Sequelize.STRING(30),
-		primaryKey: true,
-		unique: true
-	},
-	Value: {
-		type: Sequelize.INTEGER
-	},
-	Seller: {
-		type: Sequelize.STRING
-	},
-	Customer : {
-		type : Sequelize.STRING
-	},
-	date : {
-		type : Sequelize.STRING
-	}
-});
 
-Transaction.belongsTo(Products, { as: "item" });
 
 Products.belongsTo(Users, { as: "Seller" });
 Users.hasMany(Products, { as: "Seller" });
@@ -229,6 +188,5 @@ module.exports = {
   db,
   Products,
   Library,
-  Review,
-  Transaction
+  Review
 };

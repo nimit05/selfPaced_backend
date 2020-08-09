@@ -1,10 +1,9 @@
 const { Router } = require("express");
 const route = Router();
 const { auth } = require('../../middleware/auth');
-const { Users, Products, Library, Review, Transaction } = require('../../data/db');
+const { Users, Products, Library, Review } = require('../../data/db');
 const { getAllProducts, addreport } = require('../../controllers/products');
 const { AddToCart, AddToLibrary, CartProducts } = require('../../controllers/userLibrary');
-const { createTransaction } = require('../../controllers/user');
 const Sequelize = require('sequelize');
 
 route.post('/Buy', auth, async (req, res) => {
@@ -17,30 +16,19 @@ route.post('/Buy', auth, async (req, res) => {
 			[Sequelize.Op.and]: [ { userId: req.user.username }, { ProductId: product.id } ]
 		}
 	});
-	if (req.user.Coins < product.Value) {
-		res.send(false);
-	} else {
+
 		if (!lib_item) {
 			const item = await AddToLibrary(req.user.username, product.id).catch((err) => {
 				console.log(err);
 				res.send({ error: 'internal error' + err });
 			});
 			console.log(item);
-			req.user.Coins = req.user.Coins - product.Value;
-			req.user.save();
+	
 			const user = await Users.findOne({
 				where: { username: product.SellerUsername }
 			});
 
-			user.Coins = user.Coins + 0.75 * product.Value;
-			user.save();
 
-			user.Earnings = user.Earnings + 0.75 * product.Value;
-			user.save();
-
-			const trans = await createTransaction(product.id, product.Value, true, req.user.username  ,user.username);
-			console.log(trans.TransactionId);
-		}
 	}
 });
 
@@ -81,9 +69,9 @@ route.get("/", async (req, res) => {
       "short_des",
       "Description",
       "tag",
-      "Value",
       "cover_img",
-      "rating"
+      "rating",
+      'branch'
     ],
     where: { deleted: false }
   });
@@ -177,7 +165,6 @@ route.get("/search/:name", async (req, res) => {
       "short_des",
       "Description",
       "tag",
-      "Value",
       "cover_img",
       "rating",
       "keywords"
