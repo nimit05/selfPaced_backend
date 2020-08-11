@@ -97,43 +97,52 @@ const Products = db.define("products", {
   tag: {
     type: Sequelize.STRING(15),
 
-		allowNull: false
-	},
-
-	rating: {
-		type: Sequelize.FLOAT
-	},
-	cover_img: {
-		type: Sequelize.TEXT
-	},
-	product_file: {
-		type: Sequelize.TEXT
-	},
-	sample_pro: {
-		type: Sequelize.TEXT
-	},
-	keywords: {
-		type: Sequelize.TEXT
-	},
-	reports: {
-		type: Sequelize.TEXT,
-		defaultValue: ' '
-	},
-	deleted: {
-		type: Sequelize.BOOLEAN,
-		defaultValue: false
-	},
-	date : {
-		type : Sequelize.STRING
-	},
-	branch : {
-		type : Sequelize.STRING,
-		allowNull : false
-	},
-	copies : {
-		type : Sequelize.STRING,
-		defaultValue : '0'
-	}
+    allowNull: false
+  },
+  MRP: {
+    type: Sequelize.INTEGER
+  },
+  rating: {
+    type: Sequelize.FLOAT
+  },
+  Value: {
+    type: Sequelize.INTEGER
+  },
+  cover_img: {
+    type: Sequelize.TEXT
+  },
+  product_file: {
+    type: Sequelize.TEXT
+  },
+  sample_pro: {
+    type: Sequelize.TEXT
+  },
+  keywords: {
+    type: Sequelize.TEXT
+  },
+  reports: {
+    type: Sequelize.TEXT,
+    defaultValue: " "
+  },
+  deleted: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  },
+  branch: {
+    type: Sequelize.STRING(20)
+  },
+  date: {
+    type: Sequelize.STRING
+  },
+  likes: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
+  ownBy: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
+  
 });
 
 const Library = db.define("libraries", {
