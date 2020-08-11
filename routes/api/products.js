@@ -28,7 +28,8 @@ route.post('/Buy', auth, async (req, res) => {
 				where: { username: product.SellerUsername }
 			});
 
-
+      product.copies = parseInt(product.copies) + 1;
+      product.save()
 	}
 });
 

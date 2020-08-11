@@ -129,6 +129,10 @@ const Products = db.define("products", {
 	branch : {
 		type : Sequelize.STRING,
 		allowNull : false
+	},
+	copies : {
+		type : Sequelize.STRING,
+		defaultValue : '0'
 	}
 });
 
