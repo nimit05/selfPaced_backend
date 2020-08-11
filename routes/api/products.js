@@ -340,7 +340,7 @@ route.get("/reports/:refId", auth, async (req, res) => {
   res.send(arr);
 });
 
-route.post("/:refId", auth, async (req, res) => {
+route.get("/delete/:refId", auth, async (req, res) => {
   const product = await Products.findOne({
     where: { refrenceId: req.params.refId }
   });
@@ -349,29 +349,6 @@ route.post("/:refId", auth, async (req, res) => {
   res.send(true);
 });
 
-route.get("/earningInfo", auth, async (req, res) => {
-  let my_pro = await Products.findAll({
-    where: {
-      SellerUsername: req.user.username
-    }
-  });
 
-  my_pro = my_pro.sort(function (a, b) {
-    return a.createdAt - b.createdAt;
-  });
-
-  var arr = [];
-
-  for (let i = 0; i < my_pro.length; i++) {
-    let trans = await Transaction.findAll({
-      where: { itemId: my_pro[i].id }
-    });
-
-    arr.push(trans.length);
-  }
-  console.log(arr);
-
-  res.send(arr);
-});
 
 module.exports = { route };

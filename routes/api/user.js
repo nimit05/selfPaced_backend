@@ -3,7 +3,7 @@ const { Router } = require('express');
 route = Router();
 const { auth } = require('../../middleware/auth');
 const { adminAuth } = require('../../middleware/adminAuth');
-const { CartProducts, AddToLibrary } = require('../../controllers/userLibrary');
+const { CartProducts } = require('../../controllers/userLibrary');
 const Sequelize = require('sequelize');
 
 route.get('/', auth, async (req, res) => {
@@ -27,10 +27,10 @@ route.get('/Cart', auth, async (req, res) => {
 				'title',
 				's_title',
 				'short_des',
-				'Description',
 				'cover_img',
 				'tag',
-				'rating'
+				'rating',
+				'branch',
 			],
 			where: { refrenceId: cart[i] }
 		});
@@ -124,7 +124,10 @@ route.put('/', auth, (req, res) => {
 
 route.get('/products', auth, async (req, res) => {
 	const products = await Products.findAll({
-		where: { SellerUsername: req.user.username }
+		where: {[Sequelize.Op.and] : [
+			{Sellerusername : req.user.username},
+			{deleted : false}
+		]}
 	});
 	console.log('hogybhaiyaa');
 	res.send(products);
