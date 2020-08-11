@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const route = Router();
-const {Users} = require('../../data/db')
-require('dotenv').config()
+const { Users } = require('../../data/db');
+require('dotenv').config();
 
 const {
 	createusers,
@@ -32,7 +32,7 @@ route.post('/', async (req, res) => {
 			} else {
 				img_url = ran_name + img_name;
 
-				console.log('pro_image_saved');
+				('pro_image_saved');
 			}
 		});
 	}
@@ -49,7 +49,6 @@ route.post('/', async (req, res) => {
 	// })
 	// .then(message => console.log(message))
 	// .catch((err) => console.log(err));
-	
 
 	res.send(user);
 });
@@ -89,8 +88,6 @@ route.put('/', auth, async (req, res) => {
 				res.send({ error: 'image can not be uploaded try not to upload that now ' });
 			} else {
 				img_url = ran_name + img_name;
-
-				console.log('pro_image_saved');
 			}
 		});
 	}
@@ -125,9 +122,7 @@ route.post('/google', async (req, res) => {
 	});
 
 	if (user) {
-		console.log(user);
 		let exist = await isUserExistEmail(user.email);
-		console.log(exist);
 		if (!(exist === false)) {
 			req.session.token = exist.token;
 			req.session.save();
@@ -135,7 +130,6 @@ route.post('/google', async (req, res) => {
 			res.send({ email: user.email });
 		} else if (exist === false) {
 			let newUser = await createGoogleUser(user);
-			console.log(newUser);
 
 			if (newUser.email) {
 				req.session.token = newUser.token;

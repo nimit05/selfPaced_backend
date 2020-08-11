@@ -38,7 +38,6 @@ route.get('/Cart', auth, async (req, res) => {
 			products.push(item);
 		}
 	}
-	console.log(products.length);
 	res.send(products);
 });
 
@@ -59,7 +58,6 @@ route.get('/Library', auth, async (req, res) => {
 	const item = await Library.findAll({
 		where: { username: req.user.username }
 	});
-	console.log(item[0].Product_RefrenceId);
 	for (let i = 0; i < item.length; i++) {
 		let prdct = await Products.findOne({
 			attributes: [
@@ -84,9 +82,7 @@ route.put('/', auth, (req, res) => {
 	const a = req.body;
 	if (a.username) {
 		req.user.username = 'nimi';
-		console.log(req.user.username);
 		req.user.save();
-		console.log(a.username);
 	}
 	if (a.email) {
 		req.user.email = a.email;
@@ -129,7 +125,6 @@ route.get('/products', auth, async (req, res) => {
 			{deleted : false}
 		]}
 	});
-	console.log('hogybhaiyaa');
 	res.send(products);
 });
 
@@ -157,7 +152,6 @@ route.get('/reports/:username', async (req, res) => {
 		where: { username: req.params.username }
 	});
 	let arr = user.reports.split(';');
-	console.log(arr + req.params.username);
 	res.send(arr);
 });
 
@@ -165,7 +159,6 @@ route.delete('/:username', auth, async (req, res) => {
 	const user = await Users.findOne({
 		where: { username: req.params.username }
 	});
-	console.log(user.email);
 	user.destroy();
 });
 

@@ -116,10 +116,6 @@ function pass_validation() {
 	let p2 = $('#pass').val().match(/^(?=.*[a-z]).{8,20}$/);
 	let p3 = $('#pass').val().match(/^(?=.*[0-9]).{8,20}$/);
 	let p4 = $('#pass').val().match(/^(?=.*[!@#$%^&*]).{8,20}$/);
-	console.log(p1);
-	console.log(p4);
-	console.log(p3);
-	console.log(p2);
 
 	$('#warning').empty();
 
@@ -181,8 +177,6 @@ function re_pass_vali() {
 		});
 		nomistake = false;
 	} else if ($('#pass').val() != $('#conPass').val()) {
-		console.log($('#pass').val());
-		console.log($('#conPass').val());
 		$('#below_conPass').append($('<p>')).text('Password did not match');
 		$('#conPass').css({
 			border: 'red solid',
@@ -417,8 +411,7 @@ function send_log_data() {
 	};
 	if (nologmistake) {
 		postData('/api/login', data3).then((data) => {
-			
-			 if (data.username) {
+			if (data.username) {
 				location.replace('/');
 			} else if (data.error) {
 				$('#below_logUser').append($('<p>')).text('Username Or Password is Incorrect');

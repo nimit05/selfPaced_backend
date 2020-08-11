@@ -11,12 +11,10 @@ route.post('/', auth, async (req, res) => {
 });
 
 route.get('/:id', async (req, res) => {
-	console.log(req.params);
 	const comments = await Comments.findAll({
 		where: { productId: req.params.id }
 	});
 
-	console.log('comments aaye' + req.params.id);
 	res.send(comments);
 });
 
