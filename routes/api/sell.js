@@ -24,13 +24,13 @@ route.post("/", auth, async (req, res) => {
     );
     let pro = await AddToLibrary(req.user.username, product.id);
     if (product) {
-      res.status(200).redirect("/");
+      res.status(200).send(true);
     } else {
-      res.status(500).redirect("/sell-your-product/error");
+      res.status(500).send(false);
     }
   } catch (err) {
     console.log(err);
-    res.redirect("/sell-your-product/internal-error");
+    res.status(500).send(false);
   }
 });
 

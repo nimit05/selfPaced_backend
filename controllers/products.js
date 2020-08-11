@@ -19,7 +19,7 @@ async function createProduct(SellerUsername, category, title, s_title, short_des
 
   let final = year + "-" + month + "-" + today;
 
-  let cover_img = await saveThis(files.cover_img, "cover");
+  let cover_img = await saveThis(files.compressedfile, "cover");
   if (cover_img.error) {
     return false;
   }

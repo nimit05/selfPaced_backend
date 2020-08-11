@@ -8,21 +8,29 @@ const { createTransaction } = require("../../controllers/user");
 const Sequelize = require("sequelize");
 
 route.post("/Buy", auth, async (req, res) => {
-  const product = await Products.findOne({
-    where: { refrenceId: req.body.refrenceId }
-  });
-  product.ownBy++;
-  product.save();
-  const lib_item = await Library.findOne({
-    where: {
-      [Sequelize.Op.and]: [{ userId: req.user.username }, { ProductId: product.id }]
-    }
-  });
-  if (!lib_item) {
-    const item = await AddToLibrary(req.user.username, product.id).catch(err => {
-      console.log(err);
-      res.send({ error: "internal error" + err });
+  try {
+    const product = await Products.findOne({
+      where: { refrenceId: req.body.refrenceId }
     });
+    product.ownBy++;
+    product.save();
+    const lib_item = await Library.findOne({
+      where: {
+        [Sequelize.Op.and]: [{ userId: req.user.username }, { ProductId: product.id }]
+      }
+    });
+    if (!lib_item) {
+      const item = await AddToLibrary(req.user.username, product.id).catch(err => {
+        console.log(err);
+        res.send({ error: "internal error" + err });
+      });
+
+      res.send(item);
+    } else {
+      res.send("already Have");
+    }
+  } catch (err) {
+    res.send({ error: "internal" });
   }
 });
 
@@ -348,7 +356,5 @@ route.get("/delete/:refId", auth, async (req, res) => {
   product.save();
   res.send(true);
 });
-
-
 
 module.exports = { route };
