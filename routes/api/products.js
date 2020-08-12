@@ -237,7 +237,8 @@ route.get('/specific/:refrenceId', async (req, res) => {
 			'Value',
 			'cover_img',
 			'sample_pro',
-			'SellerUsername'
+			'SellerUsername',
+			'branch'
 		]
 	});
 	res.send(product);

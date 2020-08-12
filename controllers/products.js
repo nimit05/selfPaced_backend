@@ -43,7 +43,7 @@ async function createProduct(SellerUsername, category, title, s_title, short_des
 		short_des,
 		Description,
 		tag,
-		branch: branch,
+		branch,
 		product_file: file.url,
 		cover_img: cover_img.url,
 		keywords: keyword,

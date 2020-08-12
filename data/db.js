@@ -13,9 +13,12 @@ const db = new Sequelize({
 });
 
 const Users = db.define("users", {
-  name: {
+  f_name: {
     type: Sequelize.STRING(40),
     allowNull: false
+  },
+  l_name : {
+    type : Sequelize.STRING
   },
   username: {
     type: Sequelize.STRING(35),
@@ -27,8 +30,11 @@ const Users = db.define("users", {
   College: {
     type: Sequelize.TEXT
   },
-  Qualification: {
+  Course: {
     type: Sequelize.STRING
+  },
+  branch : {
+    type : Sequelize.STRING
   },
   email: {
     type: Sequelize.STRING(100),
