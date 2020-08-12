@@ -1,31 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ed2f6cdf44c59d50a1c4d4202dd9ab1e",
+    "revision": "d8cc70d5c67dbff9687163798ad38a68",
     "url": "/index.html"
   },
   {
-    "revision": "a9bf9c415f1ecc18f216",
-    "url": "/static/css/main.72e027bd.chunk.css"
+    "revision": "52d6d8a3b3b98f75c85e",
+    "url": "/static/css/main.9abeaa62.chunk.css"
   },
   {
-    "revision": "839653bf29982dbc6c17",
-    "url": "/static/js/2.da465ba5.chunk.js"
+    "revision": "4f39123364e575666d51",
+    "url": "/static/js/2.0f033213.chunk.js"
   },
   {
     "revision": "a1a636632721a402612df3e043dd630d",
-    "url": "/static/js/2.da465ba5.chunk.js.LICENSE.txt"
+    "url": "/static/js/2.0f033213.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "a9bf9c415f1ecc18f216",
-    "url": "/static/js/main.c60cdcc3.chunk.js"
+    "revision": "52d6d8a3b3b98f75c85e",
+    "url": "/static/js/main.49b4715f.chunk.js"
   },
   {
     "revision": "ee1e584a8a976edfdc36",
     "url": "/static/js/runtime-main.64818af3.js"
-  },
-  {
-    "revision": "eff3caed50119c06efe448ee79c583c4",
-    "url": "/static/media/Wick.eff3caed.jpg"
   },
   {
     "revision": "24ece0ec934396bf3bbdd56aaf1d27a5",
@@ -62,6 +58,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "f0c246790aac7400181166a2bc404519",
     "url": "/static/media/civil.f0c24679.svg"
+  },
+  {
+    "revision": "8df88b7e7ed128792b06082402292034",
+    "url": "/static/media/copywriting.8df88b7e.svg"
   },
   {
     "revision": "f7d47ee19a77a66ac105190ca243c9dd",
@@ -148,8 +148,20 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/media/research.ea54df05.svg"
   },
   {
+    "revision": "f43642716b033fc48fe9ca7c19c64f6e",
+    "url": "/static/media/school.f4364271.svg"
+  },
+  {
     "revision": "7117a4bc27774c151bbcf11d44c19e10",
     "url": "/static/media/search.7117a4bc.svg"
+  },
+  {
+    "revision": "128309467bd03fba205935175d07d6b3",
+    "url": "/static/media/search_not_found.12830946.svg"
+  },
+  {
+    "revision": "db286689d24ec0a20ff3d53912866089",
+    "url": "/static/media/supermarket.db286689.svg"
   },
   {
     "revision": "5a2668b8f5f459f67fc8af065acec1b0",
