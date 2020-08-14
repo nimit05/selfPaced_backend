@@ -4,6 +4,7 @@ const { Router } = require('express');
 const route = Router();
 const Sequelize = require('sequelize');
 const { auth } = require('../../middleware/auth');
+const {adminAuth} = require('../../middleware/adminAuth')
 
 route.post('/', auth, async (req, res) => {
 	const review = await createReview(
@@ -68,8 +69,10 @@ route.post('/report', auth, async (req, res) => {
 	});
 	let arr = review.reports.split(';');
 	arr.push(req.user.username);
+	console.log(arr)
 	review.reports = arr.join(';');
 	review.save();
+	console.log(review.reports)
 	res.send(true);
 });
 
@@ -78,6 +81,7 @@ route.delete('/:id', auth, async (req, res) => {
 		where: { id: req.params.id }
 	});
 	review.destroy();
+	
 });
 
 route.get('/reports/:id', async (req, res) => {
@@ -87,5 +91,22 @@ route.get('/reports/:id', async (req, res) => {
 	let arr = review.reports.split(';');
 	res.send(arr);
 });
+
+route.get('/' , adminAuth , async(req,res) => {
+	const review = await Review.findAll()
+	res.send(review)
+})
+
+route.get('/isReported/:id' , auth , async(req,res) => {
+	const review = await Review.findOne({
+		where : {id : req.params.id}
+	})
+	let arr = review.reports.split(';')
+	for(let i = 0 ; i < arr.length ; i++){
+		if( arr[i] == req.user.username){
+			res.send(true)
+		}
+	}
+})
 
 module.exports = { route };
