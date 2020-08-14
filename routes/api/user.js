@@ -168,6 +168,7 @@ route.delete('/:username', auth, async (req, res) => {
 		where: { username: req.params.username }
 	});
 	user.destroy();
+	res.send(true)
 });
 
 

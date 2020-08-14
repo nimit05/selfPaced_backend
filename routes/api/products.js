@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const route = Router();
 const { auth } = require('../../middleware/auth');
+const {adminAuth} = require('../../middleware/adminAuth')
 const { Users, Products, Library, Review, Transaction } = require('../../data/db');
 const { getAllProducts, addreport } = require('../../controllers/products');
 const { AddToCart, AddToLibrary, CartProducts } = require('../../controllers/userLibrary');
@@ -317,15 +318,7 @@ route.get('/Sold_products/:username', auth, async (req, res) => {
 	res.send(products);
 });
 
-route.get('/Ordered_products/:username', auth, async (req, res) => {
-	const product = await Transaction.findAll({
-		where: {
-			[Sequelize.Op.and]: [ { Debited: true }, { userId: req.params.username } ]
-		},
-		include: { model: Products, as: 'item' }
-	});
-	res.send(product);
-});
+
 
 route.post('/report', auth, async (req, res) => {
 	const report = await addreport(req.user.username, req.body.refId);
@@ -350,4 +343,9 @@ route.get('/delete/:refId', auth, async (req, res) => {
 	res.send(true);
 });
 
+
+route.get('/getall' , adminAuth , async(req,res) => {
+	const pro = await Products.findAll()
+	res.send(pro)
+} )
 module.exports = { route };

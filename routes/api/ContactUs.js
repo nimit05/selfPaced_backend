@@ -36,7 +36,7 @@ route.post('/' , auth , async(req,res) => {
     
         main().catch(console.error);
     
-        res.send('msg sent ' + req.user.email);
+        res.send(true);
 })
 
 module.exports = {route}

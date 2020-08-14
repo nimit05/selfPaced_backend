@@ -39,7 +39,7 @@ app.get("/*", function (req, res) {
 app.use("/api/pro-img", exp.static(`${__dirname}/routes/api/pro-img`));
 
 db.sync().then(() => {
-  app.listen(process.env.port, () => {
+  app.listen(4444, () => {
     console.log("server-started");
   });
 });
