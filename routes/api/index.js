@@ -9,6 +9,7 @@ const productsrouter = require('./products').route
 const commentrouter = require('./review').route
 const e_VErifyrouter = require('./email-verification').route
 const sms = require('./sms').route
+const contactus = require('./ContactUs').route
 
 route.use('/register', signuprouter)
 route.use('/login', loginrouter)
@@ -17,6 +18,7 @@ route.use('/user', userrouter)
 route.use('/products', productsrouter)
 route.use('/review', commentrouter)
 route.use('/sms', sms)
+route.use('/contactUs', contactus)
 route.use('/email-verification', e_VErifyrouter)
 
 module.exports = { route }

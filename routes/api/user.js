@@ -81,15 +81,19 @@ route.get('/Library', auth, async (req, res) => {
 route.put('/', auth, (req, res) => {
 	const a = req.body;
 	if (a.username) {
-		req.user.username = 'nimi';
+		req.user.username = a.username;
 		req.user.save();
 	}
 	if (a.email) {
 		req.user.email = a.email;
 		req.user.save();
 	}
-	if(a.name){
-		req.user.name = a.name;
+	if(a.f_name){
+		req.user.f_name = a.f_name;
+		req.user.save();
+	}
+	if(a.l_name){
+		req.user.l_name = a.l_name;
 		req.user.save();
 	}
 	if (a.phone_Number) {
@@ -108,9 +112,13 @@ route.put('/', auth, (req, res) => {
 		req.user.College = a.College
 		req.user.save();
 	}
-	if(a.Qualification){
-		req.user.Qualification = a.Qualification
+	if(a.Course){
+		req.user.Course = a.Course
 		req.user.save();
+	}
+	if(a.branch){
+		req.user.branch = a.branch
+		req.user.save()
 	}
 
 	res.send(req.user);
@@ -163,7 +171,20 @@ route.delete('/:username', auth, async (req, res) => {
 });
 
 
+route.get('/IsinCart/:refId' , auth , async(req,res) => {
+	let arr = req.user.Cart.split(';')
 
+	console.log(arr)
+	console.log(req.params.refId)
+
+	for(let i = 0 ; i< arr.length ; i++){
+		if(arr[i] == req.params.refId){
+			res.send(true)
+		}
+	}	
+
+	res.send(false)
+})
 
 
 module.exports = { route };

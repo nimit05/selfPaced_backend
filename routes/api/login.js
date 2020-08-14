@@ -42,7 +42,7 @@ route.get('/', auth, (req, res) => {
 	let senduser = {
 		user: {
 			username: user.username,
-			name: user.name,
+			name: user.f_name,
 			email: user.email,
 			phone_Number: user.phone_Number,
 			Address: user.Address,

@@ -2,7 +2,7 @@ const { Users, Transaction, Products } = require('../data/db');
 const { getrandomstring } = require('../utils/string');
 const { sendOtpToMail } = require('../utils/emailVeri');
 
-async function createusers(name, username, email, password, phone_Number, pro_img, otp) {
+async function createusers(f_name, username, email, password, phone_Number, pro_img, otp) {
 	let finduser = await Users.findOne({
 		where: {
 			username: username
@@ -38,7 +38,7 @@ async function createusers(name, username, email, password, phone_Number, pro_im
 	}
 
 	const user = await Users.create({
-		name,
+		f_name,
 		username,
 		email,
 		password,
@@ -56,7 +56,7 @@ async function createusers(name, username, email, password, phone_Number, pro_im
 	});
 
 	const newuser = await Users.findOne({
-		attributes: [ 'name', 'username', 'email', 'phone_Number', 'Verified' ],
+		attributes: [ 'f_name', 'username', 'email', 'phone_Number', 'Verified' ],
 		where: { token: user.token }
 	});
 	setTimeout(() => {
@@ -72,7 +72,7 @@ async function createusers(name, username, email, password, phone_Number, pro_im
 
 async function findUserByOTP(OTP) {
 	const user = await Users.findOne({
-		attributes: [ 'name', 'username', 'email', 'phone_Number' ],
+		attributes: [ 'f_name', 'username', 'email', 'phone_Number' ],
 		where: { OTP }
 	});
 
@@ -174,9 +174,9 @@ async function createGoogleUser(user) {
 	try {
 		let token = getrandomstring(32);
 		let newUser = await Users.create({
-			username: user.email,
+			username: user.name,
 			email: user.email,
-			name: user.name,
+			f_name: user.name,
 			pro_img: user.pro_pic,
 			Verified: true,
 			token: token
