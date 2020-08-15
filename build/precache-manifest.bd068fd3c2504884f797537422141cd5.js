@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d8cc70d5c67dbff9687163798ad38a68",
+    "revision": "6aad67d5008d69483c77582025546d38",
     "url": "/index.html"
   },
   {
-    "revision": "52d6d8a3b3b98f75c85e",
-    "url": "/static/css/main.9abeaa62.chunk.css"
+    "revision": "f7d9c3b492955fdc2a63",
+    "url": "/static/css/main.2bcccc16.chunk.css"
   },
   {
-    "revision": "4f39123364e575666d51",
-    "url": "/static/js/2.0f033213.chunk.js"
+    "revision": "ed641ef237b012f07537",
+    "url": "/static/js/2.f94b3640.chunk.js"
   },
   {
     "revision": "a1a636632721a402612df3e043dd630d",
-    "url": "/static/js/2.0f033213.chunk.js.LICENSE.txt"
+    "url": "/static/js/2.f94b3640.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "52d6d8a3b3b98f75c85e",
-    "url": "/static/js/main.49b4715f.chunk.js"
+    "revision": "f7d9c3b492955fdc2a63",
+    "url": "/static/js/main.b59d7f7d.chunk.js"
   },
   {
     "revision": "ee1e584a8a976edfdc36",
@@ -62,6 +62,14 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "8df88b7e7ed128792b06082402292034",
     "url": "/static/media/copywriting.8df88b7e.svg"
+  },
+  {
+    "revision": "a0fb2970bb118d5a32857889e1d3d089",
+    "url": "/static/media/customer.a0fb2970.svg"
+  },
+  {
+    "revision": "35ff2977a03d8854740a67328b2b88d7",
+    "url": "/static/media/earnings.35ff2977.svg"
   },
   {
     "revision": "f7d47ee19a77a66ac105190ca243c9dd",
@@ -140,6 +148,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/media/plus.452f3397.svg"
   },
   {
+    "revision": "b2ee8ce9c29fdd7f958d26952ab5dbcc",
+    "url": "/static/media/products.b2ee8ce9.svg"
+  },
+  {
     "revision": "5ca407379a5583ab43e0f5eadecae006",
     "url": "/static/media/propic.5ca40737.svg"
   },
@@ -160,11 +172,19 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/media/search_not_found.12830946.svg"
   },
   {
+    "revision": "9022938e6801351c473432e41d696ce5",
+    "url": "/static/media/sent.9022938e.svg"
+  },
+  {
     "revision": "db286689d24ec0a20ff3d53912866089",
     "url": "/static/media/supermarket.db286689.svg"
   },
   {
     "revision": "5a2668b8f5f459f67fc8af065acec1b0",
     "url": "/static/media/tushar.5a2668b8.jpg"
+  },
+  {
+    "revision": "4c7789e92014dcc62e9f2efd95377bf3",
+    "url": "/static/media/up-arrow.4c7789e9.svg"
   }
 ]);
