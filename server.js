@@ -9,7 +9,7 @@ const session = require("express-session");
 const path = require("path");
 const { auth } = require("./middleware/auth");
 
-// Production
+// Productio
 // middlewares
 app.use(
   session({
