@@ -304,7 +304,10 @@ route.get('/search/:name', async (req, res) => {
 			'keywords'
 		],
 		where: {
-			keywords: { [Sequelize.Op.like]: s }
+			[Sequelize.Op.and] : [
+			{keywords: { [Sequelize.Op.like]: s }},
+			{deleted : false}
+			]
 		}
 	});
 
