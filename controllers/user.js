@@ -174,7 +174,7 @@ async function createGoogleUser(user) {
 	try {
 		let token = getrandomstring(32);
 		let newUser = await Users.create({
-			username: user.name,
+			username: user.email,
 			email: user.email,
 			f_name: user.name,
 			pro_img: user.pro_pic,

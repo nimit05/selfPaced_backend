@@ -142,6 +142,9 @@ route.get('/getUser/:username', async (req, res) => {
 	const user = await Users.findOne({
 		where: { username: req.params.username }
 	});
+
+	console.log(req.params.username + 'hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii')
+
 	res.send(user);
 });
 

@@ -53,13 +53,14 @@ async function createProduct(SellerUsername, category, title, s_title, short_des
 	return newproduct;
 }
 
-async function createReview(userId, comment, Rating, productId, user_img) {
+async function createReview(userId, comment, Rating, productId, user_img , userName) {
 	const review = await Review.create({
 		comment,
 		userId,
 		Rating,
 		productId,
-		user_img
+		user_img,
+		userName
 	});
 	return review;
 }

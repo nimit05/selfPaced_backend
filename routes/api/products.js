@@ -242,7 +242,15 @@ route.get('/specific/:refrenceId', async (req, res) => {
 			'branch'
 		]
 	});
-	res.send(product);
+
+	const user = await Users.findOne({
+		where : {username : product.SellerUsername},
+		attributes : [
+			'f_name',
+			'l_name'
+		]
+	})
+	res.send({product : product , user : user });
 });
 route.delete('/:productId', auth, async (req, res) => {
 	try {
