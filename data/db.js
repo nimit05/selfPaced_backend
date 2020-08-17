@@ -192,6 +192,9 @@ const Review = db.define("reviews", {
   reports: {
     type: Sequelize.TEXT,
     defaultValue: " "
+  },
+  userName : {
+    type : Sequelize.STRING
   }
 });
 

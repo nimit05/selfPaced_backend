@@ -1,5 +1,5 @@
 const { createReview } = require('../../controllers/products');
-const { Review, Products, Transaction } = require('../../data/db');
+const { Review, Products, Users } = require('../../data/db');
 const { Router } = require('express');
 const route = Router();
 const Sequelize = require('sequelize');
@@ -12,7 +12,8 @@ route.post('/', auth, async (req, res) => {
 		req.body.comment,
 		req.body.rating,
 		req.body.productId,
-		req.user.pro_img
+		req.user.pro_img,
+		req.user.f_name + " " + req.user.l_name
 	);
 	const product = await Products.findOne({
 		where: { id: req.body.productId }
