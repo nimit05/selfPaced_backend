@@ -6,7 +6,7 @@ const db = new Sequelize({
   dialect: "mysql",
   host: process.env.aws_mysql_host,
 
-  database: "puranibook",
+  database: process.env.database,
   // database: "puraniBooks",
   username: process.env.aws_mysql_username,
   password: process.env.aws_mysql_pass
