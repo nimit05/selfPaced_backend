@@ -9,7 +9,7 @@ const session = require("express-session");
 const path = require("path");
 const { auth } = require("./middleware/auth");
 
-// Developmet12
+// Developmet
 // middlewares
 app.use(
   session({
