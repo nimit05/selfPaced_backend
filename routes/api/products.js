@@ -267,7 +267,7 @@ route.delete('/:productId', auth, async (req, res) => {
 	}
 });
 
-route.get('/search_item/:refId', auth, async (req, res) => {
+route.get('/search_item/:refId',  async (req, res) => {
 	const product = await Library.findAll({
 		where: {
 			userId: req.user.username
