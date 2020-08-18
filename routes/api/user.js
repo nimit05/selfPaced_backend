@@ -5,6 +5,7 @@ const { auth } = require('../../middleware/auth');
 const { adminAuth } = require('../../middleware/adminAuth');
 const { CartProducts } = require('../../controllers/userLibrary');
 const Sequelize = require('sequelize');
+const {} = require('../../controllers/user')
 
 route.get('/', auth, async (req, res) => {
 	const user = await Users.findOne({
@@ -143,7 +144,7 @@ route.get('/getUser/:username', async (req, res) => {
 		where: { username: req.params.username }
 	});
 
-	console.log(req.params.username + 'hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii')
+	console.log(req.params.username + '')
 
 	res.send(user);
 });
