@@ -14,41 +14,47 @@ const { getrandomstring, getrandomnum } = require("../../utils/string");
 const { auth } = require("../../middleware/auth");
 
 route.post("/", async (req, res) => {
-  const a = req.body.user;
-  let img_url = null;
-  let otp = getrandomnum(6);
+  try {
+    const a = req.body.user;
+    let img_url = null;
+    let otp = getrandomnum(6);
 
-  if (req.files) {
-    const ran_name = getrandomstring(32);
-    const img_name = req.files.pro_img.name;
-    const data = req.files.pro_img.data;
+    if (req.files) {
+      const ran_name = getrandomstring(32);
+      const img_name = req.files.pro_img.name;
+      const data = req.files.pro_img.data;
 
-    fs.writeFile(`${__dirname}../../data/pro-img/${ran_name}${img_name}`, data, err => {
-      if (err) {
-        console.log(err);
-        res.send({ error: "image can not be uploaded try not to upload that now " });
-      } else {
-        img_url = ran_name + img_name;
+      fs.writeFile(`${__dirname}../../data/pro-img/${ran_name}${img_name}`, data, err => {
+        if (err) {
+          console.log(err);
+          res.send({ error: "image can not be uploaded try not to upload that now " });
+        } else {
+          img_url = ran_name + img_name;
 
-        ("pro_image_saved");
-      }
-    });
+          ("pro_image_saved");
+        }
+      });
+    }
+
+    const user = await createusers(a.name, a.username, a.email, a.password, a.phone_Number, img_url, otp);
+
+    // const client = require('twilio')(accountSid, authToken);
+
+    // client.messages
+    // .create({
+    // 	body: `Your otp is ${otp}`,
+    // 	from: '+12053509477',
+    // 	to: `+${a.phone_Number}`
+    // })
+    // .then(message => console.log(message))
+    // .catch((err) => console.log(err));
+
+    res.send(user);
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).send({ error: "internal error" });
   }
-
-  const user = await createusers(a.name, a.username, a.email, a.password, a.phone_Number, img_url, otp);
-
-  // const client = require('twilio')(accountSid, authToken);
-
-  // client.messages
-  // .create({
-  // 	body: `Your otp is ${otp}`,
-  // 	from: '+12053509477',
-  // 	to: `+${a.phone_Number}`
-  // })
-  // .then(message => console.log(message))
-  // .catch((err) => console.log(err));
-
-  res.send(user);
 });
 
 route.post("/email-verification", async (req, res) => {

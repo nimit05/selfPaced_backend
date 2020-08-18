@@ -2,3 +2,4 @@
 .env
 /data/covers
 /data/files
+/build

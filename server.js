@@ -9,7 +9,6 @@ const session = require("express-session");
 const path = require("path");
 const { auth } = require("./middleware/auth");
 
-// Developme
 // middlewares
 app.use(
   session({
@@ -40,6 +39,6 @@ app.use("/api/pro-img", exp.static(`${__dirname}/routes/api/pro-img`));
 
 db.sync({ alter: true }).then(() => {
   app.listen(process.env.port, () => {
-    console.log("server-started",process.env.port );
+    console.log("server-started", process.env.port);
   });
 });

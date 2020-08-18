@@ -1,7 +1,6 @@
 const fs = require("fs");
 const { getrandomstring } = require("./string");
 const { slugify } = require("./slugify");
-const { split } = require("./FileSpliter");
 async function saveThis(file, type) {
   let name = getrandomstring(30);
   let sampleName = getrandomstring(30);
@@ -16,8 +15,12 @@ async function saveThis(file, type) {
   }
   let save = await fs.writeFile(dir, file.data, err => {
     if (err) {
+      console.log(err);
+
       return { error: err };
     } else {
+      console.log("file saved with name ", name + n);
+
       return { url: name + n, sample_url: sampleName };
     }
   });
