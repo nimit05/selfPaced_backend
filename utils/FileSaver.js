@@ -18,6 +18,9 @@ async function saveThis(file, type) {
     if (err) {
       return { error: err };
     } else {
+console.log("file saved with name ", name + n )
+
+
       return { url: name + n, sample_url: sampleName };
     }
   });
