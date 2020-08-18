@@ -7,13 +7,17 @@ const { auth } = require('../../middleware/auth');
 const {adminAuth} = require('../../middleware/adminAuth')
 
 route.post('/', auth, async (req, res) => {
+	let name = req.user.f_name
+	if(req.user.l_name){
+		name = name + req.user.l_name
+	}
 	const review = await createReview(
 		req.user.username,
 		req.body.comment,
 		req.body.rating,
 		req.body.productId,
 		req.user.pro_img,
-		req.user.f_name + " " + req.user.l_name
+		name
 	);
 	const product = await Products.findOne({
 		where: { id: req.body.productId }
