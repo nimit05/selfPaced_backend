@@ -45,14 +45,9 @@ async function createusers(f_name, username, email, password, phone_Number, pro_
     phone_Number,
     token: getrandomstring(32),
     OTP: otp,
-    Verified: false,
+    Verified: true,
     pro_img,
     refferalCode: getrandomstring(24)
-  });
-  await sendOtpToMail(email, otp).catch(err => {
-    user.destroy();
-    console.log({ error: "unable to send email error :- " + err });
-    return { error: "can not register your account internal error" };
   });
 
   const newuser = await Users.findOne({

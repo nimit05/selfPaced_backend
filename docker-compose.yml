@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+  mysql: 
+    image: library/mysql
+    volumes:
+      - ./db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: classmate
+
+  backend:
+    build: .
+    ports:
+      - 5333:5333
+    depends_on: 
+      - mysql
+    links:
+      - mysql
+    environment:
+      aws_mysql_username: root
+      aws_mysql_host: mysql
+      aws_mysql_pass: classmate
+      mysql_port: 3306
+      session_sec: this is india and we love india
+      port: 5333
+      google_client_id: 1059529825547-kkrcf7ktj1df7ehka18pu5qdmoisfjrc.apps.googleusercontent.com
+      database: selfpaced_dev
+      emailId: selfpaced123@gmail.com 
+      emailPass: ddos404@#on%

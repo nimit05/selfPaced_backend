@@ -2,9 +2,11 @@ const Sequelize = require("sequelize");
 const dotenv = require("dotenv");
 dotenv.config();
 
+console.log(process.env.aws_mysql_pass)
 const db = new Sequelize({
   dialect: "mysql",
   host: process.env.aws_mysql_host,
+port:process.env.mysql_port,
 
   database: process.env.database,
   username: process.env.aws_mysql_username,
